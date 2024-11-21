@@ -1,14 +1,20 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { enablePageScroll, disablePageScroll } from "scroll-lock";
 import Logo from "../assets/logo.svg";
 import { RxHamburgerMenu as HamburgerMenu } from "react-icons/rx";
 import { IoSearch as SearchIcon } from "react-icons/io5";
 import { IoCloseOutline as CloseIcon } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
+import { IoPersonSharp } from "react-icons/io5";
+import { IoMdFilm } from "react-icons/io";
+import { BsBookmarkPlus , BsBookmarkPlusFill} from "react-icons/bs";
 import Button from "./Button";
 import { menuItems } from "../constants/data.jsx";
-
+import { AutoComplete } from "src/api/apiCalling.jsx";
+import { NavLink } from "react-router-dom";
+import OutsideClickHandler from "react-outside-click-handler";
+import axios from "axios";
 
 
 const Header = () => {
@@ -16,6 +22,40 @@ const Header = () => {
   const [openSearchBar, setOpenSearchBar] = useState(false);
   const [dropdown, setDropdown] = useState(null);
   const [activeIndex, setActiveIndex] = useState('');
+  const [focusedIndex, setFocusedIndex] = useState(-1);
+  const [input, setInput] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+
+  useEffect(() => {
+
+    if(input.trim() === ""){
+      setSearchQuery(false);
+    }
+    else{
+      setSearchQuery(true);
+    }
+
+    const timer = setTimeout(() => {
+
+      
+      if(input.trim() !== ""){
+        AutoComplete(input).then((data) => { setSearchResults(data.d) }).catch(err => console.log(err));
+      }
+
+
+
+    }, 500)
+
+
+
+    return () => clearTimeout(timer);
+
+
+  }, [input])
 
   const toggleNavbar = () => {
     if (openNavigation) {
@@ -48,13 +88,45 @@ const Header = () => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'ArrowDown') {
+      if (focusedIndex < searchResults.length - 1) {
+        setFocusedIndex(prev => prev + 1);
+      }
+    } else if (e.key === 'ArrowUp') {
+      if (focusedIndex > 0) {
+        setFocusedIndex(prev => prev - 1);
+      }
+    } 
+    else if (e.key === 'Enter' && focusedIndex >= 0) {
+      e.preventDefault();
+      const selectedResult = searchResults[focusedIndex];
+      setSearchQuery(false);
+      setInput('');
+      window.location.href = `/search/query/${selectedResult.id}`;
+  };
+}
+
+  console.log(focusedIndex)
+
+  if (searchResults !== undefined) {
+    console.log(searchResults, "result");
+    
+
+  }
+
+  console.log("SearchQuery",searchQuery);
+
+
+console.log("INPUT" , input);
+
   return (
     <div className=" relative w-full bg-dark-5 ">
       <div className="flex   items-center  md:justify-normal ">
 
 
 
-        <div className=" py-[1rem] lg:mx-[5rem] 2xl:mx-[10rem]  flex  items-center w-full">
+        <div className=" py-[1rem] lg:mx-[5rem]   flex  items-center w-full">
           <Button className="block 2xl:hidden" onClick={toggleNavbar}>
             <HamburgerMenu />
           </Button>
@@ -67,7 +139,7 @@ const Header = () => {
             {menuItems.map((item, id) => (
               <>
                 <div
-                  key={id}
+                  key={item.id}
                   className=" mx-[1rem]"
                   onMouseEnter={() => setDropdown(id)}
                   onMouseLeave={() => setDropdown(null)}
@@ -106,12 +178,91 @@ const Header = () => {
             ))}
           </div>
 
-          <div className="  hidden mx-[1rem]  rounded-xl overflow-hidden max-w-2xl  bg-dark-4  md:flex grow flex-wrap ">
-            <input
-              type="search"
-              className=" w-full py-1 text-white bg-dark-4 px-[1rem]"
-            ></input>
+          <OutsideClickHandler  onOutsideClick={()=> searchQuery(false)} >
+          <div className="  hidden mx-[1rem]  rounded-xl  max-w-2xl min-w-96  md:flex grow flex-wrap relative">
+
+            <div className="overflow-x-hidden rounded-xl w-full ">
+              <input
+                type="text"
+                autoComplete="off"
+                className=" w-full py-1 text-white bg-dark-4 px-[1rem] focus:outline-none"
+                onChange={(e) => {setInput(e.target.value),
+                                    e.preventDefault()}
+
+                 }
+                 onKeyDown={(e)=>handleKeyDown(e)}
+                
+              ></input>
+            
+
+            
+            
+            
+            
+                <div className={` ${searchQuery ? "block":"hidden"} absolute top-11 w-full bg-dark-4 bg-opacity-30 backdrop-blur-xl text-white  h-96  overflow-y-scroll 
+                  `}>
+  
+                  {
+                    searchResults !== undefined  &&
+                    (
+  
+                      searchResults.map((item, index) => (
+                        
+
+                          <NavLink key={index}   to={`search/query/${item.id}`} className={`flex flex-row py-2 border-b-2  border-b-gray-500 my-4 px-2
+                          hover:bg-n-1 ${focusedIndex === index ? 'bg-n-1':''}`}
+                          onClick={()=>setSearchQuery(false)}  
+                          
+                          >
+                            <div className="mr-4  bg-dark-4 rounded-md overflow-hidden flex items-center justify-center" >
+                              {
+                                item.i ? (
+                                  <img src={item.i ? item.i.imageUrl : ''}
+                                  height={50} width={50}></img>
+                                ) : (
+                                  <div className="text-lt-2 text-[2rem] w-[56px] h-[70px] flex items-center justify-center">
+                                    {item.q ? <IoMdFilm/> : <IoPersonSharp/>}
+                                    <span className="text-n-1 h4-bold">{index}</span>
+                                  </div>
+                                )
+                              }
+
+                            </div>
+                            <div>
+                              <a className="h4">{item.l}</a>
+                              <p className="p1 text-dark-2">{item.s}</p>
+                            </div>
+  
+                          </NavLink>
+  
+                        
+  
+                      )
+                      )
+  
+  
+                    )
+  
+  
+                  }
+  
+                  <NavLink to={`/searchResults/${input}`} state={{ searchResults }}
+                  onClick={()=>setSearchQuery(false)}>
+                  
+                    <p>See all </p>
+                  </NavLink>
+
+  
+                </div>
+
+                </div>
+
+
           </div>
+          </OutsideClickHandler>
+
+
+
 
           <div className="hidden md:flex line-clamp-1">
             <Button>
@@ -151,7 +302,7 @@ const Header = () => {
       <div className={`absolute ${openNavigation ? "block" : "hidden"
         } 2xl:hidden top-0 left-0 right-1/3 bg-dark-3 h-screen z-50 drop-shadow-2xl`}
       >
-        
+
 
         <div className="absolute top-6 right-0 ">
           <Button px="px-[1rem] w-full" textClass="h2" onClick={handleClick}>
@@ -159,7 +310,7 @@ const Header = () => {
           </Button>
         </div>
 
-      
+
 
 
         {/* <div>
@@ -211,7 +362,8 @@ const Header = () => {
         <div className="relative  backdrop-blur-sm ring-1 overflow-hidden rounded-[10px] ring-dark-1 left-10 w-5/6">
           <input
             type="search"
-            className="w-full  py-1 text-white bg-dark-5 px-[1rem]"
+            className="w-full  py-1 text-white bg-dark-5 px-[1rem] focus:outline-none"
+            onChange={(e) => setInput(e.target.value)}
           ></input>
         </div>
 
