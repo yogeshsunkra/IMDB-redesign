@@ -7,7 +7,7 @@ const Accordian = ({item}) => {
 
   return (
     <div>
-      {item.map((index,text)=>{
+      {item.map((index,text)=>(
         <div>
             <div id={index} onClick={()=>setActiveIndex(index)}>{text}</div>
             <div className = {`${index === activeIndex ? 'block':'hidden'}`}>
@@ -18,7 +18,7 @@ const Accordian = ({item}) => {
         </div>
 
         
-      })}
+      ))}
     </div>
   )
 }

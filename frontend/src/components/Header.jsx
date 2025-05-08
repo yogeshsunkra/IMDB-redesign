@@ -199,7 +199,7 @@ console.log("INPUT" , input);
             
             
             
-                <div className={` ${searchQuery ? "block":"hidden"} absolute top-11 w-full bg-dark-4 bg-opacity-30 backdrop-blur-xl text-white  h-96  overflow-y-scroll 
+                <div className={` ${searchQuery ? "block":"hidden"} absolute  top-11 w-full bg-dark-4 bg-opacity-30 backdrop-blur-xl text-white  h-96  overflow-y-scroll 
                   `}>
   
                   {
@@ -208,8 +208,9 @@ console.log("INPUT" , input);
   
                       searchResults.map((item, index) => (
                         
+                        
 
-                          <NavLink key={index}   to={`search/query/${item.id}`} className={`flex flex-row py-2 border-b-2  border-b-gray-500 my-4 px-2
+                          <NavLink key={index}    to={(item.id.startsWith("t")?`search/title/${item.id}`:`search/celeb/${item.id}`)} className={`flex flex-row py-2 border-b-2  border-b-gray-500 my-4 px-2
                           hover:bg-n-1 ${focusedIndex === index ? 'bg-n-1':''}`}
                           onClick={()=>setSearchQuery(false)}  
                           
