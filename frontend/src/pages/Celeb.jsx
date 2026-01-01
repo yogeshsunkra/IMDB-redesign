@@ -269,8 +269,6 @@ const Celeb = () => {
         </div>
       </div>
 
-
-
     </div>
   )
 }

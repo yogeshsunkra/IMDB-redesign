@@ -1,6 +1,5 @@
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
-
 
 // export const mainPageItems = () => {
 
@@ -41,8 +40,8 @@ import axios from "axios";
 // // const fetchData = async() =>{
 
 // //     try{
-    
-            
+
+
 //                 // axios.request('https://imdb188.p.rapidapi.com/api/v1/getWeekTop10',options)
 // //                 // axios.get('https://imdb188.p.rapidapi.com/api/v1/getWhatsStreaming?country=IN',options),
 // //                 // axios.get(`https://imdb188.p.rapidapi.com/api/v1/getBornOn?month=${month}&day=${day}`,options),
@@ -50,7 +49,7 @@ import axios from "axios";
 // //                 // axios.get('https://imdb188.p.rapidapi.com/api/v1/getPopularCelebrities',options),
 // //                 // axios.get('https://imdb188.p.rapidapi.com/api/v1/getUpcomingMovies?region=IN',options)
 
-            
+
 
 
 // //             setData({
@@ -64,8 +63,8 @@ import axios from "axios";
 // //             });
 // //             setLoading(false);
 // //             ;
-            
-        
+
+
 // //     }
 // //     catch(err){
 // //         setError(true);
@@ -89,25 +88,80 @@ import axios from "axios";
 export const AutoComplete = async (input) => {
 
 
-		//Api Call 
-		const options = {
-			method: 'GET',
-			url: 'https://imdb-com.p.rapidapi.com/auto-complete',
-			params: {query: input},
-			headers: {
-			  'x-rapidapi-key': import.meta.env.VITE_API_KEY,
-			  'x-rapidapi-host': 'imdb-com.p.rapidapi.com'
-			}
-		  };
-		  
-		  try {
-			  const response =  await axios.request(options);
-			  
-			  const data = response.data;
-			  return data.data;
-		  } catch (error) {
-			  console.error(error,"NOW");
-		  }
+	//Api Call 
+	const options = {
+		method: 'GET',
+		url: 'https://imdb-com.p.rapidapi.com/auto-complete',
+		params: { query: input },
+		headers: {
+			'x-rapidapi-key': import.meta.env.VITE_API_KEY,
+			'x-rapidapi-host': 'imdb-com.p.rapidapi.com'
+		}
+	};
+
+	try {
+		const response = await axios.request(options);
+
+		const data = response.data;
+		return data.data;
+	} catch (error) {
+		console.error(error, "NOW");
+	}
+
+
+}
+
+
+export const homePageSections = async () => {
+
+	try {
+		const response = await axios.get('http://localhost:5000/api/v1/home_page');
+
+		const data = await response.data;
+
+	// 	 const result = data.map(d=>({
+
+    //      name : d.value.name,
+    //      data : d.value.data
+
+    //  }));
+
+		console.log("data fetched ",data);
+		return data;
+	} catch (error) {
+		console.error(error, "NOW");
+	}
+
+
+
+}
+export const celebData = async () => {
+
+	try {
+		const response = await axios.get('http://localhost:5000/api/v1/home_page');
+
+		const data = response.data;
+		console.log("data fetched");
+		return data[0];
+	} catch (error) {
+		console.error(error, "NOW");
+	}
+
+
+
+}
+export const titleData = async () => {
+
+	try {
+		const response = await axios.get('http://localhost:5000/api/v1/home_page');
+
+		const data = response.data;
+		console.log("data fetched");
+		return data[0];
+	} catch (error) {
+		console.error(error, "NOW");
+	}
+
 
 
 }

@@ -14,6 +14,8 @@ const App = ()=>{
     <div className="w-full ">
       <Header/>
       <Content/>
+
+      
     </div>
   )
 }
