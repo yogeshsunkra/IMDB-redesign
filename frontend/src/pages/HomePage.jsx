@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { homePageSections } from 'src/api/apiCalling'
+import HomePageSections from 'src/components/HomePageSections';
 
 const HomePage = () => {
 
@@ -8,30 +8,30 @@ const HomePage = () => {
 
   useEffect( ()=>{
 
-    homePageSections().then(data => {
+    // homePageSections().then(data => {
 
-      console.log("INITIAL",data);
-     if (data){
+    //   console.log("INITIAL",data);
+    //  if (data){
 
-    const result = data.map(d=>({
+    // // const result = data.map(d=>({
 
-         name : d.value.name,
-         data : d.value.data,
-         category:d.value.category,
-     }));
+    // //      name : d.value.name,
+    // //      data : d.value.data,
+    // //      category:d.value.category,
+    // //  }));
 
-     setHomePageData(result);
+    //  setHomePageData(data);
 
-     }
+    //  } 
 
 
-    }).catch(err => console.log(err,"ERROR"));
+    // }).catch(err => console.log(err,"ERROR"));
 
     
 
   },[])
 
-console.log("HOMEPAGE DATA",homePageData);
+// console.log("HOMEPAGE DATA",homePageData);
   return (
     <div className='w-full border-2 border-yellow-500 h-[200rem]'>
       
@@ -74,6 +74,9 @@ console.log("HOMEPAGE DATA",homePageData);
         </div>
 
       </div>
+
+
+      <HomePageSections/>
 
 
     </div>

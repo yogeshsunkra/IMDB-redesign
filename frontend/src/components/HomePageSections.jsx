@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { homePageSections } from 'src/api/apiCalling';
+import Watch from './homepage/Watch';
 
 const HomePageSections = () => {
 
@@ -25,7 +26,7 @@ const HomePageSections = () => {
 
   return (
     <div>
-      
+      <Watch/>
     </div>
   )
 }

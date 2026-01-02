@@ -119,6 +119,13 @@ export const homePageSections = async () => {
 
 		const data = await response.data;
 
+		const result = data.map(d=>({
+    
+             name : d.value.name,
+             data : d.value.data,
+             category:d.value.category,
+         }));
+
 	// 	 const result = data.map(d=>({
 
     //      name : d.value.name,
@@ -126,8 +133,8 @@ export const homePageSections = async () => {
 
     //  }));
 
-		console.log("data fetched ",data);
-		return data;
+		console.log("data fetched ",result);
+		return result; 
 	} catch (error) {
 		console.error(error, "NOW");
 	}
