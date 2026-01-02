@@ -1,5 +1,4 @@
 
-import { data } from "autoprefixer";
 import { createContext, useState } from "react";
 import { homePageSections } from "src/api/apiCalling";
 
