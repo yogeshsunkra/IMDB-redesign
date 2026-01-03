@@ -1,19 +1,32 @@
-import React, { useState ,useContext} from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { DataContext } from 'src/context/DataContext';
 
 const Watch = () => {
 
 
-const [data,setdata] = useState();
+  const [data, setData] = useState();
 
-const query = useContext(DataContext);
-// setdata(query);
+  const { sections,loading } = useContext(DataContext);
 
-console.log(query,"QUERY")
+
+
+  useEffect(() => {
+
+    if (sections) {
+
+        console.log(sections.watch,"QUERY");
+        setData(sections.watch);
+
+
+
+    }
+
+
+  }, [sections])
 
   return (
     <div>
-      
+
     </div>
   )
 }
