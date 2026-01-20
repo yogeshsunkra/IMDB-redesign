@@ -20,6 +20,16 @@ export const DataProvider = ({ children }) => {
 
     useEffect(() => {
 
+
+        // const cached = localStorage.getItem('homePageData');
+        // if (cached) {
+
+        //     return homePageData;
+        //     setSections(homePageData);
+        //     setLoading(false);
+        // }
+
+
         homePageSections().then(data => {
 
             // console.log("INITIAL", data);
@@ -28,7 +38,7 @@ export const DataProvider = ({ children }) => {
                 console.log("INITIAL", data);
 
                 const categorizedData = data.reduce((acc,item)=>{
-                    acc[item.category] === acc[item.category] || [];
+                    acc[item.category] = acc[item.category] || [];
                     acc[item.category].push(item);
                     return acc;
 
