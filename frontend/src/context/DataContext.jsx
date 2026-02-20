@@ -5,6 +5,21 @@ import { homePageSections } from "src/api/apiCalling";
 export const DataContext = createContext();
 
 
+const isValid = (cache) =>{
+
+        const parsed = JSON.parse(cache);
+
+        const timeStamp = parsed.date;
+
+        const today = new Date().toISOString().split("T")[0];
+
+        const expired = today !== timeStamp;
+
+        return expired ;
+
+}
+
+
 export const DataProvider = ({ children }) => {
 
 
@@ -12,72 +27,101 @@ export const DataProvider = ({ children }) => {
     const [explore, setExplore] = useState([]);
     const [celeb, setCeleb] = useState([]);
     const [sections, setSections] = useState([]);
-    const [loading,setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
 
-    
+
     // const [userChoices,setUserChoices] = useState();
 
 
     useEffect(() => {
 
 
-        // const cached = localStorage.getItem('homePageData');
-        // if (cached) {
-
-        //     return homePageData;
-        //     setSections(homePageData);
-        //     setLoading(false);
-        // }
+        const cached = localStorage.getItem('homePageData');
 
 
-        homePageSections().then(data => {
+        if ((cached) && (isValid(cached))) {
 
-            // console.log("INITIAL", data);
+            // localStorage.clear();
+            // console.log('CLEARED');
+            const parsed = JSON.parse(cached);
+            setSections(parsed);
+            setLoading(false);
+            return ;
+        }
+        else {
 
-            if (data) {
-                console.log("INITIAL", data);
+            homePageSections().then(data => {
 
-                const categorizedData = data.reduce((acc,item)=>{
-                    acc[item.category] = acc[item.category] || [];
-                    acc[item.category].push(item);
-                    return acc;
+                console.log("UNCACHED LS");
 
-                },{});
+                if (data) {
+                    console.log("INITIAL", data);
 
-                setSections(categorizedData);
-                setLoading(false);
-                console.log (sections,"SECTIONS");
-                console.log (loading,"Loading....");
+                    const categorizedData = data.reduce((acc, item) => {
+                        acc[item.category] = acc[item.category] || [];
+                        acc[item.category].push(item);
+                        return acc;
 
+                    }, {});
 
-
-                
-
-
-
-
-
-                // const watchData = data.filter(d => d.category === "watch");
-                // const exploreData = data.filter(d => d.category === "explore");
-                // const celebData = data.filter(d => d.category === "celeb");
+                    if (categorizedData) {
 
 
-                // setWatch(watchData);
-                // setExplore(exploreData);
-                // setCeleb(celebData);
+                        const item = {
+                            value: categorizedData,
+                            date: new Date().toISOString().split("T")[0],
+                        }
 
-                // console.log(watch,"WATCH");
-                // console.log(explore,"EXPLORE");
-                // console.log(celebData,"CELEB");
 
-            }
 
+
+                        localStorage.setItem("homePageData", JSON.stringify(item));
+
+                        setSections(categorizedData);
+
+                        setLoading(false);
+
+                        console.log(sections, "SECTIONS");
+                        console.log(loading, "Loading....");
+
+                    }
 
 
 
 
 
-        }).catch(err => console.log(err, "ERROR"));
+
+
+
+
+
+
+                    // const watchData = data.filter(d => d.category === "watch");
+                    // const exploreData = data.filter(d => d.category === "explore");
+                    // const celebData = data.filter(d => d.category === "celeb");
+
+
+                    // setWatch(watchData);
+                    // setExplore(exploreData);
+                    // setCeleb(celebData);
+
+                    // console.log(watch,"WATCH");
+                    // console.log(explore,"EXPLORE");
+                    // console.log(celebData,"CELEB");
+
+                }
+
+
+
+
+
+
+            }).catch(err => console.log(err, "ERROR"));
+
+        }
+
+
+
 
     }, [])
 

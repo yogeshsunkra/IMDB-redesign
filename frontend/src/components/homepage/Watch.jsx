@@ -15,10 +15,9 @@ const Watch = () => {
     if (sections) {
 
         console.log(sections.watch,"QUERY");
+        console.log(loading,"QUERY loading");
+
         setData(sections.watch);
-
-
-
     }
 
 

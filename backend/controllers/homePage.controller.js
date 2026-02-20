@@ -10,7 +10,30 @@ dotenv.config();
 const today = new Date()
 const currentMonth = (today.getMonth() + 1).toString().padStart(2, '0');
 const currentDay = today.getDate().toString().padStart(2, '0');
-const now = Date.now;
+
+
+const isCacheValid = (cache, days) => {
+
+        const numericDays = Number(days);
+
+        if (numericDays > 0){
+
+        const now = Date.now();
+        const cacheDuration = 24 * 3600 * 1000 * days;
+        const lastUpdated = new Date(cache.updatedAt).getTime();
+
+        return now - lastUpdated < cacheDuration;
+
+        }
+
+        const todayDate = new Date().toDateString();
+        const cacheDate = new Date(cache.updatedAt).toDateString();
+
+        return  todayDate === cacheDate;
+
+
+}
+
 
 
 
@@ -38,7 +61,7 @@ const homePageController = async (req, res) => {
                 {
                         name: "born today",
                         url: `https://imdb188.p.rapidapi.com/api/v1/getBornOn?month=${currentMonth}&day=${currentDay}`,
-                        days: '30',
+                        days: "0",
                         category: "celeb"
                 },
                 {
@@ -56,32 +79,17 @@ const homePageController = async (req, res) => {
 
                 try {
 
-                        const cacheDuration = 24 * 3600 * 1000 * days;
+
                         const cache = await HomepageSection.findOne({ name });
 
 
-                        if (cache) {
+                        if (cache && isCacheValid(cache,days)) {
 
-                                // const isValid = now - new Date(cache.updatedAt).getTime() < cacheDuration;
-                                // console.log("CACHE")
-                                // console.log("name:", name);
-                                // console.log("data:", cache.data);
-                                console.log("created at : ", cache.createdAt)
-
-
-                                // Trial 
-                                console.log("CACHE");
+                                 console.log(`Cache HIT → ${name}`);
                                 return { name, data: cache.data, category }
                         }
-
-
-
-
                         else {
-                                console.log(" NO CACHE")
-
-
-
+                                 
                                 const options = {
                                         method: "GET",
                                         url: url,
@@ -93,6 +101,8 @@ const homePageController = async (req, res) => {
 
                                 const response = await axios.request(options);
                                 const result = await response.data;
+
+                                console.log(`FETCHING FROM API → ${name}`);
                                 // console.log("data", result)
 
                                 await HomepageSection.findOneAndUpdate(
@@ -100,16 +110,16 @@ const homePageController = async (req, res) => {
                                         {
                                                 $set: {
                                                         data: result,
-                                                         category,
-                                                         updatedAt: new Date()
+                                                        category,
+                                                        updatedAt: new Date()
                                                 }
                                         }, // items going to update if found
                                         {
-                                        upsert: true,
-                                        new:true,
-                                        setDefaultsOnInsert:true,
+                                                upsert: true,
+                                                new: true,
+                                                setDefaultsOnInsert: true,
 
-                                }//if not found .. creates new object
+                                        }//if not found .. creates new object
                                 );
                                 return ({ name, data: result, category });
                         }
