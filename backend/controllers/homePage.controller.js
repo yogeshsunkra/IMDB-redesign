@@ -21,15 +21,22 @@ const isCacheValid = (cache, days) => {
         const now = Date.now();
         const cacheDuration = 24 * 3600 * 1000 * days;
         const lastUpdated = new Date(cache.updatedAt).getTime();
+        // console.log(lastUpdated,"LU");
+        // console.log(now,"N");
+        // console.log(cacheDuration,"CD");
+        const durationCheck = now - lastUpdated < cacheDuration
+        // console.log(durationCheck,"durationCheck");
 
-        return now - lastUpdated < cacheDuration;
-
+        return durationCheck;
         }
 
         const todayDate = new Date().toDateString();
         const cacheDate = new Date(cache.updatedAt).toDateString();
+        const dateCheck = todayDate === cacheDate;
+        console.log(todayDate," : ",cacheDate," : ",dateCheck,"dateCheck");
 
-        return  todayDate === cacheDate;
+
+        return  dateCheck;
 
 
 }
@@ -43,13 +50,13 @@ const homePageController = async (req, res) => {
                 {
                         name: "week top 10",
                         url: 'https://imdb188.p.rapidapi.com/api/v1/getWeekTop10',
-                        days: '30',
+                        days: "3",
                         category: "watch"
                 },
                 {
                         name: "fan favourites",
                         url: 'https://imdb188.p.rapidapi.com/api/v1/getFanFavorites?country=IN',
-                        days: '30',
+                        days: '5',
                         category: "watch"
                 },
                 {
@@ -85,7 +92,7 @@ const homePageController = async (req, res) => {
 
                         if (cache && isCacheValid(cache,days)) {
 
-                                 console.log(`Cache HIT → ${name}`);
+                                 console.log(`Cache HIT → ${name} ${days}`);
                                 return { name, data: cache.data, category }
                         }
                         else {

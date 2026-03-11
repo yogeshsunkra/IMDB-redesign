@@ -13,7 +13,7 @@ const isValid = (cache) =>{
 
         const today = new Date().toISOString().split("T")[0];
 
-        const expired = today !== timeStamp;
+        const expired = today === timeStamp;
 
         return expired ;
 
