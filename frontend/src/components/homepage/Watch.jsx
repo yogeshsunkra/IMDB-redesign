@@ -4,7 +4,8 @@ import { DataContext } from 'src/context/DataContext';
 const Watch = () => {
 
 
-  const [data, setData] = useState();
+  const [weektopTen, setWeekTopTen] = useState();
+  const [fanFav, setFanFav] = useState();
 
   const { sections,loading } = useContext(DataContext);
 
@@ -17,7 +18,7 @@ const Watch = () => {
         console.log(sections.watch,"QUERY");
         console.log(loading,"QUERY loading");
 
-        setData(sections.watch);
+        setWeekTopTen(sections.watch);
     }
 
 
