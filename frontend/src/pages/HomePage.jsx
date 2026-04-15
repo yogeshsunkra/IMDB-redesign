@@ -35,7 +35,7 @@ const HomePage = () => {
   return (
     <div className='w-full border-2 border-yellow-500 h-[200rem]'>
       
-    <div className='w-full  md:w-[85%] xl:w-[70%] mx-auto my-4 '>
+    <div className='w-full  xl:w-[85%] mx-auto my-4 '>
 
       {/* hero section */}
 
