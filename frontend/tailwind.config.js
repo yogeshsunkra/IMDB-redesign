@@ -72,7 +72,7 @@ export default {
           "@apply text-[1.75rem] font-normal leading-[auto]":{}
         },
         ".h3":{
-          "@apply text-[1.25rem] font-normal leading-[auto]":{}
+          "@apply text-[1.375rem] font-normal leading-[auto]":{}
         },
         ".h4":{
           "@apply text-[1.125rem] font-normal leading-[auto]":{}
@@ -82,6 +82,12 @@ export default {
         },
         ".p1":{
           "@apply text-[1rem] font-normal leading-[1.75rem]":{}
+        },
+        ".p2":{
+          "@apply text-[0.875rem] font-normal leading-[1.25rem]":{}
+        },
+        ".p3":{
+          "@apply text-[0.75rem] font-normal leading-[auto]":{}
         },
       });
       addUtilities({});

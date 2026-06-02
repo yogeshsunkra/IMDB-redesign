@@ -1,11 +1,19 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useRef } from 'react'
 import { DataContext } from 'src/context/DataContext';
+import RatingIcon from 'src/assets/ratingIcon.svg?react';
+import WatchedIcon from 'src/assets/watchedIcon.svg?react';
+import { simplifiedApiResponse } from 'src/utils/utilsData';
+import { RiAlignItemBottomFill } from 'react-icons/ri';
+import Slider from '../Slider';
+
 
 const Watch = () => {
 
-
   const [weekTopTen, setWeekTopTen] = useState([]);
   const [fanFav, setFanFav] = useState([]);
+  const [isRendered, setIsRendered] = useState(false);
+
+  const ref = useRef();
 
   const { sections, loading } = useContext(DataContext);
 
@@ -27,23 +35,26 @@ const Watch = () => {
 
   useEffect(() => {
 
-    if (sections) {
 
-      // const value = sections.watch;
+
+
+
+    if (!loading && sections && !isRendered) {
+
+      console.log("RENDERED");
 
       sections?.value?.watch?.forEach((e) => {
 
         const name = toCamelCase(e.name);
-        // if(name === weekTop10){
-
-        // }
 
         switch (name) {
           case "weekTop10":
-            setWeekTopTen(e.data);
+
+            setWeekTopTen(simplifiedApiResponse(e.data.data));
             break;
           case "fanFavourites":
-            setFanFav(e.data);
+
+            setFanFav(simplifiedApiResponse(e.data.data.list));
             break;
 
           default:
@@ -52,145 +63,275 @@ const Watch = () => {
 
       })
 
+      requestAnimationFrame(() => {
+        setIsRendered(true);
+      });
+      // console.log(loading, "QUERY loading");
+      // console.log(sections, "QUERY SEC");
 
-      console.log(loading, "QUERY loading");
-      console.log(sections.value, "QUERY SEC");
-      console.log(weekTopTen, "10");
-      console.log(fanFav, "fan");
     }
 
+  }, [sections, loading, isRendered])
 
-  }, [sections, loading])
 
+  const topCards = weekTopTen?.slice(0, 3);
+  const primaryCards = weekTopTen?.slice(3, 6);
+  const secondaryCards = weekTopTen?.slice(3);
 
+  console.log(primaryCards, "CARDS");
+
+  // console.log(weekTopTen, "10");
+  // console.log(fanFav, "fan");
 
   return (
-    <div className='w-full overflow-hidden'>
-
-      {/* Week Top 10 */}
-      <div className='w-full  min-h-screen border-red-700 border-2'>
-
-        <div className='w-full min-h-screen p-4 border-2 border-white flex xl:flex-col'>
-
-          {/* {weekTopTen.map((e,index) => {
-
-            if(index < 3){
-              <div>
-                <div key={e.id}>
-
-                </div>
-              </div>
-            }
-            else if(index >= 3 && index < 6){
-
-            }
-            else(index >= 3)
-            {
-              
-            }
-
-          })} */}
-          {/* div-1 */}
-          <div className='w-full p-2 overflow-hidden grid grid-flow-row gap-4  xl:grid-cols-4 '>
-            <div className=' w-full h-max xl:col-span-2  bg-dark-4 bg-opacity-55 rounded-2xl'>
-
-              {/* img */}
-              <div className='overflow-hidden rounded-xl w-full  p-4'>
-                <div className='relative max-w-max  grid  grid-cols-3 gap-4'>
-
-                  <div className='max-w-32 max-h-48 rounded-2xl rounded-l-none overflow-hidden border-2 border-purple-600 col-span-1'>
-                    <img className='w-full h-full ' src='https://m.media-amazon.com/images/M/MV5BZTA0MzU0YzItZWRjZC00YzllLWFmYjMtZWYzZDgyYzRjYTg5XkEyXkFqcGc@._V1_.jpg' loading='lazy' ></img>
-                  </div>
-                  {/* <div></div> */}
-
-                  {/* basic info */}
-                  <div className='col-span-2 w-full h-full flex flex-col gap-4 p-1 border-2 border-pink-700'>
-
-                    <div className='flex flex-col gap-2 mb-4'>
-                      {/* #1 tag */}
-                      <span className='bg-blue-600 text-white w-max p-1 px-2 rounded-lg rounded-tr-none'> #1</span>
-
-                      {/* Title */}
-                      <div>
-                        <h1 className='text-white h4-bold'>BILLA</h1>
-                      </div>
-                    </div>
-
-                    <div className='flex flex-col gap-1 text-dark-2'>
-                      {/* 2026 1h38m PG */}
-                      <div className='flex gap-1'>
-                        <span>2026</span>
-                        <span>1h 38m</span>
-                        <span>PG</span>
-                      </div>
-                      {/* *6.5 (22k) *rate */}
-                      <div className='flex gap-1'>
-                        <span>* 6.5</span>
-                        <span>* Rate</span>
-                      </div>
-
-                      {/* @ Mark as watched */}
-                      <div>
-                        <span className='text-blue-700'>Mark as watched</span>
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                  {/* synopsis */}
-                  <div className='hidden'></div>
+    <div ref={ref} className='relative w-full overflow-hidden  py-12 '>
 
 
+      <div className='absolute  flex  top-16  w-full h-[50%] justify-center items-start md:flex '>
+
+        <span className='text-[clamp(2rem,14vw,12rem)]  text-gray-400 font-extrabold opacity-5 -z-20 '>  What to Watch
+        </span>
+      </div>
+
+      <div className='w-full h-full flex '>
+
+
+        <div className=' flex flex-col px-4 py-2 gap-4 justify-center items-center'>
+
+          <div className='flex gap-4 items-center justify-center'>
+            <span className='px-1 py-2 bg-n-1 rounded-full' />
+            <h1 className='h3 text-dark-1'>TOP on IMDB this week</h1>
+            
+          </div>
+
+          <p></p>
+        </div>
+
+      </div>
+
+      {/* ************** Fan Fav ****************/}
+
+
+
+      <Slider items={fanFav} loading={loading} />
+
+
+      {/* ************ Week Top Ten Section ************* */}
+
+      <div className={`w-full   my-4 flex min-[850px]:flex-row xl:flex-col gap-1 `}>
+
+
+        {/* ************************ Top 3 cards  ************************ */}
+        <div className={`w-full h-full grid p-2 grid-flow-row xl:grid-flow-col xl:grid-cols-7 gap-4 ${loading ? "h-40 animate-pulse" : "h-full animate-none"}`}>
+
+          {/* Dynamic */}
+
+          {topCards.map((item, index) => {
+
+            {/* Index-1 */ }
+            return (
+              <div id={item.id} className={`w-full h-max  xl:h-full col-span-3
+              ${index === 0 ? "xl:col-span-3" : "xl:col-span-2"}
+               bg-dark-4 bg-opacity-40  rounded-3xl grid grid-cols-3  xl:grid-cols-2 gap-2 p-6 md:p-4 `} >
+
+
+                {/* IMAGE */}
+                < div className={`w-full row-span-2 ${index === 0 ? "xl:row-span-2" : "xl:row-span-1"} col-span-1 rounded-2xl rounded-tl-none overflow-hidden`} >
+                  <img className='aspect-[2/3] w-full h-full  object-cover'
+                    src={item.image} loading='lazy' ></img>
                 </div>
 
+                {/* DETAILS */}
+                <div className='row-span-2 col-span-2 xl:col-span-1 xl:row-span-1 w-full h-full  flex flex-col gap-2 p-2 pl-0 line-clamp-1 leading-tight break-words'>
+
+                  <div className=' flex flex-col gap-2 px-2 '>
+                    {/* #1 tag */}
+                    <div className='relative bg-blue-600 text-white w-max py-1 px-3 rounded-lg rounded-tr-none  font-semibold '> #{item.rank}
+
+                      <span className='absolute top-0 left-3/4 w-1/3 h-full bg-blue-600 -skew-x-[200deg]'></span>
+                    </div>
+
+                    {/* Title */}
+                    <div>
+                      <p className='text-white  font-extrabold'>{item.title}</p>
+                    </div>
+
+
+                  </div>
+
+                  <div className='w-full h-full  flex flex-col gap-2 text-dark-1 py-4 px-2'>
+
+                    <div className='flex gap-3 font-medium place-items-center'>
+
+                      <p>{item.releaseYear}</p>
+                      <p>{item.runtime}</p>
+                      <p>{item.titleRating}</p>
+
+                    </div>
+
+                    <div className='flex gap-1  font-medium place-items-center'>
+                      <RatingIcon className="w-[1.125rem] h-auto " />
+                      <p>{item.rating}</p>
+                    </div>
+                    <div className='flex gap-1  font-medium place-items-center'>
+                      <WatchedIcon className="w-[1.125rem] h-auto " />
+                      <p className='text-blue-500 '>Mark as Watched</p>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                {/* PLOT */}
+                <div className={`hidden  xl:block ${index === 0 ? "col-span-1" : "col-span-2"} row-span-1  w-full h-full `} >
+
+                  <p className='line-clamp-5 p2'>{item.plot}</p>
+                </div>
 
               </div>
+            )
 
-
-
-
-
-            </div>
-            {/* <div className='min-h-[12rem] w-full  border-yellow-500  border-2'></div>
-            <div className='min-h-[12rem] w-full  border-yellow-500  border-2'></div> */}
-          </div>
-          {/* div-2 */}
-          <div className='hidden w-full h-full border-2 border-red-700 p-2 overflow-hidden md:grid md:grid-flow-row gap-4 xl:hidden '>
-
-            <div className='min-h-[12rem] w-full  border-yellow-500 border-2'></div>
-            <div className='min-h-[12rem] w-full  border-yellow-500  border-2'></div>
-            <div className='min-h-[12rem] w-full  border-yellow-500  border-2'></div>
-
-          </div>
-
-          {/* div-3 */}
-          <div className='hidden xl:grid grid-flow-col gap-4'>
-            <div className='min-h-[12rem] w-full m-4 border-yellow-500 border-2'></div>
-            <div className='min-h-[12rem] w-full m-4 border-yellow-500  border-2'></div>
-            <div className='min-h-[12rem] w-full m-4 border-yellow-500  border-2'></div>
-            <div className='min-h-[12rem] w-full m-4 border-yellow-500  border-2'></div>
-            <div className='min-h-[12rem] w-full m-4 border-yellow-500  border-2'></div>
-            <div className='min-h-[12rem] w-full m-4 border-yellow-500  border-2'></div>
-            <div className='min-h-[12rem] w-full m-4 border-yellow-500  border-2'></div>
-
-          </div>
-
-
+          })}
 
 
 
         </div>
 
-      </div>
+        {/* ********************* Medium Device Only *********************** */}
+        <div className='hidden min-[850px]:grid xl:hidden w-full h-max  p-2 grid-flow-row  gap-4'>
 
-      {/* Fan Fav */}
-      <div></div>
+          {primaryCards.map((item, index) => {
+
+            { console.log("HITTING") }
+
+            return (
+
+
+              <div id={item.id} className={`w-full h-max  xl:h-full col-span-3
+              xl:${index === 0 ? "col-span-3" : "col-span-2"}
+               bg-dark-4 bg-opacity-40  rounded-3xl grid grid-cols-3  xl:grid-cols-2 gap-2 p-6 md:p-4 xl:text-[20px]`} >
+
+
+                {/* IMAGE */}
+                < div className={`w-full h-full row-span-2 xl:${index === 0 ? "row-span-2" : "row-span-1"} col-span-1 rounded-2xl rounded-tl-none overflow-hidden`} >
+                  <img className='aspect-[2/3] w-full h-full object-cover'
+                    src={item.image} loading='lazy' ></img>
+                </div>
+
+                {/* DETAILS */}
+                <div className='row-span-2 col-span-2 xl:col-span-1 xl:row-span-1 w-full h-full  flex flex-col gap-2 p-2 pl-0 
+                line-clamp-1 leading-tight break-words'>
+
+                  <div className=' flex flex-col gap-2 px-2 '>
+                    {/* #1 tag */}
+                    <div className='relative bg-blue-600 text-white w-max py-1 px-3 rounded-lg rounded-tr-none p2 font-semibold '> #{item.rank}
+
+                      <span className='absolute top-0 left-3/4 w-1/3 h-full bg-blue-600 -skew-x-[200deg]'></span>
+                    </div>
+
+                    {/* Title */}
+                    <div>
+                      <h1 className='text-white  font-extrabold line-clamp-1'>{item.title}</h1>
+                    </div>
+
+
+                  </div>
+
+                  <div className='w-full h-full  flex flex-col gap-2 text-dark-1 py-4 px-2'>
+
+                    <div className='flex gap-3 font-medium place-items-center'>
+
+                      <p>{item.releaseYear}</p>
+                      <p>{item.runtime}</p>
+                      <p>{item.titleRating}</p>
+
+                    </div>
+
+                    <div className='flex gap-1  font-medium place-items-center'>
+                      <RatingIcon className="w-[1.125rem] h-auto " />
+                      <p>{item.rating}</p>
+                    </div>
+                    <div className='flex gap-1  font-medium place-items-center'>
+                      <WatchedIcon className="w-[1.125rem] h-auto " />
+                      <p className='text-blue-500'>Mark as Watched</p>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                {/* PLOT */}
+                <div className={`hidden  xl:block ${index === 0 ? "col-span-1" : "col-span-2"} row-span-1  w-full h-full line-clamp-1`} >
+
+                  <p className='line-clamp-3'>{item.plot}</p>
+                </div>
+
+              </div>
+
+            )
 
 
 
-    </div>
+          })}
+
+          {/* Dynamic */}
+
+
+        </div>
+
+
+        {/* ********************* Large Device Only *********************** */}
+        <div className='hidden xl:grid grid-cols-7 w-full h-full  p-4 gap-2'>
+
+
+          {secondaryCards.map((item, index) => {
+
+            return (
+
+              <div
+                id={item.id}
+                className='relative overflow-hidden rounded-xl bg-dark-4 bg-opacity-40 flex flex-col'
+              >
+
+                {/* IMG */}
+                <div className='aspect-[2/3] w-full shrink-0 grow-0 overflow-hidden'>
+                  <img
+                    className='w-full h-full object-cover'
+                    src={item.image}
+                    loading='lazy'
+                  />
+                </div>
+
+                {/* Rank */}
+                <div className='absolute top-10 left-0'>
+                  <div className='relative bg-blue-600 text-white w-max px-4 rounded-md rounded-tr-none p1 font-semibold'>
+                    {item.rank}
+
+                    <span className='absolute top-0 left-3/4 w-1/3 h-full bg-blue-600 -skew-x-[200deg]'></span>
+                  </div>
+                </div>
+
+                {/* Details */}
+                <div className='p-4 pb-6 font-medium text-dark-2 hover:text-dark-1 flex-1'>
+                  <p className='line-clamp-2 leading-tight break-words'>
+                    {item.title}
+                  </p>
+                </div>
+              </div>
+            )
+
+
+          })}
+
+
+        </div>
+
+      </div >
+
+    </div >
+
   )
 }
+
 
 export default Watch

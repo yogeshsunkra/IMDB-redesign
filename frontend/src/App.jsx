@@ -1,8 +1,7 @@
 import React from "react";
 import Header from "./components/Header";
 import Content from "./components/Content";
-import TopMovies from "./components/TopMovies";
-import { DataProvider } from "./context/DataContext";
+import { DataProvider } from "./context/DataProvider.jsx";
 // import { mainPageItems } from "./api/apiCalling";
 
 
@@ -14,7 +13,7 @@ const App = () => {
   return (
     <DataProvider>
       <div className="w-full ">
-        <Header />
+        <Header/>
         <Content />
 
 

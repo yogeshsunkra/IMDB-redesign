@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { homePageSections } from 'src/api/apiCalling';
 import Watch from './homepage/Watch';
+import Celebrity from './homepage/Celebrity';
+import LazyComponent from './LazyComponent';
 
 const HomePageSections = () => {
 
@@ -16,17 +18,20 @@ const HomePageSections = () => {
 
     useEffect(()=>{
 
-        
-
-
-
     },[])
 
 
 
   return (
     <div>
+
+      <LazyComponent>
+      <Celebrity/>
+      </LazyComponent>
+
+      <LazyComponent>
       <Watch/>
+      </LazyComponent>
     </div>
   )
 }

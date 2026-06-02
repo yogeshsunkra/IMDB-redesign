@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { enablePageScroll, disablePageScroll } from "scroll-lock";
 import Logo from "../assets/logo.svg";
 import { RxHamburgerMenu as HamburgerMenu } from "react-icons/rx";
@@ -8,10 +8,15 @@ import { IoCloseOutline as CloseIcon } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoPersonSharp } from "react-icons/io5";
 import { IoMdFilm } from "react-icons/io";
-import { BsBookmarkPlus , BsBookmarkPlusFill} from "react-icons/bs";
-import Button from "./Button";
+import { BsBookmarkPlus, BsBookmarkPlusFill } from "react-icons/bs";
+const Button = lazy(() => (
+  import("./Button")
+))
+const AutoComplete = lazy(() => (
+  import("src/api/apiCalling.jsx")
+))
 import { menuItems } from "../constants/data.jsx";
-import { AutoComplete } from "src/api/apiCalling.jsx";
+// import { AutoComplete } from "src/api/apiCalling.jsx";
 import { NavLink } from "react-router-dom";
 import OutsideClickHandler from "react-outside-click-handler";
 import axios from "axios";
@@ -32,17 +37,18 @@ const Header = () => {
 
   useEffect(() => {
 
-    if(input.trim() === ""){
+    if (input.trim() === "") {
       setSearchQuery(false);
     }
-    else{
+    else {
       setSearchQuery(true);
     }
 
     const timer = setTimeout(() => {
 
-      
-      if(input.trim() !== ""){
+
+      if (input.trim() !== "") {
+    
         AutoComplete(input).then((data) => { setSearchResults(data.d) }).catch(err => console.log(err));
       }
 
@@ -97,28 +103,28 @@ const Header = () => {
       if (focusedIndex > 0) {
         setFocusedIndex(prev => prev - 1);
       }
-    } 
+    }
     else if (e.key === 'Enter' && focusedIndex >= 0) {
       e.preventDefault();
       const selectedResult = searchResults[focusedIndex];
       setSearchQuery(false);
       setInput('');
       window.location.href = `/search/query/${selectedResult.id}`;
-  };
-}
+    };
+  }
 
   console.log(focusedIndex)
 
   if (searchResults !== undefined) {
     console.log(searchResults, "result");
-    
+
 
   }
 
-  console.log("SearchQuery",searchQuery);
+  console.log("SearchQuery", searchQuery);
 
 
-console.log("INPUT" , input);
+  console.log("INPUT", input);
 
   return (
     <div className=" relative w-full bg-dark-5 ">
@@ -132,7 +138,7 @@ console.log("INPUT" , input);
           </Button>
 
           <a href="#" className="">
-            <img src={Logo} alt="Logo" />
+            <img src={Logo} alt="Logo" loading="lazy" />
           </a>
 
           <div className=" hidden mx-6 items-center  2xl:flex">
@@ -166,7 +172,7 @@ console.log("INPUT" , input);
                     </div>
 
                     <div>
-                      <img src={item.icon} alt="icon" />
+                      <img src={item.icon} alt="icon" loading="lazy" />
                     </div>
                   </div>
 
@@ -178,100 +184,107 @@ console.log("INPUT" , input);
             ))}
           </div>
 
-          <OutsideClickHandler  onOutsideClick={()=> searchQuery(false)} >
-          <div className="  hidden mx-[1rem]  rounded-xl  max-w-2xl min-w-96  md:flex grow flex-wrap relative">
+          <OutsideClickHandler onOutsideClick={() => searchQuery(false)} >
+            <div className="  hidden mx-[1rem]  rounded-xl  max-w-2xl min-w-96  md:flex grow flex-wrap relative">
 
-            <div className="overflow-x-hidden rounded-xl w-full ">
-              <input
-                type="text"
-                autoComplete="off"
-                className=" w-full py-1 text-white bg-dark-4 px-[1rem] focus:outline-none"
-                onChange={(e) => {setInput(e.target.value),
-                                    e.preventDefault()}
-
-                 }
-                 onKeyDown={(e)=>handleKeyDown(e)}
-                
-              ></input>
-            
-
-            
-            
-            
-            
-                <div className={` ${searchQuery ? "block":"hidden"} absolute  top-11 w-full bg-dark-4 bg-opacity-30 backdrop-blur-xl text-white  h-96  overflow-y-scroll 
-                  `}>
-  
-                  {
-                    searchResults !== undefined  &&
-                    (
-  
-                      searchResults.map((item, index) => (
-                        
-                        
-
-                          <NavLink key={index}    to={(item.id.startsWith("t")?`search/title/${item.id}`:`search/celeb/${item.id}`)} className={`flex flex-row py-2 border-b-2  border-b-gray-500 my-4 px-2
-                          hover:bg-n-1 ${focusedIndex === index ? 'bg-n-1':''}`}
-                          onClick={()=>setSearchQuery(false)}  
-                          
-                          >
-                            <div className="mr-4  bg-dark-4 rounded-md overflow-hidden flex items-center justify-center" >
-                              {
-                                item.i ? (
-                                  <img src={item.i ? item.i.imageUrl : ''}
-                                  height={50} width={50}></img>
-                                ) : (
-                                  <div className="text-lt-2 text-[2rem] w-[56px] h-[70px] flex items-center justify-center">
-                                    {item.q ? <IoMdFilm/> : <IoPersonSharp/>}
-                                    <span className="text-n-1 h4-bold">{index}</span>
-                                  </div>
-                                )
-                              }
-
-                            </div>
-                            <div>
-                              <a className="h4">{item.l}</a>
-                              <p className="p1 text-dark-2">{item.s}</p>
-                            </div>
-  
-                          </NavLink>
-  
-                        
-  
-                      )
-                      )
-  
-  
-                    )
-  
-  
+              <div className="overflow-x-hidden rounded-xl w-full ">
+                <input
+                  type="text"
+                  autoComplete="off"
+                  className=" w-full py-1 text-white bg-dark-4 px-[1rem] focus:outline-none"
+                  onChange={(e) => {
+                    setInput(e.target.value),
+                      e.preventDefault()
                   }
-  
+
+                  }
+                  onKeyDown={(e) => handleKeyDown(e)}
+
+                ></input>
+
+
+
+
+
+
+                <div className={` ${searchQuery ? "block" : "hidden"} absolute  top-11 w-full bg-dark-4 bg-opacity-30 backdrop-blur-xl text-white  h-96  overflow-y-scroll 
+                  `}>
+
+                  {
+                    searchResults !== undefined &&
+                    (
+
+                      searchResults.map((item, index) => (
+
+
+
+                        <NavLink key={index} to={(item.id.startsWith("t") ? `search/title/${item.id}` : `search/celeb/${item.id}`)} className={`flex flex-row py-2 border-b-2  border-b-gray-500 my-4 px-2
+                          hover:bg-n-1 ${focusedIndex === index ? 'bg-n-1' : ''}`}
+                          onClick={() => setSearchQuery(false)}
+
+                        >
+                          <div className="mr-4  bg-dark-4 rounded-md overflow-hidden flex items-center justify-center" >
+                            {
+                              item.i ? (
+                                <img src={item.i ? item.i.imageUrl : ''}
+                                  height={50} width={50} loading="lazy"></img>
+                              ) : (
+                                <div className="text-lt-2 text-[2rem] w-[56px] h-[70px] flex items-center justify-center">
+                                  {item.q ? <IoMdFilm /> : <IoPersonSharp />}
+                                  <span className="text-n-1 h4-bold">{index}</span>
+                                </div>
+                              )
+                            }
+
+                          </div>
+                          <div>
+                            <a className="h4">{item.l}</a>
+                            <p className="p1 text-dark-2">{item.s}</p>
+                          </div>
+
+                        </NavLink>
+
+
+
+                      )
+                      )
+
+
+                    )
+
+
+                  }
+
                   <NavLink to={`/searchResults/${input}`} state={{ searchResults }}
-                  onClick={()=>setSearchQuery(false)}>
-                  
+                    onClick={() => setSearchQuery(false)}>
+
                     <p>See all </p>
                   </NavLink>
 
-  
-                </div>
 
                 </div>
 
+              </div>
 
-          </div>
+
+            </div>
           </OutsideClickHandler>
 
 
 
 
           <div className="hidden md:flex line-clamp-1">
-            <Button>
-              WatchList
-            </Button>
-            <Button>
-              Sign In
-            </Button>
+            <Suspense>
+              <Button>
+                WatchList
+              </Button>
+            </Suspense>
+
+            <Suspense>
+              <Button>
+                Sign In
+              </Button>
+            </Suspense>
 
           </div>
 
@@ -284,13 +297,19 @@ console.log("INPUT" , input);
 
 
         <div className="flex items-center   md:hidden">
-          <Button px="px-[1rem]" onClick={toggleSearchBar}>
-            <SearchIcon />
-          </Button>
+          <Suspense>
+            <Button px="px-[1rem]" onClick={toggleSearchBar}>
+              <SearchIcon />
+            </Button>
+          </Suspense>
 
-          <Button textClass='w-max'>
-            Sign In
-          </Button>
+          <Suspense>
+
+            <Button textClass='w-max'>
+              Sign In
+            </Button>
+
+          </Suspense>
         </div>
 
 
@@ -306,9 +325,13 @@ console.log("INPUT" , input);
 
 
         <div className="absolute top-6 right-0 ">
+
+          <Suspense>
           <Button px="px-[1rem] w-full" textClass="h2" onClick={handleClick}>
             <CloseIcon />
           </Button>
+
+          </Suspense>
         </div>
 
 
@@ -326,7 +349,7 @@ console.log("INPUT" , input);
 
                 <div className="flex justify-between items-center">
                   <div className="flex gap-10 items-center">
-                    <img src={item.icon} width='40px' />
+                    <img src={item.icon} width='40px' loading="lazy" />
                     <a>{item.text}</a>
                   </div>
 
@@ -369,6 +392,8 @@ console.log("INPUT" , input);
         </div>
 
         <div className="absolute top-2 right-0 ">
+
+          <Suspense>
           <Button
             px="px-[1rem] "
             textClass="h4-bold text-[1.5rem]"
@@ -376,6 +401,7 @@ console.log("INPUT" , input);
           >
             <CloseIcon />
           </Button>
+          </Suspense>
         </div>
       </div>
 

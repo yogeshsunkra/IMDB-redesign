@@ -35,7 +35,7 @@ const HomePage = () => {
   return (
     <div className='w-full border-2 border-yellow-500 h-[200rem]'>
       
-    <div className='w-full  xl:w-[85%] mx-auto my-4 '>
+    <div className='w-full  xl:w-[95%] 2xl:w-[85%] mx-auto my-4 border-2 border-green-600'>
 
       {/* hero section */}
 
@@ -46,27 +46,25 @@ const HomePage = () => {
 
           {/* responsive div */}
           <div className='relative w-full flex'>
-            <div className=' relative w-full flex-initial min-h-[40vh] xl:min-h-[50vh] border-2 border-white rounded-2xl bg-cover shadow-black shadow-2xl' style={{ backgroundImage: `url(${'https://m.media-amazon.com/images/M/MV5BZTA0MzU0YzItZWRjZC00YzllLWFmYjMtZWYzZDgyYzRjYTg5XkEyXkFqcGc@._V1_.jpg'})` }}>
+            <div className=' relative w-full flex-initial min-h-[40vh] xl:min-h-[50vh] border-2 border-violet-600 rounded-2xl bg-cover shadow-black shadow-2xl' 
+            
+            style={{ backgroundImage: `url(${'https://m.media-amazon.com/images/M/MV5BZTA0MzU0YzItZWRjZC00YzllLWFmYjMtZWYzZDgyYzRjYTg5XkEyXkFqcGc@._V1_.jpg'})`  }}>
             
 
            {/* absolute div */}
           <div className='absolute z-10 flex  w-full min-h-[10rem] -bottom-[5.5rem] md:-bottom-[3rem] xl:bottom-2'>
-            <div className=' min-h-full min-w-[25%] bg-cover shadow-black shadow-2xl' style={{ backgroundImage: `url(${'https://m.media-amazon.com/images/M/MV5BZTA0MzU0YzItZWRjZC00YzllLWFmYjMtZWYzZDgyYzRjYTg5XkEyXkFqcGc@._V1_.jpg'})` }}>img</div>
+            {/* <div className=' min-h-full min-w-[25%] bg-cover shadow-black shadow-2xl' style={{ backgroundImage: `url(${'https://m.media-amazon.com/images/M/MV5BZTA0MzU0YzItZWRjZC00YzllLWFmYjMtZWYzZDgyYzRjYTg5XkEyXkFqcGc@._V1_.jpg'})` }}>img</div> */}
             <div className='flex flex-col self-end border-2 border-pink-700 min-h-[12vh] w-full '>
               <div>Title</div>
               <div>Category</div>
               <div>blah blah</div>
             </div>
           </div>
-            
-            </div>
 
+            </div>
 
             <div className='hidden md:flex min-w-[20vw] h-[20rem] border-2 border-green-500'> featured videos
             </div>
-
-
-
 
           </div>
 

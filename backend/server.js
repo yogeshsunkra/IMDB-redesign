@@ -6,6 +6,9 @@ import axios from "axios";
 import homePageController from './controllers/homePage.controller.js';
 import titleController from "./controllers/title.controller.js";
 import celebController from "./controllers/celeb.controller.js";
+// import dns from "dns";
+// dns.setDefaultResultOrder("ipv4first");
+
 
 dotenv.config(); 
 
@@ -25,7 +28,7 @@ app.get('/api/v1/home_page', homePageController);
 app.get('/api/v1/title/:id', titleController);
 
 
-app.listen('5000', () => {
+app.listen(5000, () => {
     connectDB();
     console.log("Server running on port 5000")
 });
