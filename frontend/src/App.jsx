@@ -1,24 +1,18 @@
 import React from "react";
 import Header from "./components/Header";
 import Content from "./components/Content";
-import { DataProvider } from "./context/DataProvider.jsx";
-// import { mainPageItems } from "./api/apiCalling";
+import QueryProvider from "./provider/QueryProvider.jsx";
 
 
 const App = () => {
 
-
-
-
   return (
-    <DataProvider>
+    <QueryProvider>
       <div className="w-full ">
         <Header/>
         <Content />
-
-
       </div>
-    </DataProvider>
+    </QueryProvider>
   )
 }
 

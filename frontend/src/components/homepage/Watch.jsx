@@ -1,11 +1,10 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
-import { DataContext } from 'src/context/DataContext';
+// import { DataContext } from 'src/context/DataContext';
 import RatingIcon from 'src/assets/ratingIcon.svg?react';
 import WatchedIcon from 'src/assets/watchedIcon.svg?react';
 import { simplifiedApiResponse } from 'src/utils/utilsData';
-import { RiAlignItemBottomFill } from 'react-icons/ri';
 import Slider from '../Slider';
-
+import { useHomePageSections } from 'src/hooks/useHomePageSections';
 
 const Watch = () => {
 
@@ -15,7 +14,13 @@ const Watch = () => {
 
   const ref = useRef();
 
-  const { sections, loading } = useContext(DataContext);
+  // const { sections, loading } = useContext(DataContext);
+
+  const {
+    data: sections,
+    isLoading: loading,
+    error
+  } = useHomePageSections();
 
   const toCamelCase = (str) => {
     return str
@@ -31,19 +36,19 @@ const Watch = () => {
       .join("");
   };
 
-
-
   useEffect(() => {
 
-
-
+    console.log(sections, "data in watch")
+    console.log(loading, "loading in watch")
 
 
     if (!loading && sections && !isRendered) {
 
+
       console.log("RENDERED");
 
-      sections?.value?.watch?.forEach((e) => {
+
+      sections?.watch?.forEach((e) => {
 
         const name = toCamelCase(e.name);
 
@@ -93,6 +98,13 @@ const Watch = () => {
         </span>
       </div>
 
+
+      {/* ************** Fan Fav ****************/}
+
+      <Slider items={fanFav} loading={loading} />
+
+
+
       <div className='w-full h-full flex '>
 
 
@@ -101,20 +113,13 @@ const Watch = () => {
           <div className='flex gap-4 items-center justify-center'>
             <span className='px-1 py-2 bg-n-1 rounded-full' />
             <h1 className='h3 text-dark-1'>TOP on IMDB this week</h1>
-            
+
           </div>
 
           <p></p>
         </div>
 
       </div>
-
-      {/* ************** Fan Fav ****************/}
-
-
-
-      <Slider items={fanFav} loading={loading} />
-
 
       {/* ************ Week Top Ten Section ************* */}
 
@@ -130,7 +135,7 @@ const Watch = () => {
 
             {/* Index-1 */ }
             return (
-              <div id={item.id} className={`w-full h-max  xl:h-full col-span-3
+              <div key={item.id} className={`w-full h-max  xl:h-full col-span-3
               ${index === 0 ? "xl:col-span-3" : "xl:col-span-2"}
                bg-dark-4 bg-opacity-40  rounded-3xl grid grid-cols-3  xl:grid-cols-2 gap-2 p-6 md:p-4 `} >
 
@@ -207,7 +212,7 @@ const Watch = () => {
             return (
 
 
-              <div id={item.id} className={`w-full h-max  xl:h-full col-span-3
+              <div key={item.id} className={`w-full h-max  xl:h-full col-span-3
               xl:${index === 0 ? "col-span-3" : "col-span-2"}
                bg-dark-4 bg-opacity-40  rounded-3xl grid grid-cols-3  xl:grid-cols-2 gap-2 p-6 md:p-4 xl:text-[20px]`} >
 
@@ -289,7 +294,7 @@ const Watch = () => {
             return (
 
               <div
-                id={item.id}
+                key={item.id}
                 className='relative overflow-hidden rounded-xl bg-dark-4 bg-opacity-40 flex flex-col'
               >
 

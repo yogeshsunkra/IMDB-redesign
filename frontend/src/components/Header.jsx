@@ -48,7 +48,7 @@ const Header = () => {
 
 
       if (input.trim() !== "") {
-    
+
         AutoComplete(input).then((data) => { setSearchResults(data.d) }).catch(err => console.log(err));
       }
 
@@ -142,49 +142,49 @@ const Header = () => {
           </a>
 
           <div className=" hidden mx-6 items-center  2xl:flex">
-            {menuItems.map((item, id) => (
-              <>
-                <div
-                  key={item.id}
-                  className=" mx-[1rem]"
-                  onMouseEnter={() => setDropdown(id)}
-                  onMouseLeave={() => setDropdown(null)}
-                >
-                  <div className="relative line-clamp-1">
-                    <a href="#" className="text-dark-1 hover:text-n-1">
-                      {item.text}
-                    </a>
+            {menuItems?.map((item, id) => (
 
-                  </div>
-
-
-                  <div
-                    className={`absolute  transition ease-out-[2s] ${dropdown === id ? "grid" : "hidden"
-                      } 
-                                origin-bottom top-3/4  left-0 w-full h-[30rem] bg-dark-5 grid-cols-4 px-40 py-16 z-30 `}
-                  >
-                    <div className="grid col-span-3 grid-cols-3">
-                      {item.subText.map((subItem, subIndex) => (
-                        <div key={subIndex} className="mx-4 cursor-pointer hover:text-n-1">
-                          <a>{subItem}</a>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div>
-                      <img src={item.icon} alt="icon" loading="lazy" />
-                    </div>
-                  </div>
-
+              <div
+                key={item.id}
+                className=" mx-[1rem]"
+                onMouseEnter={() => setDropdown(id)}
+                onMouseLeave={() => setDropdown(null)}
+              >
+                <div className="relative line-clamp-1">
+                  <a href="#" className="text-dark-1 hover:text-n-1">
+                    {item.text}
+                  </a>
 
                 </div>
 
 
-              </>
+                <div
+                  className={`absolute  transition ease-out-[2s] ${dropdown === id ? "grid" : "hidden"
+                    } 
+                                origin-bottom top-3/4  left-0 w-full h-[30rem] bg-dark-5 grid-cols-4 px-40 py-16 z-30 `}
+                >
+                  <div className="grid col-span-3 grid-cols-3">
+                    {item.subText.map((subItem, subIndex) => (
+                      <div key={subIndex} className="mx-4 cursor-pointer hover:text-n-1">
+                        <a>{subItem}</a>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div>
+                    <img src={item.icon} alt="icon" loading="lazy" />
+                  </div>
+                </div>
+
+
+              </div>
+
+
+
             ))}
           </div>
 
-          <OutsideClickHandler onOutsideClick={() => searchQuery(false)} >
+          <OutsideClickHandler onOutsideClick={() => setSearchQuery(false)} >
             <div className="  hidden mx-[1rem]  rounded-xl  max-w-2xl min-w-96  md:flex grow flex-wrap relative">
 
               <div className="overflow-x-hidden rounded-xl w-full ">
@@ -214,7 +214,7 @@ const Header = () => {
                     searchResults !== undefined &&
                     (
 
-                      searchResults.map((item, index) => (
+                      searchResults?.map((item, index) => (
 
 
 
@@ -225,8 +225,8 @@ const Header = () => {
                         >
                           <div className="mr-4  bg-dark-4 rounded-md overflow-hidden flex items-center justify-center" >
                             {
-                              item.i ? (
-                                <img src={item.i ? item.i.imageUrl : ''}
+                              item?.i ? (
+                                <img key={item?.i?.id} src={item.i ? item.i.imageUrl : ''}
                                   height={50} width={50} loading="lazy"></img>
                               ) : (
                                 <div className="text-lt-2 text-[2rem] w-[56px] h-[70px] flex items-center justify-center">
@@ -327,9 +327,9 @@ const Header = () => {
         <div className="absolute top-6 right-0 ">
 
           <Suspense>
-          <Button px="px-[1rem] w-full" textClass="h2" onClick={handleClick}>
-            <CloseIcon />
-          </Button>
+            <Button px="px-[1rem] w-full" textClass="h2" onClick={handleClick}>
+              <CloseIcon />
+            </Button>
 
           </Suspense>
         </div>
@@ -342,37 +342,32 @@ const Header = () => {
         </div> */}
 
         <div className="absolute top-20 w-full">
-          {menuItems.map((item, id) => (
-            <>
-              <div key={id} className={`  h3  mx-[2rem] py-[1rem] ${id === activeIndex ? 'text-n-1' : 'text-dark-1'}`}
-                onClick={() => id === activeIndex ? setActiveIndex('') : setActiveIndex(id)}>
+          {menuItems?.map((item, id) => (
+            <div key={id} className={`  h3  mx-[2rem] py-[1rem] ${id === activeIndex ? 'text-n-1' : 'text-dark-1'}`}
+              onClick={() => id === activeIndex ? setActiveIndex('') : setActiveIndex(id)}>
 
-                <div className="flex justify-between items-center">
-                  <div className="flex gap-10 items-center">
-                    <img src={item.icon} width='40px' loading="lazy" />
-                    <a>{item.text}</a>
-                  </div>
-
-                  <div className="">
-                    <IoIosArrowDown />
-                  </div>
+              <div className="flex justify-between items-center">
+                <div className="flex gap-10 items-center">
+                  <img src={item.icon} width='40px' loading="lazy" />
+                  <a>{item.text}</a>
                 </div>
 
-
-                <div className={`flex flex-col p1 py-[1rem] px-[5rem] text-dark-1 ${id === activeIndex ? 'block border-solid border-b-2 border-[#78747430]' : 'hidden'}`}>
-                  {item.subText.map((subItem, subIndex) => (
-                    <div key={subIndex} className="py-[0.5rem] cursor-pointer hover:text-n-1">
-                      <a>{subItem}</a>
-                    </div>
-
-                  ))}
+                <div className="">
+                  <IoIosArrowDown />
                 </div>
-
               </div>
 
 
-            </>
+              <div className={`flex flex-col p1 py-[1rem] px-[5rem] text-dark-1 ${id === activeIndex ? 'block border-solid border-b-2 border-[#78747430]' : 'hidden'}`}>
+                {item?.subText?.map((subItem, subIndex) => (
+                  <div key={subIndex} className="py-[0.5rem] cursor-pointer hover:text-n-1">
+                    <a>{subItem}</a>
+                  </div>
 
+                ))}
+              </div>
+
+            </div>
 
           ))}
         </div>
@@ -394,18 +389,16 @@ const Header = () => {
         <div className="absolute top-2 right-0 ">
 
           <Suspense>
-          <Button
-            px="px-[1rem] "
-            textClass="h4-bold text-[1.5rem]"
-            onClick={handleClick}
-          >
-            <CloseIcon />
-          </Button>
+            <Button
+              px="px-[1rem] "
+              textClass="h4-bold text-[1.5rem]"
+              onClick={handleClick}
+            >
+              <CloseIcon />
+            </Button>
           </Suspense>
         </div>
       </div>
-
-
 
     </div>
   );

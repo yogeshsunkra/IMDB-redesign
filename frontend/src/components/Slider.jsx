@@ -6,7 +6,7 @@ import BookmarkIcon from 'src/assets/bookmarkIcon.svg?react';
 import Arrow from 'src/assets/arrow.svg?react'
 import DisabledArrow from 'src/assets/arrowDisabled.svg?react'
 
-const Slider = ({ items, loading}) => {
+const Slider = ({ items, loading }) => {
 
     const sliderRef = useRef(null);
 
@@ -24,6 +24,7 @@ const Slider = ({ items, loading}) => {
 
 
         console.log("Loading in Slider", loading);
+        console.log("items in SLider", items);
         const calculateVisibleCards = () => {
 
             if (!sliderRef.current) return;
@@ -57,7 +58,7 @@ const Slider = ({ items, loading}) => {
 
         };
 
-    }, [loading]);
+    }, [loading, items]);
 
     /*
         TOTAL PAGES
@@ -107,21 +108,21 @@ const Slider = ({ items, loading}) => {
 
             <div className='w-full flex items-center justify-end gap-3 p2'>
 
-                    <button
-                        onClick={handlePrev}
-                        // disabled={boxIndex >= maxIndex ? true : false}
-                        className='bg-dark-4 bg-opacity-50  text-white p-2 rounded-full overflow-hidden'
-                    >
-                        <Arrow className='rotate-90' />
-                    </button>
+                <button
+                    onClick={handlePrev}
+                    // disabled={boxIndex >= maxIndex ? true : false}
+                    className='bg-dark-4 bg-opacity-50  text-white p-2 rounded-full overflow-hidden'
+                >
+                    <Arrow className='rotate-90' />
+                </button>
 
-                    <button
-                        onClick={handleNext}
-                        // disabled={boxIndex <= 0 ? true : false}
-                        className='bg-dark-4 bg-opacity-50  text-white p-2 rounded-full overflow-hidden'
-                    >
-                        <Arrow className='-rotate-90' />
-                    </button>
+                <button
+                    onClick={handleNext}
+                    // disabled={boxIndex <= 0 ? true : false}
+                    className='bg-dark-4 bg-opacity-50  text-white p-2 rounded-full overflow-hidden'
+                >
+                    <Arrow className='-rotate-90' />
+                </button>
             </div>
 
             {/* VIEWPORT */}
@@ -143,20 +144,20 @@ const Slider = ({ items, loading}) => {
                     }}
                 >
 
-                    {items.map((item, index) => {
+                    {items?.map((item, index) => {
 
                         return (
 
                             item?.id?.toString().toLowerCase().startsWith("n", 0) ?
                                 <div
                                     key={index}
-                                    className={`flex-shrink-0   ${loading ? "h-[190px] animate-pulse bg-gray-700 " : " h-max "}`}
+                                    className={`relative flex-shrink-0   ${loading ? "h-[190px] animate-pulse bg-gray-700 " : " h-max "}`}
                                     style={{
                                         width: `${cardWidth}px`
                                     }}
                                 >
 
-                                    <div className='relative overflow-hidden rounded-full w-full h-full '
+                                    <div className='relative overflow-hidden rounded-full w-full h-full bg-gray-700'
                                         style={{
                                             // width : `${cardWidth}`,
                                             // height : `${cardWidth}`,
@@ -168,12 +169,6 @@ const Slider = ({ items, loading}) => {
                                             className='aspect-[3/3] w-full object-cover object-top'
                                         />
 
-                                        <div className='absolute -top-0 left-0 rounded-full overflow-hidden'>
-                                            <BookmarkIcon />
-
-                                        </div>
-
-
 
                                     </div>
 
@@ -181,7 +176,10 @@ const Slider = ({ items, loading}) => {
                                         {item.name}
                                     </div>
 
+                                    <div className='absolute top-1/2 left-0 rounded-full overflow-hidden z-50'>
+                                        <BookmarkIcon />
 
+                                    </div>
 
                                 </div>
                                 :

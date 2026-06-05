@@ -2,9 +2,10 @@
 import React from 'react';
 import { useEffect, useState, useRef } from "react";
 import Slider from "../Slider";
-import { useContext } from "react";
-import { DataContext } from "src/context/DataContext";
+// import { useContext } from "react";
+// // import { DataContext } from "src/context/DataContext";
 import { simplifiedApiResponse } from 'src/utils/utilsData';
+import { useHomePageSections } from 'src/hooks/useHomePageSections';
 
 const Celebrity = () => {
 
@@ -12,23 +13,32 @@ const Celebrity = () => {
     const [isRendered, setIsRendered] = useState(false);
     const ref = useRef();
 
-    const { sections, loading } = useContext(DataContext);
+    const {
+        data: sections,
+        isLoading: loading,
+        error
+    } = useHomePageSections()
 
     useEffect(() => {
 
-        sections?.value?.celeb?.map((e) => {
 
-            const data = e.data?.data?.list;
+        if (!loading && sections && isRendered) {
+
+            sections?.celeb?.map((e) => {
+                const data = e.data?.data?.list;
 
 
-            setBornToday(simplifiedApiResponse(data));
+                setBornToday(simplifiedApiResponse(data))
+                console.log(bornToday, 'BORN TODAY');
+            })
+
+        }
+
+        requestAnimationFrame(() => {
             setIsRendered(true);
-            console.log(bornToday, 'BORN TODAY');
+        });
 
-
-        })
-
-    }, [sections])
+    }, [sections, loading, isRendered])
 
     return (
         <div ref={ref} className="relative w-full h-max py-12 overflow-hidden ">

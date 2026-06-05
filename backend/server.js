@@ -27,7 +27,6 @@ app.get('/api/v1/home_page', homePageController);
 
 app.get('/api/v1/title/:id', titleController);
 
-
 app.listen(5000, () => {
     connectDB();
     console.log("Server running on port 5000")
