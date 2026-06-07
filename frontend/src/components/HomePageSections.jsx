@@ -4,6 +4,7 @@ import { homePageSections } from 'src/api/apiCalling';
 import Watch from './homepage/Watch';
 import Celebrity from './homepage/Celebrity';
 import LazyComponent from './LazyComponent';
+import Explore from './homepage/Explore';
 
 const HomePageSections = () => {
 
@@ -31,6 +32,10 @@ const HomePageSections = () => {
 
       <LazyComponent>
       <Watch/>
+      </LazyComponent>
+
+      <LazyComponent>
+      <Explore/>
       </LazyComponent>
     </div>
   )

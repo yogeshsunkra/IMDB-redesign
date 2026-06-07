@@ -6,12 +6,13 @@ import BookmarkIcon from 'src/assets/bookmarkIcon.svg?react';
 import Arrow from 'src/assets/arrow.svg?react'
 import DisabledArrow from 'src/assets/arrowDisabled.svg?react'
 
-const Slider = ({ items, loading }) => {
+const Slider = ({ items, loading , query}) => {
 
     const sliderRef = useRef(null);
 
     const [boxIndex, setBoxIndex] = useState(0);
     const [visibleCards, setVisibleCards] = useState(1);
+
 
     const cardWidth = 190;
     const gap = 24;
@@ -146,9 +147,12 @@ const Slider = ({ items, loading }) => {
 
                     {items?.map((item, index) => {
 
+                        const currentItem = query(item);
+                        // console.log(currentItem , "currentItem");
+
                         return (
 
-                            item?.id?.toString().toLowerCase().startsWith("n", 0) ?
+                            currentItem?.id?.toString().toLowerCase().startsWith("n", 0) ?
                                 <div
                                     key={index}
                                     className={`relative flex-shrink-0   ${loading ? "h-[190px] animate-pulse bg-gray-700 " : " h-max "}`}
@@ -163,8 +167,8 @@ const Slider = ({ items, loading }) => {
                                             // height : `${cardWidth}`,
                                         }}>
                                         <img
-                                            src={item.image}
-                                            alt={item.name}
+                                            src={currentItem?.image}
+                                            alt={currentItem?.name}
                                             loading='lazy'
                                             className='aspect-[3/3] w-full object-cover object-top'
                                         />
@@ -173,7 +177,7 @@ const Slider = ({ items, loading }) => {
                                     </div>
 
                                     <div className='flex w-full p-4 p1 text-white'>
-                                        {item.name}
+                                        {currentItem?.name}
                                     </div>
 
                                     <div className='absolute top-1/2 left-0 rounded-full overflow-hidden z-50'>
@@ -195,8 +199,8 @@ const Slider = ({ items, loading }) => {
 
                                     <div className='relative overflow-hidden'>
                                         <img
-                                            src={item.image}
-                                            alt={item.title}
+                                            src={currentItem?.image}
+                                            alt={currentItem?.title}
                                             loading='lazy'
                                             className='aspect-[2/3] w-full object-cover '
                                         />
@@ -216,7 +220,7 @@ const Slider = ({ items, loading }) => {
                                             <div className='flex gap-4 items-center'>
                                                 <div className='flex items-center gap-1'>
                                                     <RatingIcon />
-                                                    <p>{item.rating}</p>
+                                                    <p>{currentItem?.rating}</p>
                                                 </div>
 
                                                 <RateIcon />
@@ -224,7 +228,7 @@ const Slider = ({ items, loading }) => {
 
 
                                             <div className='flex h-14 items-start'>
-                                                <p className='line-clamp-2 overflow-hidden'>{item.title}</p></div>
+                                                <p className='line-clamp-2 overflow-hidden'>{currentItem?.title}</p></div>
 
                                         </div>
 

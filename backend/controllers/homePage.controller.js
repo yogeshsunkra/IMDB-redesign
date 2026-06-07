@@ -21,11 +21,8 @@ const isCacheValid = (cache, days) => {
         const now = Date.now();
         const cacheDuration = 24 * 3600 * 1000 * days;
         const lastUpdated = new Date(cache.updatedAt).getTime();
-        // console.log(lastUpdated,"LU");
-        // console.log(now,"N");
-        // console.log(cacheDuration,"CD");
+
         const durationCheck = now - lastUpdated < cacheDuration
-        // console.log(durationCheck,"durationCheck");
 
         return durationCheck;
         }
@@ -50,13 +47,13 @@ const homePageController = async (req, res) => {
                 {
                         name: "week top 10",
                         url: 'https://imdb188.p.rapidapi.com/api/v1/getWeekTop10',
-                        days: "3",
+                        days: "33",
                         category: "watch"
                 },
                 {
                         name: "fan favourites",
                         url: 'https://imdb188.p.rapidapi.com/api/v1/getFanFavorites?country=IN',
-                        days: '5',
+                        days: '35',
                         category: "watch"
                 },
                 {
@@ -68,7 +65,7 @@ const homePageController = async (req, res) => {
                 {
                         name: "born today",
                         url: `https://imdb188.p.rapidapi.com/api/v1/getBornOn?month=${currentMonth}&day=${currentDay}`,
-                        days: "0",
+                        days: "30",
                         category: "celeb"
                 },
                 {

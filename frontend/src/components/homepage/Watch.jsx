@@ -15,7 +15,6 @@ const Watch = () => {
   const ref = useRef();
 
   // const { sections, loading } = useContext(DataContext);
-
   const {
     data: sections,
     isLoading: loading,
@@ -97,11 +96,6 @@ const Watch = () => {
         <span className='text-[clamp(2rem,14vw,12rem)]  text-gray-400 font-extrabold opacity-5 -z-20 '>  What to Watch
         </span>
       </div>
-
-
-      {/* ************** Fan Fav ****************/}
-
-      <Slider items={fanFav} loading={loading} />
 
 
 
@@ -332,6 +326,28 @@ const Watch = () => {
         </div>
 
       </div >
+
+
+      {/* ************** Fan Fav ****************/}
+
+
+      <div className = 'w-full h-full flex flex-col' >
+
+        <div className=' flex flex-col px-4 py-2 gap-4  items-center'>
+
+          <div className='w-full flex gap-4  justify-start'>
+            <span className='px-1 py-2 bg-n-1 rounded-full' />
+            <h1 className='h3 text-dark-1'>Fan Favourites</h1>
+
+          </div>
+
+          <p> </p>
+        </div>
+
+        <Slider items={fanFav} loading={loading} query={(item) => item}/>
+
+      </div>
+
 
     </div >
 

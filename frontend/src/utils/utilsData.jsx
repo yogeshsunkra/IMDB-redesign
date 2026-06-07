@@ -6,60 +6,63 @@ export const simplifiedApiResponse = (items = []) => {
     return [];
   }
 
+  // const item = query(item) ;
+
 
   return items?.map((item, index) => ({
 
-    id: item.id || index,
 
-    title: item.originalTitleText?.text || "untitled",
+    id: item?.id || item?.title?.id || index,
 
-    plot: item.plot?.plotText?.plainText,
+    title: item?.originalTitleText?.text || item?.title?.originalTitleText?.text || "untitled",
 
-    ratable: item.canRateTitle?.isRatable,
+    plot: item?.plot?.plotText?.plainText || item?.title?.plot?.plotText?.plainText,
 
-    isAdult: item.isAdult || "none",
+    ratable: item?.canRateTitle?.isRatable || item?.title?.canRateTitle?.isRatable,
 
-    image: item.primaryImage?.imageUrl || "",
+    isAdult: item.isAdult || item.title?.isAdult || "none",
 
-    ranking: item.chartMeterRanking?.currentRank || "0",
+    image: item?.primaryImage?.imageUrl || item?.title?.primaryImage?.imageUrl || "",
 
-    rating: item.ratingsSummary?.aggregateRating || "--",
+    ranking: item.chartMeterRanking?.currentRank || item.title?.chartMeterRanking?.currentRank || "0",
 
-    voteCount: item.ratingsSummary?.voteCount || "--",
+    rating: item.ratingsSummary?.aggregateRating || item.title?.ratingsSummary?.aggregateRating || "--",
 
-    releaseDay: item.releaseDate?.day || "",
+    voteCount: item.ratingsSummary?.voteCount || item.title?.ratingsSummary?.voteCount || "--",
 
-    releaseMonth: item.releaseDate?.month || "",
+    releaseDay: item.releaseDate?.day || item.title?.releaseDate?.day || "",
 
-    releaseYear: item.releaseYear?.year || "",
+    releaseMonth: item.releaseDate?.month || item.title?.releaseDate?.month || "",
 
-    country: item.releaseDate?.country?.text || "IN",
+    releaseYear: item.releaseYear?.year || item.title?.releaseYear?.year || "",
 
-    titleRating: item.titleCertificate?.rating || "",
+    country: item.releaseDate?.country?.text || item.title?.releaseDate?.country?.text || "IN",
 
-    runtime: item.titleRuntime?.seconds || "00",
+    titleRating: item.titleCertificate?.rating || item.title?.titleCertificate?.rating || "",
 
-    titleType: item.titleType?.text || "--",
+    runtime: item.titleRuntime?.seconds || item.title?.titleRuntime?.seconds || "00",
 
-    trailerId: item.latestTrailer?.id || index,
+    titleType: item.titleType?.text || item.title?.titleType?.text || "--",
 
-    trailerDescription: item.latestTrailer?.description?.value || "",
+    trailerId: item.latestTrailer?.id || item.title?.latestTrailer?.id || index,
 
-    trailerName: item.latestTrailer?.name?.value || "",
+    trailerDescription: item.latestTrailer?.description?.value || item.title?.latestTrailer?.description?.value || "",
 
-    trailerImage: item.latestTrailer?.primaryImage?.imageUrl || "",
+    trailerName: item.latestTrailer?.name?.value || item.title?.latestTrailer?.name?.value || "",
 
-    trailerRuntime: item.latestTrailer?.runtime?.value || "--",
+    trailerImage: item.latestTrailer?.primaryImage?.imageUrl || item.title?.latestTrailer?.primaryImage?.imageUrl || "",
 
-    name: item.nameText?.text || "Someone",
+    trailerRuntime: item.latestTrailer?.runtime?.value || item.title?.latestTrailer?.runtime?.value || "--",
 
-    birthDay: item.birthDateComponents?.dateComponents?.day || "0",
+    name: item.nameText?.text || item.title?.nameText?.text || "Someone",
 
-    birthMonth: item.birthDateComponents?.dateComponents?.month || "0",
+    birthDay: item.birthDateComponents?.dateComponents?.day || item.title?.birthDateComponents?.dateComponents?.day || "0",
 
-    birthYear: item.birthDateComponents?.dateComponents?.year || "0",
+    birthMonth: item.birthDateComponents?.dateComponents?.month || item.title?.birthDateComponents?.dateComponents?.month || "0",
 
-    birthString: item.birthDateComponents?.displayableProperty?.value?.plainText || "0",
+    birthYear: item.birthDateComponents?.dateComponents?.year || item.title?.birthDateComponents?.dateComponents?.year || "0",
+
+    birthString: item.birthDateComponents?.displayableProperty?.value?.plainText || item.title?.birthDateComponents?.displayableProperty?.value?.plainText || "0",
 
 
 

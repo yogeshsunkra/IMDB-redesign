@@ -63,7 +63,7 @@ const Celebrity = () => {
 
 
 
-            <Slider items={bornToday} loading={loading} />
+            <Slider items={bornToday} loading={loading} query={(item) => item}/>
 
         </div>
     )
