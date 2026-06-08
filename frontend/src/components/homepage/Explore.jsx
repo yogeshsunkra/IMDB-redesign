@@ -35,21 +35,43 @@ const Explore = () => {
             sections?.streaming?.forEach((item) => {
 
                 setStreamingData(item?.data?.data);
+
+
+            })
+
+
+            if (streamingData) {
                 console.log(streamingData[providerIndex]?.edges, "streamingData");
                 setProviderData(simplifiedApiResponse(streamingData[providerIndex]?.edges));
-                // console.log(providerData, "providerData", providerIndex);
-            })
-        }
-    }, [sections, loading,providerIndex , streamingData])
 
-    const handleClick = (data, index) => {
+                console.log(providerData, "providerData", providerIndex);
+            }
+
+
+
+
+
+
+        }
+
+
+
+    }, [sections, providerIndex, loading])
+
+    const handleClick = (index) => {
 
         if (providerIndex != index) {
             setProviderIndex(index);
-            setProviderData(simplifiedApiResponse(data));
+            // setProviderData(simplifiedApiResponse(data));
         }
 
+        console.log(index,"providerIndex");
+
     }
+
+    //     const providerData = simplifiedApiResponse(
+    //   streamingData?.[providerIndex]?.edges || []
+    // );
 
     return (
         <div className='relative w-full h-full py-12'>
@@ -58,7 +80,7 @@ const Explore = () => {
             {/* // Slider only shows the selected ott app data ... */}
 
 
-            <div className='absolute  flex  top-16  w-full h-[50%] justify-center items-start md:flex '>
+            <div className='absolute  flex  top-16  w-full h-[50%] justify-center items-start md:flex cursor-not-allowed pointer-events-none'>
 
                 <span className='text-[clamp(2rem,14vw,12rem)]  text-gray-400 font-extrabold opacity-5 -z-20 '>  Explore
                 </span>
@@ -81,9 +103,11 @@ const Explore = () => {
 
                     {streamingData?.map((item, index) => {
                         return (
-                            <div key={index} className="p-2 items-center justify-center text-black bg-white rounded-xl overflow-hidden hover:bg-yellow-500" onClick={() => handleClick(item.edges, index)}>
-                                <a>{item.providerName}</a>
-                            </div>
+                            <button key={index} className="p-2 items-center justify-center text-black bg-white rounded-xl overflow-hidden hover:bg-yellow-500" onClick={() => handleClick(index)}>
+                                {item.providerName}
+                            </button>
+
+
                         )
                     })}
 

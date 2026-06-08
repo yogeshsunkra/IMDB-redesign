@@ -12,9 +12,9 @@ export const simplifiedApiResponse = (items = []) => {
   return items?.map((item, index) => ({
 
 
-    id: item?.id || item?.title?.id || index,
+    id: item?.id ?? item?.title?.id ?? index,
 
-    title: item?.originalTitleText?.text || item?.title?.originalTitleText?.text || "untitled",
+    title: item?.originalTitleText?.text ?? item?.title?.originalTitleText?.text ?? "untitled",
 
     plot: item?.plot?.plotText?.plainText || item?.title?.plot?.plotText?.plainText,
 
@@ -22,11 +22,11 @@ export const simplifiedApiResponse = (items = []) => {
 
     isAdult: item.isAdult || item.title?.isAdult || "none",
 
-    image: item?.primaryImage?.imageUrl || item?.title?.primaryImage?.imageUrl || "",
+    image: item?.primaryImage?.imageUrl ?? item?.title?.primaryImage?.imageUrl ?? "",
 
-    ranking: item.chartMeterRanking?.currentRank || item.title?.chartMeterRanking?.currentRank || "0",
+    ranking: item.chartMeterRanking?.currentRank ?? item.title?.chartMeterRanking?.currentRank ?? "0",
 
-    rating: item.ratingsSummary?.aggregateRating || item.title?.ratingsSummary?.aggregateRating || "--",
+    rating: item.ratingsSummary?.aggregateRating ?? item.title?.ratingsSummary?.aggregateRating ?? "--",
 
     voteCount: item.ratingsSummary?.voteCount || item.title?.ratingsSummary?.voteCount || "--",
 
