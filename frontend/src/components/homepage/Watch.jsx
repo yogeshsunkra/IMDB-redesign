@@ -117,11 +117,11 @@ const Watch = () => {
 
       {/* ************ Week Top Ten Section ************* */}
 
-      <div className={`w-full   my-4 flex min-[850px]:flex-row xl:flex-col gap-1 `}>
+      <div className={`w-full ${loading || error ? "h-40 animate-pulse bg-black" : "bg-none h-full animate-none"}   my-4 flex min-[850px]:flex-row xl:flex-col gap-1 `}>
 
 
         {/* ************************ Top 3 cards  ************************ */}
-        <div className={`w-full h-full grid p-2 grid-flow-row xl:grid-flow-col xl:grid-cols-7 gap-4 ${loading ? "h-40 animate-pulse" : "h-full animate-none"}`}>
+        <div className={`w-full h-full grid p-2 grid-flow-row xl:grid-flow-col xl:grid-cols-7 gap-4 ${loading || error? "h-40 animate-pulse" : "h-full animate-none"}`}>
 
           {/* Dynamic */}
 
@@ -344,7 +344,7 @@ const Watch = () => {
           <p> </p>
         </div>
 
-        <Slider items={fanFav} loading={loading} query={(item) => item}/>
+        <Slider items={fanFav} loading={loading} query={(item) => item} error = {error}/>
 
       </div>
 

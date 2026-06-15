@@ -6,7 +6,7 @@ import BookmarkIcon from 'src/assets/bookmarkIcon.svg?react';
 import Arrow from 'src/assets/arrow.svg?react'
 import DisabledArrow from 'src/assets/arrowDisabled.svg?react'
 
-const Slider = ({ items, loading , query}) => {
+const Slider = ({ items, loading , query , error}) => {
 
     const sliderRef = useRef(null);
 
@@ -22,7 +22,6 @@ const Slider = ({ items, loading , query}) => {
     */
 
     useEffect(() => {
-
 
         console.log("Loading in Slider", loading);
         console.log("items in SLider", items);
@@ -130,7 +129,7 @@ const Slider = ({ items, loading , query}) => {
 
             <div
                 ref={sliderRef}
-                className={`overflow-x-scroll w-full ${loading ? "h-96 bg-dark-4  animate-pulse" : "h-max bg-none animate-none"}`}
+                className={`overflow-x-scroll w-full ${loading || error ? "h-96 bg-dark-4  animate-pulse" : "h-max bg-none animate-none"}`}
                 style={{
                     scrollbarWidth: "none",
                 }}>

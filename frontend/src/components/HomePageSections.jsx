@@ -5,6 +5,7 @@ import Watch from './homepage/Watch';
 import Celebrity from './homepage/Celebrity';
 import LazyComponent from './LazyComponent';
 import Explore from './homepage/Explore';
+import HeroComponent from './homepage/HeroComponent';
 
 const HomePageSections = () => {
 
@@ -25,6 +26,9 @@ const HomePageSections = () => {
 
   return (
     <div>
+
+
+      <HeroComponent/>
 
       <LazyComponent>
       <Celebrity/>

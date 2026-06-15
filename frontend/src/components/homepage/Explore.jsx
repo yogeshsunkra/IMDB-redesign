@@ -113,7 +113,7 @@ const Explore = () => {
 
                 </div>
 
-                <Slider items={providerData} loading={loading} query={(item) => item} />
+                <Slider items={providerData} loading={loading} query={(item) => item}  error = {error}/>
 
 
             </div>
