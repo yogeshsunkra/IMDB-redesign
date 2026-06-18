@@ -52,8 +52,6 @@ const Header = () => {
         AutoComplete(input).then((data) => { setSearchResults(data.d) }).catch(err => console.log(err));
       }
 
-
-
     }, 500)
 
 
@@ -130,8 +128,6 @@ const Header = () => {
     <div className=" relative w-full bg-dark-5 ">
       <div className="flex   items-center  md:justify-normal ">
 
-
-
         <div className=" py-[1rem] lg:mx-[5rem]   flex  items-center w-full">
           <Button className="block 2xl:hidden" onClick={toggleNavbar}>
             <HamburgerMenu />
@@ -146,22 +142,23 @@ const Header = () => {
 
               <div
                 key={item.id}
-                className=" mx-[1rem]"
+                className=" mx-[1rem] line-clamp-1"
                 onMouseEnter={() => setDropdown(id)}
                 onMouseLeave={() => setDropdown(null)}
               >
                 <div className="relative line-clamp-1">
-                  <a href="#" className="text-dark-1 hover:text-n-1">
+                  <a href="#" className="text-dark-1 hover:text-n-1 text-[clamp(12px,14vw,14px)]">
                     {item.text}
                   </a>
 
                 </div>
 
+                {/* Drop down */}
 
                 <div
                   className={`absolute  transition ease-out-[2s] ${dropdown === id ? "grid" : "hidden"
                     } 
-                                origin-bottom top-3/4  left-0 w-full h-[30rem] bg-dark-5 grid-cols-4 px-40 py-16 z-30 `}
+                                origin-bottom top-3/4  left-0 w-full h-[30rem] bg-dark-5 grid-cols-4 px-40 py-16 z-[100] `}
                 >
                   <div className="grid col-span-3 grid-cols-3">
                     {item.subText.map((subItem, subIndex) => (
@@ -207,7 +204,7 @@ const Header = () => {
 
 
 
-                <div className={` ${searchQuery ? "block" : "hidden"} absolute  top-11 w-full bg-dark-4 bg-opacity-30 backdrop-blur-xl text-white  h-96  overflow-y-scroll 
+                <div className={` ${searchQuery ? "block" : "hidden"} absolute  top-11 w-full bg-dark-4 bg-opacity-30 backdrop-blur-xl text-white  h-96  overflow-y-scroll z-[100] 
                   `}>
 
                   {
@@ -215,7 +212,6 @@ const Header = () => {
                     (
 
                       searchResults?.map((item, index) => (
-
 
 
                         <NavLink key={index} to={(item.id.startsWith("t") ? `search/title/${item.id}` : `search/celeb/${item.id}`)} className={`flex flex-row py-2 border-b-2  border-b-gray-500 my-4 px-2

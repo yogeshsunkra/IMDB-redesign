@@ -33,9 +33,9 @@ const HomePage = () => {
 
 // console.log("HOMEPAGE DATA",homePageData);
   return (
-    <div className='w-full border-2 border-yellow-500 h-[200rem]'>
+    <div className='w-full h-[200rem]'>
       
-    <div className='w-full  xl:w-[95%] 2xl:w-[85%] mx-auto my-4 border-2 border-green-600'>
+    <div className='w-full  xl:w-[95%] 2xl:w-[85%] mx-auto my-4 '>
 
       {/* hero section */}
 

@@ -6,6 +6,7 @@ import Celebrity from './homepage/Celebrity';
 import LazyComponent from './LazyComponent';
 import Explore from './homepage/Explore';
 import HeroComponent from './homepage/HeroComponent';
+import Footer from './Footer';
 
 const HomePageSections = () => {
 
@@ -25,7 +26,7 @@ const HomePageSections = () => {
 
 
   return (
-    <div>
+    <div className='w-full h-full flex flex-col gap-24'>
 
 
       <HeroComponent/>
@@ -41,6 +42,12 @@ const HomePageSections = () => {
       <LazyComponent>
       <Explore/>
       </LazyComponent>
+
+      <LazyComponent>
+      <Footer/>
+      </LazyComponent>
+
+
     </div>
   )
 }

@@ -93,7 +93,7 @@ const Watch = () => {
 
       <div className='absolute  flex  top-16  w-full h-[50%] justify-center items-start md:flex '>
 
-        <span className='text-[clamp(2rem,14vw,12rem)]  text-gray-400 font-extrabold opacity-5 -z-20 '>  What to Watch
+        <span className='text-[clamp(2rem,14vw,10rem)]  text-gray-400 font-extrabold opacity-5 -z-20 '>  What to Watch
         </span>
       </div>
 
@@ -105,7 +105,9 @@ const Watch = () => {
         <div className=' flex flex-col px-4 py-2 gap-4 justify-center items-center'>
 
           <div className='flex gap-4 items-center justify-center'>
-            <span className='px-1 py-2 bg-n-1 rounded-full' />
+            <span className='px-1 py-2 bg-n-1 rounded-full' > 
+              {/* <img src='/menu/watch-menu.svg'/> */}
+            </span>
             <h1 className='h3 text-dark-1'>TOP on IMDB this week</h1>
 
           </div>

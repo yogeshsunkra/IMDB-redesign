@@ -39,34 +39,6 @@ const HeroComponent = () => {
     ]);
 
 
-    // const demoArray = [
-    //     {
-    //         title: "Billa",
-    //         img: 'https://m.media-amazon.com/images/M/MV5BZTA0MzU0YzItZWRjZC00YzllLWFmYjMtZWYzZDgyYzRjYTg5XkEyXkFqcGc@._V1_.jpg'
-    //     },
-    //     {
-    //         title: "Kalki 2898AD",
-    //         img: 'https://m.media-amazon.com/images/M/MV5BMGRjZTQ0YzUtYWJjMS00OGY1LTkwNjMtYjYwZmFmNTY3MGZkXkEyXkFqcGc@._V1_FMjpg_UY1600_.jpg'
-    //     },
-    //     {
-    //         title: "Salaar",
-    //         img: 'https://m.media-amazon.com/images/M/MV5BNTU0ZjYxOWItOWViMC00YWVlLWJlMGUtZjc1YWU0NTlhY2ZhXkEyXkFqcGc@._V1_FMjpg_UY1500_.jpg'
-    //     },
-    //     {
-    //         title: "Baahubali",
-    //         img: 'https://m.media-amazon.com/images/M/MV5BNWM5MDQzNmQtZmQwZS00MjZlLTgzMTAtMzUwNDNiNTQwODRiXkEyXkFqcGc@._V1_FMjpg_UX1905_.jpg'
-    //     },
-    //     {
-    //         title: "Saaho",
-    //         img: 'https://m.media-amazon.com/images/M/MV5BZDFiM2Q3MTktNDY2MS00NmZhLThhNTItYTljZjkyODc4MjQzXkEyXkFqcGc@._V1_FMjpg_UX500_.jpg'
-    //     },
-    //     {
-    //         title: "Darling",
-    //         img: 'https://m.media-amazon.com/images/M/MV5BZWMxNjE4MjMtOGIxMS00YTliLWI5YzgtYjQ2NzNhMDIzYjRiXkEyXkFqcGc@._V1_FMjpg_UY768_.jpg'
-    //     },
-
-    // ]
-
     const handleNext = () => {
 
         setItems(prev => [...prev.slice(1), prev[0]]);
@@ -87,15 +59,13 @@ const HeroComponent = () => {
 
 
     return (
-        <div className='w-full  h-[70vw] md:h-[50vw] xl:max-h-[40vw] border-red-600 border-2'>
+        <div className='w-full  h-[70vw] md:h-[50vw] xl:max-h-[40vw]  shadow-md '>
 
-            {/* 'https://m.media-amazon.com/images/M/MV5BZTA0MzU0YzItZWRjZC00YzllLWFmYjMtZWYzZDgyYzRjYTg5XkEyXkFqcGc@._V1_.jpg' */}
-
-            <div className="flex w-full h-full gap-4  md:p-4">
+            <div className="flex w-full h-full gap-4  md:p-4 ">
 
 
                 {/* ***** Hero slider section ****** */}
-                <div className="relative w-full xl:w-[75%] h-full border-2 border-green-700 ">
+                <div className="relative w-full xl:w-[75%] h-full rounded-2xl overflow-hidden">
 
                     <div className=" w-full h-[75%] shadow-black "
                         style={{
@@ -107,7 +77,7 @@ const HeroComponent = () => {
                     >
                     </div>
 
-                    <div className="absolute bottom-0 left-0 w-full h-max  flex px-4   bg-gradient-to-t from-dark-3 via-dark-3 to-transparent z-50 backdrop-blur-[1px] p-2">
+                    <div className="absolute bottom-0 left-0 w-full h-max  flex px-4   bg-gradient-to-t from-dark-3 from-25% via-dark-3 via-50% to-transparent to-60% z-50 backdrop-blur-[1px] p-2">
 
                         <div className="w-[30%] h-max rounded-tl-none rounded-2xl overflow-hidden">
                             <img src={currentItem?.img} alt="IMAGE" className="w-full aspect-[2/3] object-cover" />
@@ -159,19 +129,19 @@ const HeroComponent = () => {
 
 
                 {/******  Up Next Section ******/}
-                <div className="hidden xl:flex w-[25%] flex-col justify-between border-2 border-green-500 p-2">
+                <div className="hidden xl:flex w-[25%] flex-col justify-between p-2  ">
 
-                    <div className="w-full h-max py-2">
+                    {/* <div className="w-full h-max py-2">
                         <span className="text-white h4 font-600 leading-3">Up next ...</span>
-                    </div>
+                    </div> */}
 
                     {upNext.map((e, index) => {
 
                         return (
-                    <div key = {index} className="  w-full h-auto flex bg-gradient-to-t from-dark-3 via-dark-3 to-transparent z-50 backdrop-blur-[1px] border-2 border-fuchsia-700">
+                    <div key = {index} className="  w-full h-max   flex  z-50 backdrop-blur-3xl shadow-md bg-gradient-to-br from-dark-4 via-dark-3 to-dark-3 rounded-2xl overflow-hidden ">
 
-                        <div className="w-[50%] h-max rounded-md rounded-tl-none overflow-hidden">
-                            <img src={e.img} alt="IMAGE" className="w-full aspect-[2/3] object-cover" />
+                        <div className="w-[55%] h-max rounded-md rounded-tl-none overflow-hidden">
+                            <img src={e.img} alt="IMAGE" className="w-full aspect-[2/3.5] object-cover" />
                         </div>
                         <div className="flex flex-col w-full h-full 
                          gap-2 p-2">
