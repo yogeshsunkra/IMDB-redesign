@@ -6,7 +6,7 @@ import Celebrity from './homepage/Celebrity';
 import LazyComponent from './LazyComponent';
 import Explore from './homepage/Explore';
 import HeroComponent from './homepage/HeroComponent';
-import Footer from './Footer';
+
 
 const HomePageSections = () => {
 
@@ -43,9 +43,6 @@ const HomePageSections = () => {
       <Explore/>
       </LazyComponent>
 
-      <LazyComponent>
-      <Footer/>
-      </LazyComponent>
 
 
     </div>
