@@ -6,6 +6,7 @@ import Slider from "../Slider";
 // // import { DataContext } from "src/context/DataContext";
 import { simplifiedApiResponse } from 'src/utils/utilsData';
 import { useHomePageSections } from 'src/hooks/useHomePageSections';
+import Loading from '../Loading';
 
 const Celebrity = () => {
 

@@ -5,8 +5,9 @@ import PlayIcon from 'src/assets/playIcon.svg?react';
 import BookmarkIcon from 'src/assets/bookmarkIcon.svg?react';
 import Arrow from 'src/assets/arrow.svg?react'
 import DisabledArrow from 'src/assets/arrowDisabled.svg?react'
+import Loading from './Loading';
 
-const Slider = ({ items, loading , query , error}) => {
+const Slider = ({ items, loading, query, error }) => {
 
     const sliderRef = useRef(null);
 
@@ -100,6 +101,8 @@ const Slider = ({ items, loading , query , error}) => {
         visibleCards *
         (cardWidth + gap);
 
+    const loaderArray = Array.from({ length: 7 })
+
     return (
 
         <div className='w-full'>
@@ -129,7 +132,7 @@ const Slider = ({ items, loading , query , error}) => {
 
             <div
                 ref={sliderRef}
-                className={`overflow-x-scroll w-full ${loading || error ? "h-96 bg-dark-4  animate-pulse" : "h-max bg-none animate-none"}`}
+                className={`overflow-x-scroll w-full h-max bg-none animate-none`}
                 style={{
                     scrollbarWidth: "none",
                 }}>
@@ -144,106 +147,42 @@ const Slider = ({ items, loading , query , error}) => {
                     }}
                 >
 
-                    {items?.map((item, index) => {
+                    {error ?
 
-                        const currentItem = query(item);
-                        // console.log(currentItem , "currentItem");
+                        loaderArray.map((_, index) => {
 
-                        return (
-
-                            currentItem?.id?.toString().toLowerCase().startsWith("n", 0) ?
+                            return (
                                 <div
                                     key={index}
-                                    className={`relative flex-shrink-0   ${loading ? "h-[190px] animate-pulse bg-gray-700 " : " h-max "}`}
+                                    className={`flex-shrink-0  rounded-xl overflow-hidden rounded-tl-none h-auto bg-dark-5/70 p-2`}
                                     style={{
                                         width: `${cardWidth}px`
                                     }}
                                 >
 
-                                    <div className='relative overflow-hidden rounded-full w-full h-full bg-gray-700'
-                                        style={{
-                                            // width : `${cardWidth}`,
-                                            // height : `${cardWidth}`,
-                                        }}>
-                                        <img
-                                            src={currentItem?.image}
-                                            alt={currentItem?.name}
-                                            loading='lazy'
-                                            className='aspect-[3/3] w-full object-cover object-top'
-                                        />
-
+                                    <div className='relative overflow-hidden  aspect-[2/3] bg-dark-5/50 animate-pulse'>
+    
 
                                     </div>
 
-                                    <div className='flex w-full p-4 p1 text-white'>
-                                        {currentItem?.name}
-                                    </div>
+                                    <div className='text-white mt-2 grid grid-flow-2 px-2 py-8 gap-4 flex-shrink-0 overflow-hidden'>
 
-                                    <div className='absolute top-1/2 left-0 rounded-full overflow-hidden z-50'>
-                                        <BookmarkIcon />
-
-                                    </div>
-
-                                </div>
-                                :
-
-                                //*************** */ Title Cards **********
-                                <div
-                                    key={index}
-                                    className={`flex-shrink-0  rounded-xl overflow-hidden rounded-tl-none ${loading ? "h-96 animate-pulse bg-gray-700 " : "h-auto bg-dark-4 bg-opacity-50 "}`}
-                                    style={{
-                                        width: `${cardWidth}px`
-                                    }}
-                                >
-
-                                    <div className='relative overflow-hidden'>
-                                        <img
-                                            src={currentItem?.image}
-                                            alt={currentItem?.title}
-                                            loading='lazy'
-                                            className='aspect-[2/3] w-full object-cover '
-                                        />
-
-                                        <div className='absolute top-0 left-0'>
-                                            <BookmarkIcon />
-
-                                        </div>
-
-
-
-                                    </div>
-
-                                    <div className='text-white mt-2 grid grid-flow-2 px-2 py-auto gap-4 flex-shrink-0'>
-
-                                        <div className='flex flex-col gap-4'>
+                                        <div className='flex flex-col gap-4 py-4 bg-dark-3/55 rounded-2xl'>
                                             <div className='flex gap-4 items-center'>
-                                                <div className='flex items-center gap-1'>
-                                                    <RatingIcon />
-                                                    <p>{currentItem?.rating}</p>
-                                                </div>
-
-                                                <RateIcon />
                                             </div>
 
-
-                                            <div className='flex h-14 items-start'>
-                                                <p className='line-clamp-2 overflow-hidden'>{currentItem?.title}</p></div>
 
                                         </div>
 
 
                                         <div className='flex flex-col gap-2'>
 
-                                            <button className="line-clamp-1 text-blue-500 bg-dark-4 bg-opacity-80 rounded-3xl px-4 py-3 overflow-hidden p2">
-                                                <p className='line-clamp-1'>
-                                                    Watch options
-                                                </p>
+                                            <button className="bg-dark-3/55  rounded-3xl px-4 py-3 overflow-hidden ">
                                             </button>
 
 
-                                            <button className="flex items-center gap-2 justify-center line-clamp-1 text-white bg-none  rounded-3xl px-4 py-3 overflow-hidden p2 hover:bg-dark-4"  >
-                                                <PlayIcon />
-                                                <p className='line-clamp-1'>Trailer</p>
+                                            <button className=" rounded-3xl px-4 py-3 overflow-hidden  bg-dark-3/55"  >
+
                                             </button>
 
                                         </div>
@@ -251,15 +190,129 @@ const Slider = ({ items, loading , query , error}) => {
                                     </div>
 
                                 </div>
+                            )
+                        }
 
-                        );
+                        )
+                        : items?.map((item, index) => {
 
-                    })}
+                            const currentItem = query(item);
+                            // console.log(currentItem , "currentItem");
+
+                            return (
+
+                                currentItem?.id?.toString().toLowerCase().startsWith("n", 0) ?
+                                    <div
+                                        key={index}
+                                        className={`relative flex-shrink-0  h-max }`}
+                                        style={{
+                                            width: `${cardWidth}px`
+                                        }}
+                                    >
+
+                                        <div className='relative overflow-hidden rounded-full w-full h-full bg-gray-700'
+                                            style={{
+                                                // width : `${cardWidth}`,
+                                                // height : `${cardWidth}`,
+                                            }}>
+                                            <img
+                                                src={currentItem?.image}
+                                                alt={currentItem?.name}
+                                                loading='lazy'
+                                                className='aspect-[3/3] w-full object-cover object-top'
+                                            />
+
+
+                                        </div>
+
+                                        <div className='flex w-full p-4 p1 text-white'>
+                                            {currentItem?.name}
+                                        </div>
+
+                                        <div className='absolute top-1/2 left-0 rounded-full overflow-hidden z-50'>
+                                            <BookmarkIcon />
+
+                                        </div>
+
+                                    </div>
+                                    :
+
+                                    //*************** */ Title Cards **********
+                                    <div
+                                        key={index}
+                                        className={`flex-shrink-0  rounded-xl overflow-hidden rounded-tl-none h-auto bg-dark-4 bg-opacity-50 `}
+                                        style={{
+                                            width: `${cardWidth}px`
+                                        }}
+                                    >
+
+                                        <div className='relative overflow-hidden bg-gray-700'>
+                                            <img
+                                                src={currentItem?.image}
+                                                alt={currentItem?.title}
+                                                loading='lazy'
+                                                className='aspect-[2/3] w-full object-cover '
+                                            />
+
+                                            <div className='absolute top-0 left-0'>
+                                                <BookmarkIcon />
+
+                                            </div>
+
+
+
+                                        </div>
+
+                                        <div className='text-white mt-2 grid grid-flow-2 px-2 py-auto gap-4 flex-shrink-0'>
+
+                                            <div className='flex flex-col gap-4'>
+                                                <div className='flex gap-4 items-center'>
+                                                    <div className='flex items-center gap-1'>
+                                                        <RatingIcon />
+                                                        <p>{currentItem?.rating}</p>
+                                                    </div>
+
+                                                    <RateIcon />
+                                                </div>
+
+
+                                                <div className='flex h-14 items-start'>
+                                                    <p className='line-clamp-2 overflow-hidden'>{currentItem?.title}</p></div>
+
+                                            </div>
+
+
+                                            <div className='flex flex-col gap-2'>
+
+                                                <button className="line-clamp-1 text-blue-500 bg-dark-4 bg-opacity-80 rounded-3xl px-4 py-3 overflow-hidden p2">
+                                                    <p className='line-clamp-1'>
+                                                        Watch options
+                                                    </p>
+                                                </button>
+
+
+                                                <button className="flex items-center gap-2 justify-center line-clamp-1 text-white bg-none  rounded-3xl px-4 py-3 overflow-hidden p2 hover:bg-dark-4"  >
+                                                    <PlayIcon />
+                                                    <p className='line-clamp-1'>Trailer</p>
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                            );
+
+                        })}
 
                 </div>
 
 
             </div>
+
+
+
 
         </div>
 
