@@ -10,6 +10,7 @@ export const useHomePageSections = () => {
       const data = await homePageSections();
 
       console.log(data , "TANSTACK DATA");
+      console.log( "TANSTACK API HIT");
       // console.log(isloading , "LOADING")
 
       return data.reduce((acc, item) => {

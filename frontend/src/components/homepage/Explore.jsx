@@ -10,7 +10,7 @@ import { simplifiedApiResponse } from 'src/utils/utilsData';
 
 const Explore = () => {
 
-    const [providerIndex, setProviderIndex] = useState(0);
+    const [providerIndex, setProviderIndex] = useState([0]);
     const [providerData, setProviderData] = useState([]);
     const [streamingData, setStreamingData] = useState([]);
 
@@ -48,15 +48,11 @@ const Explore = () => {
             }
 
 
-
-
-
-
         }
 
 
 
-    }, [sections, providerIndex, loading])
+    }, [providerIndex])
 
     const handleClick = (index) => {
 
@@ -103,7 +99,8 @@ const Explore = () => {
 
                     {streamingData?.map((item, index) => {
                         return (
-                            <button key={index} className="p-2 items-center justify-center text-black bg-white rounded-xl overflow-hidden hover:bg-yellow-500" onClick={() => handleClick(index)}>
+                            <button key={index}  className={`p-2 items-center justify-center   rounded-lg overflow-hidden hover:text-n-1 ${providerIndex == index ? " border-b-2 border-b-n-1 text-n-1" :"border-none text-white"}`} onClick={() => handleClick(index)}  
+                            >
                                 {item.providerName}
                             </button>
 

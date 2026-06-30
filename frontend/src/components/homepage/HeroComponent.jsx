@@ -36,6 +36,7 @@ const HeroComponent = () => {
 
     // const [currentIndex, setCurrentIndex] = useState(0);
     const [items, setItems] = useState([]);
+    const [isSliding, setIsSliding] = useState(false);
 
     const intervalRef = useRef(null);
 
@@ -114,13 +115,13 @@ const HeroComponent = () => {
 
 
     return (
-        <div className='w-full  h-[70vw] md:h-[50vw] xl:max-h-[40vw]  shadow-md '>
+        <div className='w-full  h-[70vw] md:h-[50vw] xl:max-h-[40vw]  shadow-md border-b-2 border-b-dark-2/10 '>
 
             <div className="flex w-full h-full gap-4  md:p-4 ">
 
 
                 {/* ***** Hero slider section ****** */}
-                <div className={`relative w-full xl:w-[75%] h-full rounded-2xl overflow-hidden ${loading ? "bg- dark-5 animate-pulse" : "animate-none bg-none"}`}>
+                <div className={`relative w-full xl:w-[75%] h-full rounded-2xl overflow-hidden ${loading ? "bg- dark-5 animate-pulse" : "animate-none bg-none"} bg-dark-4 bg-opacity-30 backdrop-blur-xl `}>
 
                     {items && !loading && (
 
@@ -204,7 +205,7 @@ const HeroComponent = () => {
 
 
                 {/******  Up Next Section ******/}
-                <div className="hidden xl:flex w-[25%] flex-col justify-between p-2  ">
+                <div className={`hidden xl:flex w-[25%] flex-col justify-between p-2  gap-4 ${loading? "bg-dark-4 bg-opacity-30 backdrop-blur-xl" : "bg-none"} `}>
 
                     {/* <div className="w-full h-max py-2">
                         <span className="text-white h4 font-600 leading-3">Up next ...</span>
@@ -213,7 +214,7 @@ const HeroComponent = () => {
                     {upNext?.map((e, index) => {
 
                         return (
-                            <div key={index} className="  w-full h-max   flex  z-50 backdrop-blur-3xl shadow-md bg-gradient-to-br from-dark-4 via-dark-3 to-dark-3 rounded-2xl overflow-hidden ">
+                            <div key={index} className="  w-full h-max   flex  z-50 backdrop-blur-3xl shadow-md bg-gradient-to-br from-dark-4 via-dark-3 to-dark-4/50 rounded-2xl overflow-hidden  bg-opacity-30  ">
 
                                 <div className="w-[55%] h-max rounded-md rounded-tl-none overflow-hidden">
                                     <img src={e.image} alt="IMAGE" className="w-full aspect-[2/3.5] object-cover" />

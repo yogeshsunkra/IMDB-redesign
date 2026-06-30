@@ -33,7 +33,7 @@ const HomePage = () => {
 
 // console.log("HOMEPAGE DATA",homePageData);
   return (
-    <div className='w-full h-[200rem]'>
+    <div className='w-full h-max'>
       
     <div className='w-full  xl:w-[95%] 2xl:w-[85%] mx-auto my-4 '>
 

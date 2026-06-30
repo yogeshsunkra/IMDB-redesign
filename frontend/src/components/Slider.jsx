@@ -154,6 +154,7 @@ const Slider = ({ items, loading, query, error }) => {
                             return (
                                 <div
                                     key={index}
+
                                     className={`flex-shrink-0  rounded-xl overflow-hidden rounded-tl-none h-auto bg-dark-5/70 p-2`}
                                     style={{
                                         width: `${cardWidth}px`
@@ -161,7 +162,7 @@ const Slider = ({ items, loading, query, error }) => {
                                 >
 
                                     <div className='relative overflow-hidden  aspect-[2/3] bg-dark-5/50 animate-pulse'>
-    
+
 
                                     </div>
 
@@ -204,6 +205,7 @@ const Slider = ({ items, loading, query, error }) => {
                                 currentItem?.id?.toString().toLowerCase().startsWith("n", 0) ?
                                     <div
                                         key={index}
+                                        id={currentItem.id}
                                         className={`relative flex-shrink-0  h-max }`}
                                         style={{
                                             width: `${cardWidth}px`
@@ -216,6 +218,7 @@ const Slider = ({ items, loading, query, error }) => {
                                                 // height : `${cardWidth}`,
                                             }}>
                                             <img
+                                                id={currentItem.id}
                                                 src={currentItem?.image}
                                                 alt={currentItem?.name}
                                                 loading='lazy'
@@ -240,6 +243,7 @@ const Slider = ({ items, loading, query, error }) => {
                                     //*************** */ Title Cards **********
                                     <div
                                         key={index}
+                                        id={currentItem?.id}
                                         className={`flex-shrink-0  rounded-xl overflow-hidden rounded-tl-none h-auto bg-dark-4 bg-opacity-50 `}
                                         style={{
                                             width: `${cardWidth}px`
@@ -248,6 +252,7 @@ const Slider = ({ items, loading, query, error }) => {
 
                                         <div className='relative overflow-hidden bg-gray-700'>
                                             <img
+                                                id={currentItem?.id}
                                                 src={currentItem?.image}
                                                 alt={currentItem?.title}
                                                 loading='lazy'
