@@ -53,14 +53,14 @@ export const homePageSections = async () => {
 
 
 }
-export const celebData = async () => {
+export const celebData = async (id) => {
 
 	try {
-		const response = await axios.get('http://localhost:5000/api/v1/celeb');
+		const response = await axios.get(`http://localhost:5000/api/v1/person/${id}`);
 
-		const data = response.data;
+		const data = await response.data;
 		console.log("data fetched");
-		return data[0];
+		return data;
 	} catch (error) {
 		console.error(error, "NOW");
 	}

@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRef } from 'react'
+import { useParams } from 'react-router-dom';
 import Slider from 'src/components/Slider';
+import { useCelebData } from 'src/hooks/useCelebData';
 
 
 const Celeb = () => {
@@ -9,6 +11,31 @@ const Celeb = () => {
   const [active, setActive] = useState(false);
 
   const box = useRef(null);
+
+   const params = useParams();
+    const id = params.id
+    console.log(id);
+
+
+  const {
+      data : celebData,
+      isLoading : loading,
+      error : error 
+
+  } = useCelebData(id);
+
+
+ 
+
+  useEffect(()=>{
+
+    if(celebData && !loading){
+
+       console.log(celebData?.data,"CELEB PAGE")
+
+    }
+
+  },[celebData,loading])
 
   
 
