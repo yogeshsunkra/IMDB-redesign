@@ -7,15 +7,48 @@ import Tiktok from 'src/assets/footer/tiktok.svg?react';
 import Facebook from 'src/assets/footer/facebook.svg?react';
 import Company from 'src/assets/footer/company.svg?react';
 import AdsBtn from 'src/assets/footer/adsBtn.svg?react';
+import { useContext } from 'react';
+import { DataContext } from 'src/context/DataContext';
+import { useState, useEffect } from 'react';
 
 const Footer = () => {
 
 
+    const { searched, loading } = useContext(DataContext);
+
+
+
     return (
-        <div className="flex flex-col gap-6 w-full h-full justify-center items-center border-2 border-red-500 py-4 bg-black">
+        <div className="flex flex-col gap-6 w-full h-full justify-center items-center  py-4 bg-black">
 
             {/* Previously viewed or searched  */}
-            <div className="w-full h-[20rem] border-2 border-white"></div>
+            <div className="w-full lg:w-[80%]  h-full p-4">
+
+                <p className ="h3  text-white"> Recently Viewed</p>
+
+                {searched && !loading ? (
+
+                    <div></div>
+
+
+                ) : (
+                    <div className='w-full h-20 flex  items-center'>
+                        <p className="h4 text-dark-1">
+                           You have no recently viewed pages
+                        </p>
+                    </div>
+                )
+
+
+
+
+
+
+                }
+
+
+
+            </div>
 
             {/* Standard footer */}
             <div className='flex flex-col gap-8 w-full lg:w-[70%] xl:w-[50%] h-full'>
@@ -68,36 +101,21 @@ const Footer = () => {
                 {/* links */}
                 <div className='flex flex-wrap w-full h-max gap-4 py-2 justify-center items-center px-24 '>
 
-                    <a className="text-white p3 cursor-pointer hover:underline">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Biggerrr Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Biiiggeeesstttttttttttt linkkkkkkkkkk</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
-                    <a className="text-white p3">Link</a>
+
+                    <a className="text-white p2">HelpSite</a>
+                    <a className="text-white p2">IndexIMDbProBox</a>
+                    <a className="text-white p3hover:cursor-pointer">Office</a>
+                    <a className="text-white p3hover:cursor-pointer">MojoLicense</a>
+                    <a className="text-white p3hover:cursor-pointer">IMDb Data</a>
+                    <a className="text-white p3hover:cursor-pointer">Press</a>
+                    <a className="text-white p3hover:cursor-pointer">RoomAdvertisingJobsConditions</a>
+                    <a className="text-white p3 hover:cursor-pointer">UsePrivacy</a>
+                    <a className="text-white p3hover:cursor-pointer">Policy</a>
+                    <a className="text-white p3 hover:cursor-pointer ">Your Ads Privacy Choices</a>
+
+
                     <a className="text-white p3 flex gap-2">
-                        <AdsBtn />Link</a>
+                        <AdsBtn />Your Ads Privacy Choices</a>
 
                 </div>
 

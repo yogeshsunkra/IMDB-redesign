@@ -3,23 +3,24 @@ import React, { useState, useContext, useEffect, useRef } from 'react'
 import RatingIcon from 'src/assets/ratingIcon.svg?react';
 import WatchedIcon from 'src/assets/watchedIcon.svg?react';
 import { simplifiedApiResponse } from 'src/utils/utilsData';
-import Slider from '../Slider';
 import { useHomePageSections } from 'src/hooks/useHomePageSections';
+import {NavLink} from 'react-router-dom'
 
 const Watch = () => {
 
   const [weekTopTen, setWeekTopTen] = useState([]);
-  const [fanFav, setFanFav] = useState([]);
   const [isRendered, setIsRendered] = useState(false);
 
   const ref = useRef();
+
+  const key = ""
 
   // const { sections, loading } = useContext(DataContext);
   const {
     data: sections,
     isLoading: loading,
     error
-  } = useHomePageSections();
+  } = useHomePageSections("week-top-ten");
 
   const toCamelCase = (str) => {
     return str
@@ -47,25 +48,28 @@ const Watch = () => {
       console.log("RENDERED");
 
 
-      sections?.watch?.forEach((e) => {
+      setWeekTopTen(simplifiedApiResponse(sections.data.data));
 
-        const name = toCamelCase(e.name);
 
-        switch (name) {
-          case "weekTop10":
+      // sections?.watch?.forEach((e) => {
 
-            setWeekTopTen(simplifiedApiResponse(e.data.data));
-            break;
-          case "fanFavourites":
+      //   const name = toCamelCase(e.name);
 
-            setFanFav(simplifiedApiResponse(e.data.data.list));
-            break;
+      //   switch (name) {
+      //     case "weekTop10":
 
-          default:
-            break;
-        }
+      //       setWeekTopTen(simplifiedApiResponse(e.data.data));
+      //       break;
+      //     case "fanFavourites":
 
-      })
+      //       setFanFav(simplifiedApiResponse(e.data.data.list));
+      //       break;
+
+      //     default:
+      //       break;
+      //   }
+
+      // })
 
       requestAnimationFrame(() => {
         setIsRendered(true);
@@ -102,13 +106,18 @@ const Watch = () => {
       <div className='w-full h-full flex '>
 
 
-        <div className=' flex flex-col px-4 py-2 gap-4 justify-center items-center'>
+        <div className=' flex flex-col px-4 py-2 gap-4 justify-center items-center '>
 
-          <div className='flex gap-4 items-center justify-center'>
+          <div  className='w-max h-full flex gap-4 items-center justify-center underline-offset-2 '>
             <span className='px-1 py-2 bg-n-1 rounded-full' > 
               {/* <img src='/menu/watch-menu.svg'/> */}
             </span>
-            <h1 className='h3 text-dark-1'>TOP on IMDB this week</h1>
+
+            <NavLink to={`/search/explore/week-top-ten`} className = "w-full h-max">
+
+              <span className='h3 text-dark-1 p-4'>TOP on IMDB this week</span>
+
+            </NavLink>
 
           </div>
 
@@ -119,11 +128,11 @@ const Watch = () => {
 
       {/* ************ Week Top Ten Section ************* */}
 
-      <div className={`w-full ${loading || error ? "h-40 animate-pulse bg-black" : "bg-none h-full animate-none"}   my-4 flex min-[850px]:flex-row xl:flex-col gap-1 `}>
+      <div className={`w-full   my-4 flex min-[850px]:flex-row xl:flex-col gap-1 `}>
 
 
         {/* ************************ Top 3 cards  ************************ */}
-        <div className={`w-full h-full grid p-2 grid-flow-row xl:grid-flow-col xl:grid-cols-7 gap-4 ${loading || error? "h-40 animate-pulse" : "h-full animate-none"}`}>
+        <div className={`w-full h-full grid p-2 grid-flow-row xl:grid-flow-col xl:grid-cols-7 gap-4 ${loading || error? "h-60 animate-pulse bg-dark-4" : "h-full animate-none bg-none"}`}>
 
           {/* Dynamic */}
 
@@ -199,7 +208,7 @@ const Watch = () => {
         </div>
 
         {/* ********************* Medium Device Only *********************** */}
-        <div className='hidden min-[850px]:grid xl:hidden w-full h-max  p-2 grid-flow-row  gap-4'>
+        <div className={`hidden min-[850px]:grid xl:hidden w-full h-max  p-2 grid-flow-row  gap-4 ${loading || error? "h-60 animate-pulse bg-dark-4" : "h-full animate-none bg-none"}`}>
 
           {primaryCards.map((item, index) => {
 
@@ -282,7 +291,7 @@ const Watch = () => {
 
 
         {/* ********************* Large Device Only *********************** */}
-        <div className='hidden xl:grid grid-cols-7 w-full h-full  p-4 gap-2'>
+        <div className={`hidden xl:grid grid-cols-7 w-full h-full  p-4 gap-2 ${loading || error? "h-60 animate-pulse bg-dark-4" : "h-full animate-none bg-none"}`}>
 
 
           {secondaryCards.map((item, index) => {
@@ -330,25 +339,7 @@ const Watch = () => {
       </div >
 
 
-      {/* ************** Fan Fav ****************/}
 
-
-      <div className = 'w-full h-full flex flex-col' >
-
-        <div className=' flex flex-col px-4 py-2 gap-4  items-center'>
-
-          <div className='w-full flex gap-4  justify-start'>
-            <span className='px-1 py-2 bg-n-1 rounded-full' />
-            <h1 className='h3 text-dark-1'>Fan Favourites</h1>
-
-          </div>
-
-          <p> </p>
-        </div>
-
-        <Slider items={fanFav} loading={loading} query={(item) => item} error = {error}/>
-
-      </div>
 
 
     </div >

@@ -4,8 +4,9 @@ import { homePageSections } from 'src/api/apiCalling';
 import Watch from './homepage/Watch';
 import Celebrity from './homepage/Celebrity';
 import LazyComponent from './LazyComponent';
-import Explore from './homepage/Explore';
+import Streaming from './homepage/Streaming';
 import HeroComponent from './homepage/HeroComponent';
+import FanFav from './homepage/FanFav';
 
 
 const HomePageSections = () => {
@@ -39,9 +40,16 @@ const HomePageSections = () => {
       <Watch/>
       </LazyComponent>
 
+
       <LazyComponent>
-      <Explore/>
+      <FanFav/>
       </LazyComponent>
+
+      <LazyComponent>
+      <Streaming/>
+      </LazyComponent>
+
+      
 
 
 

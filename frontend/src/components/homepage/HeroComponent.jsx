@@ -15,7 +15,7 @@ const HeroComponent = () => {
         data: sections,
         isLoading: loading,
         error: error
-    } = useHomePageSections()
+    } = useHomePageSections("fan-fav")
 
 
 
@@ -45,22 +45,25 @@ const HeroComponent = () => {
         if (sections && !loading) {
 
 
-            sections?.watch?.forEach((e) => {
+            setItems(simplifiedApiResponse(sections.data.data.list));
 
-                const name = toCamelCase(e.name);
 
-                switch (name) {
-                    case "fanFavourites":
+            // sections?.watch?.forEach((e) => {
 
-                        setItems(simplifiedApiResponse(e.data.data.list));
-                        console.log(items);
-                        break;
+            //     const name = toCamelCase(e.name);
 
-                    default:
-                        break;
-                }
+            //     switch (name) {
+            //         case "fanFavourites":
 
-            })
+            //             setItems(simplifiedApiResponse(e.data.data.list));
+            //             console.log(items);
+            //             break;
+
+            //         default:
+            //             break;
+            //     }
+
+            // })
 
         }
 

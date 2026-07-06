@@ -6,6 +6,7 @@ import BookmarkIcon from 'src/assets/bookmarkIcon.svg?react';
 import Arrow from 'src/assets/arrow.svg?react'
 import DisabledArrow from 'src/assets/arrowDisabled.svg?react'
 import Loading from './Loading';
+import { NavLink } from 'react-router-dom';
 
 const Slider = ({ items, loading, query, error }) => {
 
@@ -203,7 +204,8 @@ const Slider = ({ items, loading, query, error }) => {
                             return (
 
                                 currentItem?.id?.toString().toLowerCase().startsWith("n", 0) ?
-                                    <div
+                                    <NavLink
+                                        to={(currentItem.id.startsWith("t") ? `search/title/${currentItem.id}` : `search/celeb/${currentItem.id}`)}
                                         key={index}
                                         id={currentItem.id}
                                         className={`relative flex-shrink-0  h-max }`}
@@ -237,11 +239,12 @@ const Slider = ({ items, loading, query, error }) => {
 
                                         </div>
 
-                                    </div>
+                                    </NavLink>
                                     :
 
                                     //*************** */ Title Cards **********
-                                    <div
+                                    <NavLink
+                                        to={(currentItem.id.startsWith("t") ? `search/title/${currentItem.id}` : `search/celeb/${currentItem.id}`)}
                                         key={index}
                                         id={currentItem?.id}
                                         className={`flex-shrink-0  rounded-xl overflow-hidden rounded-tl-none h-auto bg-dark-4 bg-opacity-50 `}
@@ -305,7 +308,7 @@ const Slider = ({ items, loading, query, error }) => {
 
                                         </div>
 
-                                    </div>
+                                    </NavLink>
 
                             );
 

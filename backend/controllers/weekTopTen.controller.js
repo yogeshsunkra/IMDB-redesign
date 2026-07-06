@@ -1,3 +1,4 @@
+
 import express from "express";
 import dotenv from "dotenv";
 import HomepageSection from "../models/home.model.js";
@@ -16,104 +17,84 @@ const isCacheValid = (cache, days) => {
 
         const numericDays = Number(days);
 
-        if (numericDays > 0) {
+        if (numericDays > 0){
 
-                const now = Date.now();
-                const cacheDuration = 24 * 3600 * 1000 * days;
-                const lastUpdated = new Date(cache.updatedAt).getTime();
+        const now = Date.now();
+        const cacheDuration = 24 * 3600 * 1000 * days;
+        const lastUpdated = new Date(cache.updatedAt).getTime();
 
-                const durationCheck = now - lastUpdated < cacheDuration
+        const durationCheck = now - lastUpdated < cacheDuration
 
-                return durationCheck;
+        return durationCheck;
         }
 
         const todayDate = new Date().toDateString();
         const cacheDate = new Date(cache.updatedAt).toDateString();
         const dateCheck = todayDate === cacheDate;
-        console.log(todayDate, " : ", cacheDate, " : ", dateCheck, "dateCheck");
+        console.log(todayDate," : ",cacheDate," : ",dateCheck,"dateCheck");
 
 
-        return dateCheck;
+        return  dateCheck;
 
 
 }
 
 
-const sections = [
-        {
-                name: "week top 10",
-                url: 'https://imdb188.p.rapidapi.com/api/v1/getWeekTop10',
-                days: "33",
-                category: "watch",
-                key: "week-top-ten"
-        },
-        {
-                name: "fan favourites",
-                url: 'https://imdb188.p.rapidapi.com/api/v1/getFanFavorites?country=IN',
-                days: '35',
-                category: "watch",
-                key: "fan-fav"
-        },
-        {
-                name: "streaming",
-                url: 'https://imdb188.p.rapidapi.com/api/v1/getWhatsStreaming?country=IN',
-                days: '30',
-                category: "streaming",
-                key: "streaming"
-        },
-        {
-                name: "born today",
-                url: `https://imdb188.p.rapidapi.com/api/v1/getBornOn?month=${currentMonth}&day=${currentDay}`,
-                days: "30",
-                category: "celeb",
-                key: "born-today"
-        },
-        {
-                name: "upcoming movies",
-                url: 'https://imdb188.p.rapidapi.com/api/v1/getUpcomingMovies?region=IN',
-                days: '30',
-                category: "explore",
-                key: "upcoming-movies"
-        },
-        {
-                name: "popular celebrities",
-                url: 'https://imdb188.p.rapidapi.com/api/v1/getPopularCelebrities',
-                days: '30',
-                category: "explore",
-                key: "popular-celebrities"
-        }
-];
 
 
-const homePageController = async (req, res) => {
+const weekTopTenController = async (req, res) => {
+
+        const sections = [
+                {
+                        name: "week top 10",
+                        url: 'https://imdb188.p.rapidapi.com/api/v1/getWeekTop10',
+                        days: "33",
+                        category: "watch"
+                },
+                {
+                        name: "fan favourites",
+                        url: 'https://imdb188.p.rapidapi.com/api/v1/getFanFavorites?country=IN',
+                        days: '35',
+                        category: "watch"
+                },
+                {
+                        name: "streaming",
+                        url: 'https://imdb188.p.rapidapi.com/api/v1/getWhatsStreaming?country=IN',
+                        days: '30',
+                        category: "streaming"
+                },
+                {
+                        name: "born today",
+                        url: `https://imdb188.p.rapidapi.com/api/v1/getBornOn?month=${currentMonth}&day=${currentDay}`,
+                        days: "30",
+                        category: "celeb"
+                },
+                {
+                        name: "upcoming movies",
+                        url: 'https://imdb188.p.rapidapi.com/api/v1/getUpcomingMovies?region=IN',
+                        days: '30',
+                        category: "explore"
+                }
+        ];
 
 
-        const { key } = req.params;
-
-        const request = sections.find(section => section.key === key);
-
-        if (!request) {
-                return res.status(404).json({
-                        success: false,
-                        message: `No section found for "${key}"`,
-                });
-        }
 
         const loadSection = async (name, url, days, category) => {
 
 
                 try {
 
+
                         const cache = await HomepageSection.findOne({ name });
 
 
-                        if (cache && isCacheValid(cache, days)) {
+                        if (cache && isCacheValid(cache,days)) {
 
-                                console.log(`Cache HIT → ${name} ${days}`);
+                                 console.log(`Cache HIT → ${name} ${days}`);
                                 return { name, data: cache.data, category }
                         }
                         else {
-
+                                 
                                 const options = {
                                         method: "GET",
                                         url: url,
@@ -148,6 +129,7 @@ const homePageController = async (req, res) => {
                                 return ({ name, data: result, category });
                         }
 
+
                 } catch (error) {
                         console.error(`Initial load failed for ${name}: ${error.message}`);
                         console.error(`API ERROR for ${name}:`, {
@@ -159,15 +141,37 @@ const homePageController = async (req, res) => {
                         return { name, error: true };
                 }
 
+
         }
 
+        //initial parallel load 
 
-        const result = await loadSection(request.name, request.url, request.days, request.category);
+        const initialResult = await Promise.allSettled(
+                sections.map((section) => loadSection(section.name, section.url, section.days, section.category)
 
 
-        res.status(200).json(result);
+                ));
+
+        // initialResult.map((r) => {
+        //         if (r.status === "fulfilled") {
+        //                 const { name, data, } = r.value;
+        //                 console.log(name," &",data)
+        //                 return { name, success: true, data };
+        //         } else {
+        //                 // rejected should be rare because loadSection catches errors, but handle defensively
+        //                 return {
+        //                         name: "unknown",
+        //                         success: false,
+        //                         error: true,
+        //                         reason: r.reason?.message || String(r.reason),
+        //                 };
+        //         }
+        // });
+
+        res.status(200).json(initialResult);
         // return initialResult;
+
 
 }
 
-export default homePageController;
+export default weekTopTenController;

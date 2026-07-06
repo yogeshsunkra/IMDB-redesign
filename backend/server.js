@@ -23,7 +23,7 @@ app.use(cors({
 
 app.get('/api/v1/person/:id',celebController);
 
-app.get('/api/v1/home_page', homePageController);
+app.get('/api/v1/home_page/:key', homePageController);
 
 app.get('/api/v1/title/:id', titleController);
 

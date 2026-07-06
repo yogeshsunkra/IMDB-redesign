@@ -29,23 +29,26 @@ export const AutoComplete = async (input) => {
 }
 
 
-export const homePageSections = async () => {
+export const homePageSections = async (key) => {
 
 	try {
-		const response = await axios.get('http://localhost:5000/api/v1/home_page');
+		console.log(key,"API KEY ")
+		const response = await axios.get(`http://localhost:5000/api/v1/home_page/${key}`);
 
 		const data = await response.data;
 
-		const result = data.map(d=>({
+		// const result = data.map(d=>({
     
-             name : d.value.name,
-             data : d.value.data,
-             category:d.value.category,
-         }));
+        //      name : d.value.name,
+        //      data : d.value.data,
+        //      category:d.value.category,
+        //  }));
+
+		
 
 
-		console.log("data fetched ",result);
-		return result; 
+		console.log("data fetched ",data);
+		return data; 
 	} catch (error) {
 		console.error(error, "NOW");
 	}

@@ -18,20 +18,27 @@ const Celebrity = () => {
         data: sections,
         isLoading: loading,
         error
-    } = useHomePageSections()
+    } = useHomePageSections("born-today")
 
     useEffect(() => {
 
 
         if (!loading && sections && isRendered) {
 
-            sections?.celeb?.map((e) => {
-                const data = e.data?.data?.list;
+
+            const data = sections.data?.data?.list;
 
 
-                setBornToday(simplifiedApiResponse(data))
-                console.log(bornToday, 'BORN TODAY');
-            })
+            setBornToday(simplifiedApiResponse(data))
+            console.log(bornToday, 'BORN TODAY');
+
+            // sections?.celeb?.map((e) => {
+            //     const data = e.data?.data?.list;
+
+
+            //     setBornToday(simplifiedApiResponse(data))
+            //     console.log(bornToday, 'BORN TODAY');
+            // })
 
         }
 
@@ -64,7 +71,7 @@ const Celebrity = () => {
 
 
 
-            <Slider items={bornToday} loading={loading} query={(item) => item}  error = {error}/>
+            <Slider items={bornToday} loading={loading} query={(item) => item} error={error} />
 
         </div>
     )

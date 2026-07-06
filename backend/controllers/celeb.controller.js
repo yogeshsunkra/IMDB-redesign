@@ -20,10 +20,6 @@ const celebController = async (req, res) => {
         else {
             console.log("person not found")
 
-
-
-
-
             const options = {
                 method: 'GET',
                 url: 'https://imdb146.p.rapidapi.com/v1/name/',

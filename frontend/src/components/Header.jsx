@@ -129,15 +129,22 @@ const Header = () => {
       <div className="flex   items-center  md:justify-normal ">
 
         <div className=" py-[1rem] lg:mx-[5rem]   flex  items-center w-full">
-          <Button className="block 2xl:hidden" onClick={toggleNavbar}>
-            <HamburgerMenu />
-          </Button>
 
-          <a href="#" className="">
-            <img src={Logo} alt="Logo" loading="lazy" />
-          </a>
+          <div className="flex gap-4 self-start">
 
-          <div className=" hidden mx-6 items-center  2xl:flex">
+            <Button className="block 2xl:hidden" onClick={toggleNavbar}>
+              <HamburgerMenu />
+            </Button>
+
+            <NavLink to={`/home`} className="w-max h-max">
+              <img src={Logo} alt="Logo" loading="lazy" />
+            </NavLink>
+
+          </div>
+
+
+
+          <div className=" hidden mx-6 items-center  2xl:flex ">
             {menuItems?.map((item, id) => (
 
               <div
@@ -162,9 +169,9 @@ const Header = () => {
                 >
                   <div className="grid col-span-3 grid-cols-3">
                     {item.subText.map((subItem, subIndex) => (
-                      <div key={subIndex} className="mx-4 cursor-pointer hover:text-n-1">
-                        <a>{subItem}</a>
-                      </div>
+                      <NavLink key={subIndex} to={`search/${subItem?.path}`} className="mx-4 cursor-pointer hover:text-n-1">
+                        <a>{subItem?.title}</a>
+                      </NavLink>
                     ))}
                   </div>
 
@@ -181,8 +188,10 @@ const Header = () => {
             ))}
           </div>
 
+          {/* Searchbar and search box  */}
+
           <OutsideClickHandler onOutsideClick={() => setSearchQuery(false)} >
-            <div className="  hidden mx-[1rem]  rounded-xl  max-w-2xl min-w-96  md:flex grow flex-wrap relative">
+            <div className="  hidden mx-[1rem]  rounded-xl  max-w-4xl min-w-96  md:flex grow flex-wrap relative">
 
               <div className="overflow-x-hidden rounded-xl w-full ">
                 <input
@@ -269,7 +278,7 @@ const Header = () => {
 
 
 
-          <div className="hidden md:flex line-clamp-1">
+          <div className="hidden md:flex self-end line-clamp-1">
             <Suspense>
               <Button>
                 WatchList
@@ -357,7 +366,7 @@ const Header = () => {
               <div className={`flex flex-col p1 py-[1rem] px-[5rem] text-dark-1 ${id === activeIndex ? 'block border-solid border-b-2 border-[#78747430]' : 'hidden'}`}>
                 {item?.subText?.map((subItem, subIndex) => (
                   <div key={subIndex} className="py-[0.5rem] cursor-pointer hover:text-n-1">
-                    <a>{subItem}</a>
+                    <a>{subItem.title}</a>
                   </div>
 
                 ))}
