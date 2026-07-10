@@ -12,32 +12,32 @@ const Celeb = () => {
 
   const box = useRef(null);
 
-   const params = useParams();
-    const id = params.id
-    console.log(id);
+  const params = useParams();
+  const id = params.id
+  console.log(id);
 
 
   const {
-      data : celebData,
-      isLoading : loading,
-      error : error 
+    data: celebData,
+    isLoading: loading,
+    error: error
 
   } = useCelebData(id);
 
 
- 
 
-  useEffect(()=>{
 
-    if(celebData && !loading){
+  useEffect(() => {
 
-       console.log(celebData?.data,"CELEB PAGE")
+    if (celebData && !loading) {
+
+      console.log(celebData?.data, "CELEB PAGE")
 
     }
 
-  },[celebData,loading])
+  }, [celebData, loading])
 
-  
+
 
   // const width = box.current.clientWidth;
 
@@ -83,7 +83,7 @@ const Celeb = () => {
               <div className='w-full h-full min-h-52 rounded-lg bg-black col-span-5 order-1
               md:order-2 md:col-span-4 lg:col-span-3' ></div>
 
-            {/* btns */}
+              {/* btns */}
               <div className='w-full flex gap-4  col-span-5 order-2 md:order-3 lg:col-span-1 lg:flex-col '>
 
                 <div className='flex w-1/2 text-center items-center justify-center bg-dark-2/30  py-2 rounded-2xl lg:h-1/2 lg:w-full '>34 Videos</div>
@@ -117,11 +117,13 @@ const Celeb = () => {
         </div>
       </div>
 
-      {/*  */}
+      {/*Details  */}
 
       <div>
+
+        {/* sub nav */}
         <div className='w-full flex justify-center bg-dark-3 py-8'>
-          <div className='w-full  xl:w-[80%] p-8'>
+          <div className='w-full flex flex-col gap-16  xl:w-[80%] p-8'>
 
             <div className='border-[1px] border-n-1 rounded-md overflow-hidden mb-12'>
               <div className='w-full bg-n-1 h-8'></div>
@@ -132,6 +134,8 @@ const Celeb = () => {
               </div>
             </div>
 
+
+            {/* Images  */}
             <div className='my-32'>
               <div>
                 <span className='relative inline-block px-4  text-2xl text-n-1'>
@@ -186,6 +190,8 @@ const Celeb = () => {
             </div>
 
 
+
+            {/* Known for */}
             <div className='mb-32'>
               <div>
                 <span className='relative inline-block px-4  text-2xl text-n-1'>
@@ -193,36 +199,47 @@ const Celeb = () => {
                   Known for</span>
               </div>
 
-                  {/* <Slider /> */}
+              {/* <Slider /> */}
             </div>
 
             {/* Credits */}
-            <div className='mb-32'>
+            <div className='flex flex-col gap-8'>
               <div>
                 <span className='relative inline-block px-4  text-2xl text-n-1'>
                   <span className=' absolute left-0 w-1 h-full bg-n-1 rounded-xl '></span>
                   Credits</span>
               </div>
 
-              <div className='p-4'>
-                {/* filters div  */}
-                <div></div>
+              {/* filters div  */}
+              <div></div>
 
-                <div className='py-4 border-b-2 border-lt-2/60'>
+              <div className='flex flex-col gap-4'>
+
+
+                {/* Actor / Writer / Producer */}
+
+                <div className=''>
                   <h1 className='h4-bold text-n-1'>Actor</h1>
                 </div>
 
                 {/* Accordion */}
-                <div className='py-4 border-b-2 border-lt-2/60' onClick={() => handleToggle()}>
+                <div className='p-4 border-2 border-lt-2/60' onClick={() => handleToggle()}>
 
-                  <div className='relative'>
-                    <div>
-                      <h1>Upcoming <span className='text-lt-2'>6</span></h1>
+                  {/* UPcoming/released /etc */}
+
+                  <div className='relative flex flex-col gap-6'>
+
+                    <div className='flex gap-2 items-center'>
+                      <h1 className = "h4 font-bold">Upcoming </h1>
+
+                      {/* dynamic no of upcoming movies */}
+                      <span className='text-lt-2 font-normal p1'>6</span>
                     </div>
+
                     {/* List */}
                     <div className={`${active ? 'block' : 'hidden'}  `}>
 
-                      <div className='flex justify-between py-4 border-b-2
+                      <div className='flex py-2 justify-between  border-b-2
                     border-lt-2/60'>
                         <div className='flex gap-2'>
 
@@ -246,8 +263,13 @@ const Celeb = () => {
 
 
 
-                    <div className='absolute right-0 top-0' >X</div>
+                    <div className='absolute right-0 top-0' >V</div>
                   </div>
+
+
+
+
+
                 </div>
               </div>
 
@@ -258,22 +280,111 @@ const Celeb = () => {
 
             {/* Personal details */}
 
-            <div className='mb-32'>
+            <div className='flex flex-col gap-8'>
 
-              <div>
+              <div >
                 <span className='relative inline-block px-4  text-2xl text-n-1'>
                   <span className=' absolute left-0 w-1 h-full bg-n-1 rounded-xl '></span>
                   Personal details</span>
               </div>
 
-              <div></div>
+              <div className='relative'>
+
+                {/* List */}
+
+                <div className='flex justify-between py-4 border-b-2
+                    border-lt-2/60'>
+                  <div className='flex gap-2'>
+
+
+                    <div className="flex gap-8">
+                      <h1 className='h4'>Height</h1>
+                      <span className='p1 text-white font-bold'>6 ft</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h1>2025</h1>
+                  </div>
+
+                </div>
+                <div className='flex justify-between py-4 border-b-2
+                    border-lt-2/60'>
+                  <div className='flex gap-2'>
+
+
+                    <div className="flex gap-8">
+                      <h1 className='h4'>Height</h1>
+                      <span className='p1 text-white font-bold'>6 ft</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h1>2025</h1>
+                  </div>
+
+                </div>
+
+
+
+              </div>
 
 
             </div>
 
+
+
+
             {/* Did you know */}
 
+            <div className='flex flex-col gap-8'>
+
+              <div>
+                <span className='relative inline-block px-4  text-2xl text-n-1'>
+                  <span className=' absolute left-0 w-1 h-full bg-n-1 rounded-xl '></span>
+                  Did You Know</span>
+              </div>
+
+              <div className="bg-dark-5 flex flex-col gap-2 p-4 border-2 border-lt-2/60">
+                <h3>Trivia</h3>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cumque perspiciatis, repellat eius nulla aliquid, placeat impedit deleniti suscipit et ea nobis quaerat totam quasi corrupti eaque alias, debitis magni amet! Id quo voluptate consectetur enim cumque!</p>
+              </div>
+
+
+            </div>
+
+
             {/* FAQs */}
+
+            <div className='flex flex-col gap-8'>
+
+              <div>
+                <span className='relative inline-block px-4  text-2xl text-n-1'>
+                  <span className=' absolute left-0 w-1 h-full bg-n-1 rounded-xl '></span>
+                  FAQs</span>
+              </div>
+
+              <div className='flex justify-between py-4 border-b-2
+                    border-lt-2/60'>
+                <div className='flex gap-2'>
+
+                  <div className='w-8 h-12 bg-lt-2 h4-bold text-dark-5 '>
+                    +
+                  </div>
+                  <div>
+                    <h1 className='h4'>The Raja Saab</h1>
+                    <span className='p1 text-blue-700'>In production</span>
+                  </div>
+                </div>
+
+                <div>
+                  <h1>2025</h1>
+                </div>
+
+              </div>
+
+
+            </div>
 
 
           </div>

@@ -20,15 +20,15 @@ const celebController = async (req, res) => {
         else {
             console.log("person not found")
 
+
             const options = {
                 method: 'GET',
-                url: 'https://imdb146.p.rapidapi.com/v1/name/',
+                url: 'https://imdb-scraper3.p.rapidapi.com/api/v1/name/detail',
                 params: { id: id },
                 headers: {
                     'x-rapidapi-key': process.env.API_KEY,
-                    'x-rapidapi-host': 'imdb146.p.rapidapi.com',
+                    'x-rapidapi-host': 'imdb-scraper3.p.rapidapi.com',
                     'Content-Type': 'application/json'
-
                 }
             };
 

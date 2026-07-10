@@ -14,13 +14,17 @@ const titleController = async (req, res) => {
     const now = Date.now()
 
     try {
+
+        
+
         const options = {
             method: 'GET',
-            url: 'https://imdb146.p.rapidapi.com/v1/title/',
-            params: { id: id },
+            url: 'https://imdb-scraper3.p.rapidapi.com/api/v1/title/detail',
+            params: { id: 'tt4154796' },
             headers: {
                 'x-rapidapi-key': process.env.API_KEY,
-                'x-rapidapi-host': 'imdb146.p.rapidapi.com'
+                'x-rapidapi-host': 'imdb-scraper3.p.rapidapi.com',
+                'Content-Type': 'application/json'
             }
         };
 
