@@ -201,18 +201,18 @@ export const simplifiedTitleResponse = (data) => {
     // Featured Review
     featuredReview: movie?.featuredReviews?.edges?.[0]
       ? {
-          author:
-            movie.featuredReviews.edges[0].node.author.nickName,
-          rating:
-            movie.featuredReviews.edges[0].node.authorRating,
-          summary:
-            movie.featuredReviews.edges[0].node.summary.originalText,
-          review:
-            movie.featuredReviews.edges[0].node.text.originalText
-              .plainText,
-          date:
-            movie.featuredReviews.edges[0].node.submissionDate,
-        }
+        author:
+          movie.featuredReviews.edges[0].node.author.nickName,
+        rating:
+          movie.featuredReviews.edges[0].node.authorRating,
+        summary:
+          movie.featuredReviews.edges[0].node.summary.originalText,
+        review:
+          movie.featuredReviews.edges[0].node.text.originalText
+            .plainText,
+        date:
+          movie.featuredReviews.edges[0].node.submissionDate,
+      }
       : null,
   };
 };
@@ -220,83 +220,85 @@ export const simplifiedTitleResponse = (data) => {
 
 
 export const simplifiedPersonResponse = (data) => {
-  const person = data?.data?.result;
+    const overview = data?.overview?.data?.name || {};
+    const knownFor = data?.knownFor?.data?.name?.knownFor?.edges || [];
+    const awards = data?.awards?.data?.name || {};
+    const quotes = data?.quotes?.data?.name?.quotes || {};
+    const images = data?.images?.data?.name?.images || {};
 
-  if (!person) return null;
+    return {
+        overview: {
+            id: overview?.id,
+            name: overview?.nameText?.text,
+            image: overview?.primaryImage?.url,
+            bio: overview?.bio?.text?.plainText,
+            birthName: overview?.birthName?.text,
+            birthDate: overview?.birthDate?.displayableProperty?.value?.plainText,
+            birthPlace: overview?.birthLocation?.text,
+            height: overview?.height?.displayableProperty?.value?.plainText,
+            isAlive: overview?.deathStatus === "ALIVE",
 
-  return {
-    // Basic
-    id: person?.id,
-    name: person?.nameText?.text,
-    disambiguator: person?.disambiguator?.text,
-
-    // Image
-    image: person?.primaryImage?.url,
-    imageCaption: person?.primaryImage?.caption?.plainText,
-    totalImages: person?.images?.total,
-
-    // Biography
-    bio: person?.bio?.text?.plainText,
-
-    // Birth & Death
-    birthDate: person?.birthDate?.displayableProperty?.value?.plainText,
-    birth: {
-      day: person?.birthDate?.dateComponents?.day,
-      month: person?.birthDate?.dateComponents?.month,
-      year: person?.birthDate?.dateComponents?.year,
-    },
-
-    deathStatus: person?.deathStatus,
-    deathDate: person?.deathDate
-      ? person?.deathDate?.displayableProperty?.value?.plainText
-      : null,
-
-    // Professions
-    professions:
-      person?.primaryProfessions?.map(
-        profession => profession?.category?.text
-      ) || [],
-
-    // Known For
-    knownFor:
-      person?.knownFor?.edges?.map(item => ({
-        title: item?.node?.title?.titleText?.text,
-        category: item?.node?.summary?.principalCategory?.text,
-      })) || [],
-
-    // IMDb Ranking
-    meterRanking: {
-      rank: person?.meterRanking?.currentRank,
-      change: person?.meterRanking?.rankChange?.difference,
-      direction: person?.meterRanking?.rankChange?.changeDirection,
-    },
-
-    // Statistics
-    totalVideos: person?.videos?.total,
-    triviaCount: person?.subNavTrivia?.total,
-    awardNominations: person?.subNavAwardNominations?.total,
-    faqs: person?.subNavFaqs?.total,
-
-    // Featured Videos
-    videos:
-      person?.primaryVideos?.edges?.map(video => ({
-        id: video?.node?.id,
-        title: video?.node?.name?.value,
-        description: video?.node?.description?.value,
-        runtime: video?.node?.runtime?.value,
-        thumbnail: video?.node?.thumbnail?.url,
-
-        relatedTitle: {
-          id: video?.node?.primaryTitle?.id,
-          title: video?.node?.primaryTitle?.titleText?.text,
-          year: video?.node?.primaryTitle?.releaseYear?.year,
+            officialLinks:
+                overview?.officialLinks?.edges?.map(({ node }) => ({
+                    platform: node?.label,
+                    url: node?.url,
+                })) || [],
         },
 
-        preview:
-          video?.node?.previewURLs?.[0]?.url,
+        knownFor: knownFor.map(({ node }) => ({
+            id: node?.title?.id,
+            title: node?.title?.titleText?.text,
+            originalTitle: node?.title?.originalTitleText?.text,
+            image: node?.title?.primaryImage?.url,
+            year: node?.title?.releaseYear?.year,
+            releaseDate: node?.title?.releaseDate,
+            rating: node?.title?.ratingsSummary?.aggregateRating,
+            type: node?.title?.titleType?.text,
 
-        video:
-          video?.node?.playbackURLs?.[0]?.url,
-      })) || [],
-  };
+            role: node?.credit?.category?.text,
+
+            characters:
+                node?.credit?.characters?.map((c) => c?.name) || [],
+        })),
+
+        awards: {
+            wins: awards?.totalWins?.total || 0,
+            nominations: awards?.totalNominations?.total || 0,
+        },
+
+        quotes: {
+            total: quotes?.total || 0,
+
+            items:
+                quotes?.edges?.map(({ node }) => ({
+                    id: node?.id,
+                    quote: node?.text?.plainText,
+                })) || [],
+        },
+
+        images: {
+            total: images?.total || 0,
+
+            items:
+                images?.edges?.map(({ node }) => ({
+                    id: node?.id,
+                    image: node?.url,
+                    caption: node?.caption?.plainText,
+                    type: node?.type,
+
+                    titles:
+                        node?.titles?.map((title) => ({
+                            id: title?.id,
+                            title: title?.titleText?.text,
+                            year: title?.releaseYear?.year,
+                        })) || [],
+
+                    people:
+                        node?.names?.map((person) => ({
+                            id: person?.id,
+                            name: person?.nameText?.text,
+                        })) || [],
+                })) || [],
+        },
+    };
 };

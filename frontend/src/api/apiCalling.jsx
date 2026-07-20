@@ -71,10 +71,10 @@ export const celebData = async (id) => {
 
 
 }
-export const titleData = async () => {
+export const titleData = async (id) => {
 
 	try {
-		const response = await axios.get('http://localhost:5000/api/v1/title');
+		const response = await axios.get(`http://localhost:5000/api/v1/title/${id}`);
 
 		const data = response.data;
 		console.log("data fetched");

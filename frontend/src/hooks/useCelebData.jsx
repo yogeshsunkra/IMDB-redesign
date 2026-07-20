@@ -8,8 +8,8 @@ export const useCelebData = (id) =>{
         queryKey : ["Celeb",id],
         queryFn : async () => {
          const data = await celebData(id);
-         console.log("CELEB TANSTACK",data);
-         return data;
+         console.log("CELEB TANSTACK",data.data);
+         return data?.data;
         },
         
         staleTime : 30 * 60 * 1000
