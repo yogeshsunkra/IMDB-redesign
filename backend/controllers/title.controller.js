@@ -1,240 +1,104 @@
-// import express from "express";
-// import mongoose from "mongoose";
-// import axios from "axios";
-// import dotenv from 'dotenv';
-// import Title from "../models/title.model.js"
-
-// dotenv.config()
-
-
-// const titleController = async (req, res) => {
-
-//     const id = req.params.id;
-//     const cacheDuration = 24 * 3600 * 1000 * 10;
-//     const now = Date.now()
-
-//     try {
-
-        
-
-//         const options = {
-//             method: 'GET',
-//             url: 'https://imdb-scraper3.p.rapidapi.com/api/v1/title/detail',
-//             params: { id: 'tt4154796' },
-//             headers: {
-//                 'x-rapidapi-key': process.env.API_KEY,
-//                 'x-rapidapi-host': 'imdb-scraper3.p.rapidapi.com',
-//                 'Content-Type': 'application/json'
-//             }
-//         };
-
-//         let title = await Title.findOne({ id: id });
-
-
-
-//         if (title) {
-//             const valid = now - new Date(title.createdAt).getTime() < cacheDuration;
-//             if (valid) {
-//                 console.log("data", title)
-//                 return res.json(title);
-//             }
-
-
-//         }
-
-//         const response = await axios.request(options);
-
-//         title = new Title({
-//             id: id,
-//             data: response.data,
-//         })
-
-//         await title.save();
-//         res.status(200).json(title);
-
-
-
-
-//     }
-//     catch (err) {
-//         console.error("AXIOS ERROR RESPONSE:", err.response?.data || err.message);
-//         res.status(500).json({ error: err.response?.data || err.message });
-//     }
-// }
-
-// export default titleController;
-
-
+import Title from "../models/title.model.js";
+import axios from "axios";
 import express from "express";
 import dotenv from "dotenv";
-import HomepageSection from "../models/home.model.js";
-import axios from "axios";
 
-dotenv.config();
+const titleController = async (req, res) => {
+    try {
+        const { id } = req.params;
 
+        console.log(id, "PARAMS ID");
 
+        // Check cache
+        let title = await Title.findOne({ id });
 
-const today = new Date()
-const currentMonth = (today.getMonth() + 1).toString().padStart(2, '0');
-const currentDay = today.getDate().toString().padStart(2, '0');
-
-
-const isCacheValid = (cache, days) => {
-
-        const numericDays = Number(days);
-
-        if (numericDays > 0) {
-
-                const now = Date.now();
-                const cacheDuration = 24 * 3600 * 1000 * days;
-                const lastUpdated = new Date(cache.updatedAt).getTime();
-
-                const durationCheck = now - lastUpdated < cacheDuration
-
-                return durationCheck;
+        if (title) {
+            console.log("Found in database");
+            return res.status(200).json(title);
         }
 
-        const todayDate = new Date().toDateString();
-        const cacheDate = new Date(cache.updatedAt).toDateString();
-        const dateCheck = todayDate === cacheDate;
-        console.log(todayDate, " : ", cacheDate, " : ", dateCheck, "dateCheck");
+        console.log("Title not found. Fetching from API...");
+
+        const requests = [
+            {
+                name: "titleOverview",
+                url: `https://imdb236.p.rapidapi.com/api/imdb/${id}`,
+                key: "overview",
+            },
+            {
+                name: "similarTitle",
+                url: `https://imdb236.p.rapidapi.com/api/imdb/${id}/similar`,
+                // Verify endpoint
+                key: "similarTitle",
+            },
+
+        ];
+
+        // Fetch all APIs in parallel
+        const responses = await Promise.allSettled(
+            requests.map(async (request) => {
+
+                console.log(request.url, "REQUEST URL");
+                console.log(typeof request.url, "TYPE OF");
 
 
-        return dateCheck;
+                const options = {
+                    method: 'GET',
+                    url: request.url,
+                    headers: {
+                        "x-rapidapi-key": process.env.API_KEY,
+                        'x-rapidapi-host': 'imdb236.p.rapidapi.com',
+                        'Content-Type': 'application/json'
+                    },
+                };
+                const response = await axios.request(options);
+                // console.log(response.data);
+                const result = response.data;
 
 
-}
 
+                return {
+                    key: request.key,
+                    data: result,
+                };
+            })
+        );
 
-const sections = [
-        {
-                name: "week top 10",
-                url: 'https://imdb188.p.rapidapi.com/api/v1/getWeekTop10',
-                days: "33",
-                category: "watch",
-                key: "week-top-ten"
-        },
-        {
-                name: "fan favourites",
-                url: 'https://imdb188.p.rapidapi.com/api/v1/getFanFavorites?country=IN',
-                days: '35',
-                category: "watch",
-                key: "fan-fav"
-        },
-        {
-                name: "streaming",
-                url: 'https://imdb188.p.rapidapi.com/api/v1/getWhatsStreaming?country=IN',
-                days: '30',
-                category: "streaming",
-                key: "streaming"
-        },
-        {
-                name: "born today",
-                url: `https://imdb188.p.rapidapi.com/api/v1/getBornOn?month=${currentMonth}&day=${currentDay}`,
-                days: "30",
-                category: "celeb",
-                key: "born-today"
-        },
-        {
-                name: "upcoming movies",
-                url: 'https://imdb188.p.rapidapi.com/api/v1/getUpcomingMovies?region=IN',
-                days: '30',
-                category: "explore",
-                key: "upcoming-movies"
-        },
-        {
-                name: "popular celebrities",
-                url: 'https://imdb188.p.rapidapi.com/api/v1/getPopularCelebrities',
-                days: '30',
-                category: "explore",
-                key: "popular-celebrities"
-        }
-];
+        // Store all responses in one object
+        const titleData = {};
 
+        responses.forEach((result) => {
+            if (result.status === "fulfilled") {
+                titleData[result.value.key] = result.value.data;
+            } else {
+                console.error("Request Failed:", result.reason?.response?.data || result.reason);
 
-const TitleController = async (req, res) => {
+                // Optional: keep failed requests as null
+                titleData[result.reason] = null;
+            }
+        });
 
+        // Save to MongoDB
+        title = new Title({
+            id,
+            data: titleData,
 
-        const { key } = req.params;
+        });
 
-        const request = sections.find(section => section.key === key);
+        await title.save();
 
-        if (!request) {
-                return res.status(404).json({
-                        success: false,
-                        message: `No section found for "${key}"`,
-                });
-        }
+        console.log("Saved to database");
+        console.log(titleData, "person Data");
 
-        const loadSection = async (name, url, days, category) => {
+        return res.status(200).json(title);
+    } catch (err) {
+        console.error("AXIOS ERROR:", err.response?.data || err.message);
 
+        return res.status(500).json({
+            success: false,
+            error: err.response?.data || err.message,
+        });
+    }
+};
 
-                try {
-
-                        const cache = await HomepageSection.findOne({ name });
-
-
-                        if (cache && isCacheValid(cache, days)) {
-
-                                console.log(`Cache HIT → ${name} ${days}`);
-                                return { name, data: cache.data, category }
-                        }
-                        else {
-
-                                const options = {
-                                        method: "GET",
-                                        url: url,
-                                        headers: {
-                                                'x-rapidapi-key': process.env.API_KEY,
-                                                'x-rapidapi-host': 'imdb188.p.rapidapi.com'
-                                        }
-                                }
-
-                                const response = await axios.request(options);
-                                const result = await response.data;
-
-                                console.log(`FETCHING FROM API → ${name}`);
-                                // console.log("data", result)
-
-                                await HomepageSection.findOneAndUpdate(
-                                        { name }, //filter object
-                                        {
-                                                $set: {
-                                                        data: result,
-                                                        category,
-                                                        updatedAt: new Date()
-                                                }
-                                        }, // items going to update if found
-                                        {
-                                                upsert: true,
-                                                new: true,
-                                                setDefaultsOnInsert: true,
-
-                                        }//if not found .. creates new object
-                                );
-                                return ({ name, data: result, category });
-                        }
-
-                } catch (error) {
-                        console.error(`Initial load failed for ${name}: ${error.message}`);
-                        console.error(`API ERROR for ${name}:`, {
-                                message: error.message,
-                                status: error.response?.status,
-                                data: error.response?.data,
-                                headers: error.response?.headers
-                        });
-                        return { name, error: true };
-                }
-
-        }
-
-
-        const result = await loadSection(request.name, request.url, request.days, request.category);
-
-
-        res.status(200).json(result);
-        // return initialResult;
-
-}
-
-export default TitleController;
+export default titleController;

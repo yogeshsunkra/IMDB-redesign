@@ -74,7 +74,7 @@ export const simplifiedApiResponse = (items = []) => {
 
 
 export const simplifiedTitleResponse = (data) => {
-  const movie = data?.data?.result;
+  const movie = data;
 
   if (!movie) return null;
 

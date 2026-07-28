@@ -4,6 +4,7 @@ import Content from "./components/Content";
 import Footer from './components/Footer';
 import QueryProvider from "./provider/QueryProvider.jsx";
 import { DataProvider } from "./context/DataProvider.jsx";
+import LazyComponent from "./components/LazyComponent.jsx";
 
 
 const App = () => {
@@ -17,7 +18,10 @@ const App = () => {
 
           <Header />
           <Content />
-          <Footer />
+          <LazyComponent>
+            <Footer />
+          </LazyComponent>
+          
 
         </DataProvider>
       </div>

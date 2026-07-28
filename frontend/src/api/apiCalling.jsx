@@ -76,9 +76,9 @@ export const titleData = async (id) => {
 	try {
 		const response = await axios.get(`http://localhost:5000/api/v1/title/${id}`);
 
-		const data = response.data;
+		const data = await response.data;
 		console.log("data fetched");
-		return data[0];
+		return data;
 	} catch (error) {
 		console.error(error, "NOW");
 	}

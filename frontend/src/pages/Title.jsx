@@ -1,56 +1,543 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useRef, useMemo } from 'react'
+import { useParams } from 'react-router-dom';
+import LazyComponent from 'src/components/LazyComponent';
+import Slider from 'src/components/Slider';
+import { useTitleData } from 'src/hooks/useTitleData';
+import { simplifiedTitleResponse } from 'src/utils/utilsData';
+
 
 const Title = () => {
 
-  const params = useParams();
-  console.log(params, 'PARAMETER');
-  console.log(params.id, 'PARAMETER ID');
 
+  const [activeIndex, setActiveIndex] = useState();
+  const [titleData, setTitleData] = useState();
+  const [credits, setCredits] = useState();
+
+  const box = useRef(null);
+
+  const params = useParams();
+  const id = params.id
+  console.log(id);
+
+
+  const {
+    data: movieData,
+    isLoading: loading,
+    error: error
+
+  } = useTitleData(id);
+
+
+
+
+  useEffect(() => {
+
+    if (movieData && !loading) {
+      setTitleData(movieData)
+
+      console.log(titleData, "Title PAGE")
+      // console.log(personData?.images?.items, "Person Data")
+
+    }
+
+  }, [loading, movieData])
+
+
+  useEffect(() => {
+    if (!titleData?.knownFor) return;
+
+    const groupedCredits = Object.values(
+      titleData.knownFor.reduce((acc, credit) => {
+        if (!acc[credit.role]) {
+          acc[credit.role] = {
+            role: credit.role,
+            data: [],
+          };
+        }
+
+        acc[credit.role].data.push(credit);
+
+        return acc;
+      }, {})
+    );
+
+    setCredits(groupedCredits);
+  }, [titleData]);
+
+  //   const groupedCredits = useMemo(() => {
+  //   if (!personData?.knownFor) return {};
+
+  //   return personData.knownFor.reduce((acc, credit) => {
+  //     (acc[credit.role] ??= []).push(credit);
+  //     return [acc];
+  //   }, {});
+
+
+  // }, [personData]);
+
+
+
+
+
+
+  // const width = box.current.clientWidth;
+
+  // console.log(width,'width')s
+
+  const handleToggle = (index) => {
+
+    if(activeIndex !== index){
+       setActiveIndex(index);
+    }
+    else{
+      setActiveIndex(null)
+    }
+   
+  }
 
 
   return (
     <div className='w-full '>
-      {/* <div className='w-full justify-center  bg-no-repeat bg-clip-border bg-center  '
-        style={{ backgroundImage: `url(${'https://m.media-amazon.com/images/M/MV5BZTA0MzU0YzItZWRjZC00YzllLWFmYjMtZWYzZDgyYzRjYTg5XkEyXkFqcGc@._V1_.jpg'})` }}>
+      <div>
 
-        <div className='w-full  backdrop-blur-2xl bg-gradient-to-t from-dark-4 to-dark-4/70 drop-shadow-2xl '>
-
-          <div className='flex  p-8 xl:w-[90%] mx-auto flex-col'>
-            <h1 className='text-4xl'>Prabhas</h1>
+      </div>
 
 
-            <div className='grid grid-cols-5 gap-1 '>
-              <div className='w-full h-full min-h-56 rounded-lg bg-black col-span-5 order-1
-              md:order-2 md:col-span-4 lg:col-span-3' ></div>
-              <div className='w-full flex gap-4 my-2 col-span-5 order-2 md:order-3 lg:col-span-1 lg:flex-col '>
-                <div className='flex w-1/2 text-center items-center justify-center bg-dark-2/30  py-2 rounded-2xl lg:h-1/2 lg:w-full '>34 Videos</div>
-                <div className=' flex w-1/2 text-center items-center justify-center bg-dark-2/30 py-2 rounded-2xl lg:h-1/2 lg:w-full '> 99+ photos</div>
-              </div> 
-              <div className='w-full rounded-r-2xl rounded-bl-2xl overflow-hidden col-span-2 order-3 min-h-16  
-              md:order-1 md:col-span-1 xl:min-h-96 '>
-                <img src='https://m.media-amazon.com/images/M/MV5BZTA0MzU0YzItZWRjZC00YzllLWFmYjMtZWYzZDgyYzRjYTg5XkEyXkFqcGc@._V1_.jpg ' loading='lazy' />
-              </div>
-              <div className='h-40 overflow-hidden col-span-3 order-4 md:col-span-5 lg:col-span-3 mx-2'>
-                <p>Prabhas is an Indian actor who works in Telugu cinema. One of the highest-paid and highest-grossing actor in Indian cinema. Prabhas is hailed as the "First Pan-Indian Superstar". Prabhas was born in a Telugu family to late U. Suryanarayana Raju and Siva Kumari. His family hails from Mogalthur, Andhra Pradesh. He is the youngest of three children and is the nephew of Telugu actor Uppalapati Krishnam Raju. Prabhas did his schooling at Don Bosco Matriculation Higher Secondary School, Chennai, and at DNR High School, Bhimavaram. He then completed his intermediate education from Nalanda College, Hyderabad. He later went on to pursue Bachelor of Technology (BTech) from Sri Chaitanya College, Hyderabad.Prabhas made his acting debut with drama Eeswar, and later attained his breakthrough with the action romance Varsham. He went on to act in other commercially successful films such as Chatrapathi, Bujjigadu, Billa, Darling, Mr. Perfect, and Mirchi winning the Nandi Award for Best Actor for his performance in the lattermost. He went on to play a dual role in the epic action film Baahubali: The Beginning which received national and international acclaim, and became a record-breaking box office success. He reprised his role in the sequel, Baahubali 2: The Conclusion which rewrote several box office records and emerged as the highest-grossing Indian film at that point, establishing Prabhas as the first pan-Indian star. Commercial success has since varied, with action thrillers Saaho and Salaar: Part 1 - Ceasefire, both of which rank among the highest-grossing Indian films. He is the first Indian actor ever to have four 100+ crore opening films worldwide, a feat unheard of in Indian cinema.Prabhas is referred to in the media and by his fandom as the "Rebel Star" and "Darling", he has appeared in over 20 films, and earned numerous accolades. He has been featuring in Forbes India's Celebrity 100 list since 2015. He was added to the Forever Desirable list of Hyderabad Times in 2019. He was the most searched actor on Google for the year 2019. He is the only actor from south cinema to feature in the magazine Eastern Eye's 2019 listing of the 10 Sexiest Asian Men. He was also featured in the GQ in their listing of the most influential young Indians of 2017. Prabhas stood alone as the only Indian actor in the "Top 10 Most Used Hashtags on Twitter" list in 2023.
-                  Born
-                  October 23, 1979</p>
-              </div>
-              <div className='col-span-5 order-5 lg:col-span-2 my-4'>
-                <div className='w-full mx-8 rounded-3xl bg-n-1 py-4 px-2 text-dark-3'>
-                  + Add to List
+      {/* <iframe width="560"
+                        height="315"
+                        src=
+"https://imdb-video.media-imdb.com/vi3834163993/1434659607842-pgv4ql-1438191196090.mp4?Expires=1733769477&Signature=HBOFWIhcdXH0WT763Peer4b5W7B1cfR5OyARi2laboAZfyRXfxCjOPHX-nUJ6Vn-AwK3HpBLOzKaE3hYfjMCCSS3Qgmmrbca4gCFurgCrl159NUBpFqfZUxY5JdSSM4Dvxl0gMiBRnP2BzsrqP5twvBnEljXCzK69~fcHknuFtXpaLcCuG3wtCIh89S24N9lvHVrLPJprXQpihs3NwJbRf3wzw3ypDKs-AvIk~8V2oHNw2eUr4chcppqEANw3EF9pG0d-cFbOwOZcES03Kbn9VfXcCw-zpUmtZTu6hu3FOBZV9-YvlLJZyyYb4t9eOIeA8UYrGRIQZBN~2kH5n4qvQ__&Key-Pair-Id=APKAIFLZBVQZ24NQH3KA"
+                        title="GeeksforGeeks" >
+                </iframe> */}
+
+      {titleData &&
+
+        <>
+
+          < div className='w-full min-h-screen justify-center  bg-no-repeat bg-clip-border bg-center  '
+            style={{ backgroundImage: `url(${'https://m.media-amazon.com/images/M/MV5BZTA0MzU0YzItZWRjZC00YzllLWFmYjMtZWYzZDgyYzRjYTg5XkEyXkFqcGc@._V1_.jpg'})` }}>
+
+            <div className='w-full min-h-screen  backdrop-blur-2xl bg-gradient-to-t from-dark-4 to-dark-4/70 drop-shadow-2xl '>
+
+              <div className='flex  p-8 xl:w-[80%] mx-auto flex-col gap-4'>
+
+
+                {/* Name */}
+                <div className={`w-max flex flex-col gap-1 ${loading ? "w-20 h-8 bg-dark-4 animate-pulse" : "w-max h-max bg-none animate-none"}`}>
+                  <span className="flex gap-2 items-end leading-none ">
+                    <h1 className='text-3xl'>{titleData?.overview?.name}</h1>
+                    <p className="text-dark-2 p1 ">{"( I )"}</p>
+                  </span>
+                  <p className='p1 text-dark-2 font-semibold'>Actor</p>
                 </div>
+
+
+                <div className='grid grid-cols-5 gap-4 '>
+
+                  {/* black screen or video player */}
+                  <div className='w-full h-full min-h-52 rounded-lg bg-black col-span-5 order-1
+              md:order-2 md:col-span-4 lg:col-span-3' ></div>
+
+                  {/* Videos and images btns */}
+                  <div className='w-full flex gap-4  col-span-5 order-2 md:order-3 lg:col-span-1 lg:flex-col '>
+
+                    <div className='flex w-1/2 text-center items-center justify-center bg-dark-2/30  py-2 rounded-2xl lg:h-1/2 lg:w-full '> 16 videos</div>
+
+                    <div className=' flex w-1/2 text-center items-center justify-center bg-dark-2/30 py-2 rounded-2xl lg:h-1/2 lg:w-full '> {`${titleData?.images?.total > 100 ? "99+" : titleData?.images?.total} photos`}</div>
+                  </div>
+
+                  {/* profile photo */}
+                  <div className={`w-full h-full rounded-r-2xl rounded-bl-2xl overflow-hidden col-span-2 order-3 aspect-[2/3]  
+              md:order-1 md:col-span-1 bg-dark-2/20 ${loading ? "animate-pulse" : "animate-none"}`} >
+                    <img className='text-center object-cover object-center aspect-[2/3]' src={titleData?.overview?.image}
+                      alt="No Image"
+                      loading="lazy" />
+                  </div>
+
+                  {/* synopsis */}
+                  <div className='flex flex-col gap-2 max-h-60 h-max col-span-3 order-4 md:col-span-5 lg:col-span-3  overflow-hidden '>
+                    <p className='line-clamp-5 text-clip'>
+                      {titleData?.overview?.bio}
+                    </p>
+                    <span className='flex gap-2'>
+                      <p className="font-semibold">Born</p>
+                      <p>{titleData?.overview?.birthDate}</p>
+                    </span>
+                  </div>
+
+                  {/*  */}
+                  <div className='flex justify-center items-center w-full col-span-5 order-5 lg:col-span-2'>
+                    <div className='flex  w-full  rounded-3xl bg-n-1 py-3 px-4 text-dark-3'>
+                      + Add to List
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/*Details  */}
+
+          <div>
+
+            {/* sub nav */}
+            <div className='w-full flex justify-center bg-dark-3 py-8'>
+              <div className='w-full flex flex-col gap-16  xl:w-[80%] p-8'>
+
+                <div className='border-[1px] border-n-1 rounded-md overflow-hidden mb-12'>
+                  <div className='w-full bg-n-1 h-8'></div>
+                  <div className='flex my-4 relative'>
+                    <h1 className='h4-bold text-n-1 mx-2 inline-block'>Awards</h1>
+                    <p className='p text-lt-2 '>{`${titleData?.awards?.wins} wins & ${titleData?.awards?.nominations} Nominations`}</p>
+                    <div className='absolute right-10'> X </div>
+                  </div>
+                </div>
+
+
+                {/* Images  */}
+                <div className='my-32'>
+                  <div>
+                    <span className='relative inline-block px-4  text-2xl text-n-1'>
+                      <span className=' absolute left-0 w-1 h-full bg-n-1 rounded-xl '></span>
+                      Photos</span>
+                  </div>
+
+                  <div className='flex  flex-wrap  w-full h-[400px] gap-4 overflow-hidden p-8 clamp ' >
+
+
+                    {titleData?.images?.items?.map((item, index) => {
+
+                      if (index <= 6) {
+
+                        return (
+                          <div key={index} className='w-max h-max rounded-xl overflow-hidden '>
+                            <img className='  object-contain min-w-max max-h-[calc(120.8px)] min-h-[calc(82.6px)]  xl:max-h-[calc(172.8px)] xl:min-h-[calc(82.6px)] '
+                              src={`${item?.image} loading="lazy" `}
+                            />
+                          </div>
+
+                        )
+                      }
+                    })}
+
+                  </div>
+
+
+
+                </div>
+
+                { }
+
+                {/* Known for */}
+                <div className='mb-32'>
+                  <div>
+                    <span className='relative inline-block px-4  text-2xl text-n-1'>
+                      <span className=' absolute left-0 w-1 h-full bg-n-1 rounded-xl '></span>
+                      Known for</span>
+                  </div>
+
+                  {/* <Slider /> */}
+                  <LazyComponent>
+
+                    <Slider items={titleData?.knownFor} loading={loading} query={(item) => item} error={error} />
+                  </LazyComponent>
+
+                </div>
+
+                {/* Credits */}
+                <div className='flex flex-col gap-8'>
+                  <div>
+                    <span className='relative inline-block px-4  text-2xl text-n-1'>
+                      <span className=' absolute left-0 w-1 h-full bg-n-1 rounded-xl '></span>
+                      Credits</span>
+                  </div>
+
+
+                  <div className='flex flex-col gap-4'>
+
+                    {
+
+                      credits?.map((credit, index) => {
+
+                        console.log(credit, "Credits");
+
+                        return (
+
+                          <>
+
+
+                            {/* Actor / Writer / Producer */}
+
+                            <div key={index} className='flex flex-col gap-2'>
+                              <h1 className='h4-bold text-n-1'>{credit?.role}</h1>
+
+
+                              <div className='p-4 border-2 border-lt-2/60' onClick={() => handleToggle(index)}>
+
+                                {/* UPcoming/released /etc */}
+
+                                <div className='relative flex flex-col gap-6'>
+
+                                  <div className='flex gap-2 items-center'>
+                                    <h1 className="h4 font-bold">Total </h1>
+
+                                    {/* dynamic no of upcoming movies */}
+                                    <span className='text-lt-2 font-normal p1'>{credit?.data?.length}</span>
+                                  </div>
+
+                                  {/* List */}
+
+                                  <div className={`${index === activeIndex ? 'block' : 'hidden'}`}>
+
+                                    {credit?.data?.map((item, index) => {
+
+                                      return (
+
+                                        <div className='flex items-center border-b-2 border-lt-2/60 justify-between h-max'>
+
+                                          <div className='flex py-2 gap-4 '>
+                                            <div className='flex gap-2'>
+
+                                              <div className='w-12 h-max bg-lt-2 h4-bold text-dark-5 overflow-hidden rounded-tr-xl'>
+                                                <img className='text-center object-cover object-center aspect-[2/3]' src={item?.image}
+                                                  alt="No Image"
+                                                  loading="lazy" />
+                                              </div>
+                                            </div>
+                                            <div>
+                                              <h1 className='h4'>{item?.title}</h1>
+                                              <span className='p1 text-blue-700'>{item?.type}</span>
+                                            </div>
+
+
+                                          </div>
+
+
+                                          <div>
+                                            <h1>{item?.year}</h1>
+                                          </div>
+
+
+
+                                        </div>
+
+
+
+
+                                      )
+
+                                    })}
+
+                                  </div>
+
+
+
+
+                                  <div className='absolute right-0 top-0' >V</div>
+                                </div>
+
+
+
+                              </div>
+
+                            </div >
+
+                            {/* Accordion */}
+
+
+                          </>
+                        )
+
+
+
+                      })
+                    }
+
+
+
+                  </div>
+
+                </div>
+
+                {/* Videos */}
+
+
+                {/* Personal details */}
+
+                <div className='flex flex-col gap-8 '>
+
+                  <div >
+                    <span className='relative inline-block px-4  text-2xl text-n-1'>
+                      <span className=' absolute left-0 w-1 h-full bg-n-1 rounded-xl '></span>
+                      Personal details</span>
+                  </div>
+
+                  <div className='relative'>
+
+                    {/* List */}
+
+
+
+                    {/* Height */}
+                    <div className='flex justify-between py-4 border-b-2
+                    border-lt-2/60'>
+                      <div className='flex gap-2'>
+
+                        <div className="flex gap-8 items-center">
+                          <h1 className='h4'>Height</h1>
+                          <span className='p1 text-dark-2 font-bold'>{titleData?.overview?.height}</span>
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    {/* External Links */}
+                    <div className='flex justify-between py-4 border-b-2
+                    border-lt-2/60'>
+                      <div className='flex gap-2'>
+
+
+                        <div className="flex gap-8 items-center">
+                          <h1 className='h4'>External Links</h1>
+                          {titleData?.overview?.officialLinks?.map((link, index) => {
+                            return (
+
+                              <a key={index} href={link.url} className='p1 text-blue-800 font-bold mx-2'>{link.platform}</a>
+
+                            )
+                          })}
+
+                        </div>
+                      </div>
+
+
+                    </div>
+
+
+                    {/* Birth Place */}
+                    <div className='flex justify-between py-4 border-b-2
+                    border-lt-2/60'>
+                      <div className='flex gap-2'>
+
+
+                        <div className="flex gap-8 items-center">
+                          <h1 className='h4'>Birth Place</h1>
+
+
+                          <span className='p1 text-dark-2 font-bold mx-2'>{titleData?.overview?.birthPlace}</span>
+
+
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    {/* Birth Date */}
+                    <div className='flex justify-between py-4 border-b-2
+                    border-lt-2/60'>
+                      <div className='flex gap-2'>
+
+
+                        <div className="flex gap-8 items-center">
+                          <h1 className='h4'>Birth Date</h1>
+
+
+                          <span className='p1 text-dark-2 font-bold mx-2'>{titleData?.overview?.birthDate}</span>
+
+
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    {/* Birth Name*/}
+                    <div className='flex justify-between py-4 border-b-2
+                    border-lt-2/60'>
+                      <div className='flex gap-2'>
+
+
+                        <div className="flex gap-8 items-center">
+                          <h1 className='h4'>Birth Name</h1>
+
+
+                          <span className='p1 text-dark-2 font-bold mx-2'>{titleData?.overview?.birthName}</span>
+
+
+                        </div>
+                      </div>
+
+
+                    </div>
+
+
+
+
+
+
+                  </div>
+
+
+                </div>
+
+
+
+
+                {/* Did you know */}
+
+
+                <div className='flex flex-col gap-8'>
+
+                  <div>
+                    <span className='relative inline-block px-4  text-2xl text-n-1'>
+                      <span className=' absolute left-0 w-1 h-full bg-n-1 rounded-xl '></span>
+                      Did You Know</span>
+                  </div>
+
+                  {titleData?.quotes?.items?.map((quotes, index) => {
+                    return (
+                      
+
+                      <div key={index} className="bg-dark-5 flex flex-col gap-2 p-4 border-2 border-lt-2/60">
+                        <h3 className="font-semibold" >Quote</h3>
+                        <p className='text-dark-2'>{quotes.quote}</p>
+                      </div>
+
+                    )
+                  })}
+
+
+
+
+                </div>
+
+
               </div>
             </div>
           </div>
 
+        </>
+
+      }
+
+      {
+        !titleData &&
+        <div className="w-full h-screen flex justify-center items-center">
+
+          <h1 className="text-4xl">Oops ! Something Went Wrong !! &#x1F623;</h1>
+
         </div>
-      </div> */}
+      }
 
 
 
 
-    </div>
+    </div >
   )
 }
 
