@@ -2,11 +2,9 @@
 import React from 'react';
 import { useEffect, useState, useRef } from "react";
 import Slider from "../Slider";
-// import { useContext } from "react";
-// // import { DataContext } from "src/context/DataContext";
 import { simplifiedApiResponse } from 'src/utils/utilsData';
 import { useHomePageSections } from 'src/hooks/useHomePageSections';
-import Loading from '../Loading';
+
 
 const Celebrity = () => {
 
@@ -17,7 +15,8 @@ const Celebrity = () => {
     const {
         data: sections,
         isLoading: loading,
-        error
+        error,
+        refetch
     } = useHomePageSections("born-today")
 
     useEffect(() => {
@@ -71,7 +70,7 @@ const Celebrity = () => {
 
 
 
-            <Slider items={bornToday} loading={loading} query={(item) => item} error={error} />
+            <Slider items={bornToday} loading={loading} query={(item) => item} error={error} type="celeb" refetch={refetch}/>
 
         </div>
     )

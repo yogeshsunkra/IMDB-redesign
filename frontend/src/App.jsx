@@ -1,10 +1,10 @@
-import React from "react";
+import React, { lazy } from "react";
 import Header from "./components/Header";
 import Content from "./components/Content";
-import Footer from './components/Footer';
+const Footer = lazy(()=>import('./components/Footer'));
 import QueryProvider from "./provider/QueryProvider.jsx";
 import { DataProvider } from "./context/DataProvider.jsx";
-import LazyComponent from "./components/LazyComponent.jsx";
+const LazyComponent = lazy(()=>import("./components/LazyComponent.jsx"));
 
 
 const App = () => {
@@ -17,7 +17,9 @@ const App = () => {
         <DataProvider>
 
           <Header />
+
           <Content />
+
           <LazyComponent>
             <Footer />
           </LazyComponent>

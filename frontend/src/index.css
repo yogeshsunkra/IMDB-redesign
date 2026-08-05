@@ -25,6 +25,50 @@
     
  }
 
+ .hero-slide {
+    animation: hero-slide-in 700ms ease-out;
+ }
+
+ .hero-content-slide {
+    animation: hero-content-slide-in 700ms ease-out;
+ }
+
+ .hero-up-next-card {
+    animation: hero-up-next-in 500ms ease-out both;
+ }
+
+ @keyframes hero-slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(24px) scale(1.02);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+ }
+
+ @keyframes hero-content-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+ }
+
+ @keyframes hero-up-next-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+ }
 
  @layer base{
      body{

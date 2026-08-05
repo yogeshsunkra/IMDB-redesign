@@ -6,6 +6,7 @@ import WatchedIcon from 'src/assets/watchedIcon.svg?react';
 import { simplifiedApiResponse } from 'src/utils/utilsData';
 import Slider from '../Slider';
 import { useHomePageSections } from 'src/hooks/useHomePageSections';
+import Error from '../Error';
 
 const FanFav = () => {
 
@@ -16,11 +17,11 @@ const FanFav = () => {
 
     const key = ""
 
-    // const { sections, loading } = useContext(DataContext);
     const {
         data: sections,
         isLoading: loading,
-        error
+        error,
+        refetch
     } = useHomePageSections("fan-fav");
 
     // const toCamelCase = (str) => {
@@ -43,49 +44,31 @@ const FanFav = () => {
         console.log(loading, "loading in watch")
 
 
-        if (!loading && sections && !isRendered) {
+        if (!loading && sections && !isRendered && !error) {
 
+                    console.log("ERROR FAN FAV",error);
 
             console.log("RENDERED");
 
 
-            setFanFav(simplifiedApiResponse(sections.data.data.list));
+            setFanFav(simplifiedApiResponse(sections?.data?.data?.list));
 
-
-            // sections?.watch?.forEach((e) => {
-
-            //   const name = toCamelCase(e.name);
-
-            //   switch (name) {
-            //     case "weekTop10":
-
-            //       setWeekTopTen(simplifiedApiResponse(e.data.data));
-            //       break;
-            //     case "fanFavourites":
-
-            //       setFanFav(simplifiedApiResponse(e.data.data.list));
-            //       break;
-
-            //     default:
-            //       break;
-            //   }
-
-            // })
 
             requestAnimationFrame(() => {
                 setIsRendered(true);
             });
-            // console.log(loading, "QUERY loading");
-            // console.log(sections, "QUERY SEC");
+
 
         }
 
     }, [sections, loading, isRendered])
 
+    if(error){
+        return(
+            <Error onRetry = {refetch}/>
+        )
+    }
 
-
-    // console.log(weekTopTen, "10");
-    // console.log(fanFav, "fan");
 
     return (
         <div ref={ref} className='relative w-full overflow-hidden  '>
@@ -108,12 +91,9 @@ const FanFav = () => {
                     <p> </p>
                 </div>
 
-                <Slider items={fanFav} loading={loading} query={(item) => item} error={error} />
+                <Slider items={fanFav} loading={loading} query={(item) => item} error={error} refetch={refetch} />
 
             </div >
-
-
-
 
 
         </div >

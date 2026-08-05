@@ -1,29 +1,20 @@
-import React, { useState } from 'react'
-import { useEffect } from 'react';
-import { homePageSections } from 'src/api/apiCalling';
-import Watch from './homepage/Watch';
-import Celebrity from './homepage/Celebrity';
+import React, { Suspense, lazy, useState } from 'react'
 import LazyComponent from './LazyComponent';
-import Streaming from './homepage/Streaming';
 import HeroComponent from './homepage/HeroComponent';
-import FanFav from './homepage/FanFav';
+
+const Celebrity = lazy(() => import('./homepage/Celebrity'));
+const Watch = lazy(() => import('./homepage/Watch'));
+const FanFav = lazy(() => import('./homepage/FanFav'));
+const Streaming = lazy(() => import('./homepage/Streaming'));
+
+const SectionFallback = () => (
+  <div className='h-40 w-full rounded-2xl bg-dark-4/40 animate-pulse' />
+);
 
 
 const HomePageSections = () => {
 
     //Apply Lazy load sections !!IMPORTANT BY TODAY 
-
-    const [watchSection,setWatchSection] = useState();
-    const [exploreSection,setExploreSection] = useState();
-    const [spotlight,setSpotlight] = useState();
-    const [misc,setMisc] = useState();
-    const [news,setNews] = useState();
-
-
-    useEffect(()=>{
-
-    },[])
-
 
 
   return (
@@ -33,20 +24,27 @@ const HomePageSections = () => {
       <HeroComponent/>
 
       <LazyComponent>
-      <Celebrity/>
+        <Suspense fallback={<SectionFallback />}>
+          <Celebrity/>
+        </Suspense>
       </LazyComponent>
 
       <LazyComponent>
-      <Watch/>
-      </LazyComponent>
-
-
-      <LazyComponent>
-      <FanFav/>
+        <Suspense fallback={<SectionFallback />}>
+          <Watch/>
+        </Suspense>
       </LazyComponent>
 
       <LazyComponent>
-      <Streaming/>
+        <Suspense fallback={<SectionFallback />}>
+          <FanFav/>
+        </Suspense>
+      </LazyComponent>
+
+      <LazyComponent>
+        <Suspense fallback={<SectionFallback />}>
+          <Streaming/>
+        </Suspense>
       </LazyComponent>
 
       

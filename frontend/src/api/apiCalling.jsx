@@ -23,6 +23,7 @@ export const AutoComplete = async (input) => {
 		return data.data;
 	} catch (error) {
 		console.error(error, "NOW");
+		throw error;
 	}
 
 
@@ -51,6 +52,7 @@ export const homePageSections = async (key) => {
 		return data; 
 	} catch (error) {
 		console.error(error, "NOW");
+		throw error;
 	}
 
 
@@ -66,6 +68,7 @@ export const celebData = async (id) => {
 		return data;
 	} catch (error) {
 		console.error(error, "NOW");
+		throw error;
 	}
 
 
@@ -81,6 +84,7 @@ export const titleData = async (id) => {
 		return data;
 	} catch (error) {
 		console.error(error, "NOW");
+		throw error;
 	}
 
 

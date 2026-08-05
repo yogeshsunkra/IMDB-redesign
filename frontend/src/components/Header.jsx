@@ -2,24 +2,30 @@ import React from "react";
 import { useState, useEffect, lazy, Suspense } from "react";
 import { enablePageScroll, disablePageScroll } from "scroll-lock";
 import Logo from "../assets/logo.svg";
-import { RxHamburgerMenu as HamburgerMenu } from "react-icons/rx";
-import { IoSearch as SearchIcon } from "react-icons/io5";
-import { IoCloseOutline as CloseIcon } from "react-icons/io5";
-import { IoIosArrowDown } from "react-icons/io";
-import { IoPersonSharp } from "react-icons/io5";
-import { IoMdFilm } from "react-icons/io";
-import { BsBookmarkPlus, BsBookmarkPlusFill } from "react-icons/bs";
+import AuthModal from "./AuthModal.jsx";
 const Button = lazy(() => (
   import("./Button")
 ))
 const AutoComplete = lazy(() => (
   import("src/api/apiCalling.jsx")
 ))
+const HamburgerMenu = lazy(() => import("react-icons/rx").then((module) => ({ default: module.RxHamburgerMenu })));
+const SearchIcon = lazy(() => import("react-icons/io5").then((module) => ({ default: module.IoSearch })));
+const CloseIcon = lazy(() => import("react-icons/io5").then((module) => ({ default: module.IoCloseOutline })));
+const ArrowDownIcon = lazy(() => import("react-icons/io").then((module) => ({ default: module.IoIosArrowDown })));
+const PersonIcon = lazy(() => import("react-icons/io5").then((module) => ({ default: module.IoPersonSharp })));
+const FilmIcon = lazy(() => import("react-icons/io").then((module) => ({ default: module.IoMdFilm })));
+
+const LazyIcon = ({ icon: Icon, className }) => (
+  <Suspense fallback={<span className={`inline-block h-5 w-5 ${className || ""}`} />}>
+    <Icon className={className} />
+  </Suspense>
+);
 import { menuItems } from "../constants/data.jsx";
-// import { AutoComplete } from "src/api/apiCalling.jsx";
+
 import { NavLink } from "react-router-dom";
 import OutsideClickHandler from "react-outside-click-handler";
-import axios from "axios";
+
 
 
 const Header = () => {
@@ -33,6 +39,7 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false)
 
 
   useEffect(() => {
@@ -92,6 +99,9 @@ const Header = () => {
     }
   };
 
+  const openAuthModal = () => setModalOpen(true);
+  const closeAuthModal = () => setModalOpen(false);
+
   const handleKeyDown = (e) => {
     if (e.key === 'ArrowDown') {
       if (focusedIndex < searchResults.length - 1) {
@@ -133,7 +143,7 @@ const Header = () => {
           <div className="flex gap-4 self-start">
 
             <Button className="block 2xl:hidden" onClick={toggleNavbar}>
-              <HamburgerMenu />
+              <LazyIcon icon={HamburgerMenu} />
             </Button>
 
             <NavLink to={`/home`} className="w-max h-max">
@@ -235,7 +245,7 @@ const Header = () => {
                                   height={50} width={50} loading="lazy"></img>
                               ) : (
                                 <div className="text-lt-2 text-[2rem] w-[56px] h-[70px] flex items-center justify-center">
-                                  {item.q ? <IoMdFilm /> : <IoPersonSharp />}
+                                  {item.q ? <LazyIcon icon={FilmIcon} /> : <LazyIcon icon={PersonIcon} />}
                                   <span className="text-n-1 h4-bold">{index}</span>
                                 </div>
                               )
@@ -286,7 +296,7 @@ const Header = () => {
             </Suspense>
 
             <Suspense>
-              <Button>
+              <Button onClick={openAuthModal}>
                 Sign In
               </Button>
             </Suspense>
@@ -304,13 +314,13 @@ const Header = () => {
         <div className="flex items-center   md:hidden">
           <Suspense>
             <Button px="px-[1rem]" onClick={toggleSearchBar}>
-              <SearchIcon />
+              <LazyIcon icon={SearchIcon} />
             </Button>
           </Suspense>
 
           <Suspense>
 
-            <Button textClass='w-max'>
+            <Button textClass='w-max' onClick={openAuthModal}>
               Sign In
             </Button>
 
@@ -333,7 +343,7 @@ const Header = () => {
 
           <Suspense>
             <Button px="px-[1rem] w-full" textClass="h2" onClick={handleClick}>
-              <CloseIcon />
+              <LazyIcon icon={CloseIcon} />
             </Button>
 
           </Suspense>
@@ -358,7 +368,7 @@ const Header = () => {
                 </div>
 
                 <div className="">
-                  <IoIosArrowDown />
+                  <LazyIcon icon={ArrowDownIcon} />
                 </div>
               </div>
 
@@ -399,12 +409,13 @@ const Header = () => {
               textClass="h4-bold text-[1.5rem]"
               onClick={handleClick}
             >
-              <CloseIcon />
+              <LazyIcon icon={CloseIcon} />
             </Button>
           </Suspense>
         </div>
       </div>
 
+      <AuthModal isOpen={modalOpen} onClose={closeAuthModal} />
     </div>
   );
 };

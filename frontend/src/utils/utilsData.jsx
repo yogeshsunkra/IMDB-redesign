@@ -12,7 +12,7 @@ export const simplifiedApiResponse = (items = []) => {
   return items?.map((item, index) => ({
 
 
-    id: item?.id ?? item?.title?.id ?? index,
+    id: item?.id ?? item?.title?.id ?? index ,
 
     title: item?.originalTitleText?.text ?? item?.title?.originalTitleText?.text ?? "untitled",
 
@@ -22,7 +22,9 @@ export const simplifiedApiResponse = (items = []) => {
 
     isAdult: item.isAdult || item.title?.isAdult || "none",
 
-    image: item?.primaryImage?.imageUrl ?? item?.title?.primaryImage?.imageUrl ?? "",
+    image: item?.primaryImage?.imageUrl ?? item?.title?.primaryImage?.imageUrl ,
+
+    primaryImage : item?.primaryImage,
 
     ranking: item.chartMeterRanking?.currentRank ?? item.title?.chartMeterRanking?.currentRank ?? "0",
 
@@ -54,7 +56,9 @@ export const simplifiedApiResponse = (items = []) => {
 
     trailerRuntime: item.latestTrailer?.runtime?.value || item.title?.latestTrailer?.runtime?.value || "--",
 
-    name: item.nameText?.text || item.title?.nameText?.text || "Someone",
+    name: item.nameText?.text || item.title?.nameText?.text ||  "Someone",
+
+    fullName : item?.fullName || "someone",
 
     birthDay: item.birthDateComponents?.dateComponents?.day || item.title?.birthDateComponents?.dateComponents?.day || "0",
 
