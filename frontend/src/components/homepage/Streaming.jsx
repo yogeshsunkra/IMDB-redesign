@@ -20,7 +20,8 @@ const Streaming = () => {
     const {
         data: sections,
         isLoading: loading,
-        error
+        error,
+        refetch
     } = useHomePageSections("streaming");
 
 
@@ -55,7 +56,15 @@ const Streaming = () => {
 
 
 
-    }, [sections, providerIndex, streamingData])
+    }, [sections, providerIndex, streamingData ,loading])
+
+
+    if(error){
+        return(
+            <Error onRetry={refetch}/>
+        )
+        
+    }
 
     const handleClick = (index) => {
 

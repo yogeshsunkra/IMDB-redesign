@@ -1,48 +1,62 @@
-import React, { useEffect, useState } from 'react'
-import HomePageSections from 'src/components/HomePageSections';
+import React, { Suspense, lazy, useState } from 'react'
+import LazyComponent from '../components/LazyComponent';
+import HeroComponent from '../components/homepage/HeroComponent';
+
+const Celebrity = lazy(() => import('../components/homepage/Celebrity'));
+const Watch = lazy(() => import('../components/homepage/Watch'));
+const FanFav = lazy(() => import('../components/homepage/FanFav'));
+const Streaming = lazy(() => import('../components/homepage/Streaming'));
+
+const SectionFallback = () => (
+  <div className='h-40 w-full rounded-2xl bg-dark-4/40 animate-pulse' />
+);
 
 const HomePage = () => {
 
-  const [homePageData,setHomePageData] = useState();
-
-
-  useEffect( ()=>{
-
-    // homePageSections().then(data => {
-
-    //   console.log("INITIAL",data);
-    //  if (data){
-
-    // // const result = data.map(d=>({
-
-    // //      name : d.value.name,
-    // //      data : d.value.data,
-    // //      category:d.value.category,
-    // //  }));
-
-    //  setHomePageData(data);
-
-    //  } 
-
-
-    // }).catch(err => console.log(err,"ERROR"));
-
-    
-
-  },[])
-
-// console.log("HOMEPAGE DATA",homePageData);
   return (
     <div className='w-full h-max'>
-      
-    <div className='w-full  xl:w-[95%] 2xl:w-[85%] mx-auto my-4 '>
 
-      {/* hero section */}
+      <div className='w-full  xl:w-[95%] 2xl:w-[85%] mx-auto my-4 '>
 
-      <HomePageSections/>
+        {/* hero section */}
+
+        <div className='w-full h-full flex flex-col gap-24'>
 
 
-    </div>
+          <HeroComponent />
+
+          <LazyComponent>
+            <Suspense fallback={<SectionFallback />}>
+              <Celebrity />
+            </Suspense>
+          </LazyComponent>
+
+          <LazyComponent>
+            <Suspense fallback={<SectionFallback />}>
+              <Watch />
+            </Suspense>
+          </LazyComponent>
+
+          <LazyComponent>
+            <Suspense fallback={<SectionFallback />}>
+              <FanFav />
+            </Suspense>
+          </LazyComponent>
+
+          <LazyComponent>
+            <Suspense fallback={<SectionFallback />}>
+              <Streaming />
+            </Suspense>
+          </LazyComponent>
+
+
+
+
+
+        </div>
+
+
+      </div>
 
 
 

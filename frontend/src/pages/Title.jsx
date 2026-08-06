@@ -349,7 +349,7 @@ const Title = () => {
                           <h1 className='h4'>Worldwide Gross</h1>
 
 
-                          <span className='p1 text-dark-2 font-bold mx-2'>{titleData?.overview?.grossWorldwide.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</span>
+                          <span className='p1 text-dark-2 font-bold mx-2'>{titleData?.overview?.grossWorldwide?.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</span>
 
 
                         </div>

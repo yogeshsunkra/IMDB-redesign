@@ -33,7 +33,7 @@ const LazyComponent = ({children}) => {
     return(
 
         <div ref={ref}>
-            {visible? children :"Loading"}
+            {visible && (children ) }
         </div>
     )
 }

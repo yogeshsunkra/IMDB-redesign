@@ -142,7 +142,7 @@ const Watch = () => {
                 {/* DETAILS */}
                 <div className='row-span-2 col-span-2 xl:col-span-1 xl:row-span-1 w-full h-full  flex flex-col gap-2 p-2 pl-0 line-clamp-1 leading-tight break-words'>
 
-                  <Skeleton loading={loading} className='flex flex-col gap-2 px-2 w-full ' skeletonClass='h-8'>
+                  <Skeleton loading={loading} className='flex flex-col gap-2 px-2 w-full ' >
                     {/* #1 tag */}
                     <div className='relative bg-blue-600 text-white w-max py-1 px-3 rounded-lg rounded-tr-none  font-semibold '> #{item?.rank}
 
@@ -206,7 +206,7 @@ const Watch = () => {
             return (
 
 
-              <div key={item?.id} className={`w-full h-max  xl:h-full col-span-3
+              <div key={item?.id || index} className={`w-full h-max  xl:h-full col-span-3
               xl:${index === 0 ? "col-span-3" : "col-span-2"}
                bg-dark-4 bg-opacity-40  rounded-3xl grid grid-cols-3  xl:grid-cols-2 gap-2 p-6 md:p-4 xl:text-[20px]`} >
 

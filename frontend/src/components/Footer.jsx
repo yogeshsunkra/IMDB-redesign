@@ -7,15 +7,9 @@ import Tiktok from 'src/assets/footer/tiktok.svg?react';
 import Facebook from 'src/assets/footer/facebook.svg?react';
 import Company from 'src/assets/footer/company.svg?react';
 import AdsBtn from 'src/assets/footer/adsBtn.svg?react';
-import { useContext } from 'react';
-import { DataContext } from 'src/context/DataContext';
-import { useState, useEffect } from 'react';
+
 
 const Footer = () => {
-
-
-    const { searched, loading } = useContext(DataContext);
-
 
 
     return (
@@ -26,18 +20,21 @@ const Footer = () => {
 
                 <p className ="h3  text-white"> Recently Viewed</p>
 
-                {searched && !loading ? (
+                {
+                // (
 
-                    <div></div>
+                //     <div></div>
 
 
-                ) : (
-                    <div className='w-full h-20 flex  items-center'>
+                // ) : (
+
+                // )
+
+                                    <div className='w-full h-20 flex  items-center'>
                         <p className="h4 text-dark-1">
                            You have no recently viewed pages
                         </p>
                     </div>
-                )
 
 
 
@@ -102,14 +99,14 @@ const Footer = () => {
                 <div className='flex flex-wrap w-full h-max gap-4 py-2 justify-center items-center px-24 '>
 
 
-                    <a className="text-white p2">HelpSite</a>
-                    <a className="text-white p2">IndexIMDbProBox</a>
+                    <a className="text-white p2">Help Site</a>
+                    <a className="text-white p2">Index IMDbPro Box</a>
                     <a className="text-white p3hover:cursor-pointer">Office</a>
-                    <a className="text-white p3hover:cursor-pointer">MojoLicense</a>
+                    <a className="text-white p3hover:cursor-pointer">Mojo License</a>
                     <a className="text-white p3hover:cursor-pointer">IMDb Data</a>
                     <a className="text-white p3hover:cursor-pointer">Press</a>
-                    <a className="text-white p3hover:cursor-pointer">RoomAdvertisingJobsConditions</a>
-                    <a className="text-white p3 hover:cursor-pointer">UsePrivacy</a>
+                    <a className="text-white p3hover:cursor-pointer">Room Advertising Jobs Conditions</a>
+                    <a className="text-white p3 hover:cursor-pointer">Use Privacy</a>
                     <a className="text-white p3hover:cursor-pointer">Policy</a>
                     <a className="text-white p3 hover:cursor-pointer ">Your Ads Privacy Choices</a>
 

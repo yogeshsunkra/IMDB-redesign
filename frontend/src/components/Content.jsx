@@ -10,10 +10,9 @@ import HomePage  from  '../pages/HomePage' ;
 const Content = () => {
 
 
-
   return (
     <div>
-      <Suspense fallback = {<div className='w-full h-full animate-pulse'></div>}>
+      <Suspense fallback = {<div className='w-full h-screen animate-pulse'></div>}>
       <Routes>
         <Route path='/home' element= {<HomePage/>}></Route>
         <Route path='/' element= {<HomePage/>}></Route>
